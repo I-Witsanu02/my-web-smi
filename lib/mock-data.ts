@@ -8,17 +8,17 @@ import type {
 } from "@/lib/types";
 
 export const clinicalDisclaimer =
-  "Clinical decision support only. Not a medical diagnosis.";
+  "Clinical decision support only. Not a medical diagnosis. / ระบบนี้ใช้เพื่อสนับสนุนการพิจารณาทางคลินิก ไม่ใช่การวินิจฉัยแทนแพทย์";
 
 export const demoCase = {
-  caseCode: "BA-9412-A",
+  caseCode: "BA-DEMO-10226",
   sex: "MALE",
-  chronologicalAgeMonths: 120,
-  predictedBoneAgeMonths: 116,
-  baCaDifferenceMonths: -4,
-  uncertaintyMonths: 1.8,
+  chronologicalAgeMonths: 166,
+  predictedBoneAgeMonths: 200,
+  baCaDifferenceMonths: 34,
+  uncertaintyMonths: 6.3,
   model: "FocalNet-Tiny v6.2",
-  screeningFlag: "MONITOR",
+  screeningFlag: "CLINICAL REVIEW SUGGESTED",
   roiImportance: [
     { roi: "PP3", value: 0.88 },
     { roi: "Carpal", value: 0.82 },
@@ -31,12 +31,12 @@ export const demoCase = {
 
 export const sampleCase: CaseSummary = {
   id: demoCase.caseCode,
-  chronologicalAge: "10y 0m",
-  predictedBoneAge: "9y 8m",
-  difference: `${demoCase.baCaDifferenceMonths} months`,
+  chronologicalAge: "13y 10m",
+  predictedBoneAge: "16y 8m",
+  difference: `+${demoCase.baCaDifferenceMonths} months`,
   uncertainty: `+/- ${demoCase.uncertaintyMonths} months`,
   modelVersion: demoCase.model,
-  interpretation: "monitor",
+  interpretation: "clinical review suggested",
   sex: demoCase.sex,
   heightCm: 142.5,
   weightKg: 38.2,
