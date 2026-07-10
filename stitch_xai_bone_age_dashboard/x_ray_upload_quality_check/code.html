@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9ff;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid #E2E8F0;
+        }
+        .upload-dashed {
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='12' ry='12' stroke='%23002046' stroke-width='2' stroke-dasharray='8%2c 12' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-surface": "#213145",
+                      "on-surface": "#0b1c30",
+                      "on-tertiary": "#ffffff",
+                      "outline-variant": "#c4c6cf",
+                      "secondary": "#006971",
+                      "primary": "#002046",
+                      "on-tertiary-fixed-variant": "#3f4759",
+                      "surface-bright": "#f8f9ff",
+                      "tertiary-container": "#2e3648",
+                      "on-background": "#0b1c30",
+                      "on-tertiary-fixed": "#141b2c",
+                      "background": "#f8f9ff",
+                      "on-primary": "#ffffff",
+                      "surface-container-low": "#eff4ff",
+                      "surface-container-highest": "#d3e4fe",
+                      "on-error-container": "#93000a",
+                      "primary-fixed": "#d6e3ff",
+                      "surface-tint": "#465f88",
+                      "inverse-primary": "#aec7f7",
+                      "secondary-fixed": "#9af0fa",
+                      "error": "#ba1a1a",
+                      "secondary-fixed-dim": "#7ed4dd",
+                      "outline": "#74777f",
+                      "on-secondary-fixed": "#002023",
+                      "surface-container-high": "#dce9ff",
+                      "on-tertiary-container": "#979fb5",
+                      "on-primary-container": "#87a0cd",
+                      "on-secondary-container": "#006d76",
+                      "surface-dim": "#cbdbf5",
+                      "secondary-container": "#97edf7",
+                      "tertiary-fixed": "#dbe2fa",
+                      "tertiary": "#192132",
+                      "surface-variant": "#d3e4fe",
+                      "primary-container": "#1b365d",
+                      "on-primary-fixed": "#001b3d",
+                      "on-error": "#ffffff",
+                      "on-surface-variant": "#44474e",
+                      "surface-container": "#e5eeff",
+                      "inverse-on-surface": "#eaf1ff",
+                      "on-primary-fixed-variant": "#2e476f",
+                      "tertiary-fixed-dim": "#bfc6dd",
+                      "on-secondary": "#ffffff",
+                      "surface": "#f8f9ff",
+                      "surface-container-lowest": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "on-secondary-fixed-variant": "#004f55",
+                      "primary-fixed-dim": "#aec7f7"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "32px",
+                      "base": "4px",
+                      "container-max": "1440px",
+                      "gutter": "24px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "body-lg": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "headline-sm": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "body-md": ["Inter"],
+                      "data-mono": ["Inter"]
+              },
+              "fontSize": {
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "data-mono": ["14px", {"lineHeight": "20px", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- Side Navigation Rail -->
+<aside class="flex flex-col h-screen fixed left-0 top-0 z-40 bg-primary shadow-sm docked left-0 h-full w-72">
+<div class="p-6 flex flex-col h-full">
+<div class="flex items-center gap-3 mb-10">
+<div class="w-10 h-10 bg-secondary-fixed rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">radiology</span>
+</div>
+<div>
+<h1 class="text-headline-sm font-headline-sm font-bold text-on-primary">BoneAge AI</h1>
+<p class="text-label-caps text-on-primary opacity-70">Clinical Support</p>
+</div>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-4 px-4 py-3 rounded-xl transition-colors text-on-primary-container opacity-70 hover:bg-primary-container" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-xl transition-colors text-on-primary font-bold border-r-4 border-secondary-fixed bg-primary-container" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+<span class="font-body-md text-body-md">New Case</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-xl transition-colors text-on-primary-container opacity-70 hover:bg-primary-container" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-body-md text-body-md">History</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-xl transition-colors text-on-primary-container opacity-70 hover:bg-primary-container" href="#">
+<span class="material-symbols-outlined">science</span>
+<span class="font-body-md text-body-md">Research</span>
+</a>
+</nav>
+<div class="mt-auto space-y-2 border-t border-white/10 pt-6">
+<a class="flex items-center gap-4 px-4 py-3 rounded-xl transition-colors text-on-primary-container opacity-70 hover:bg-primary-container" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-xl transition-colors text-on-primary-container opacity-70 hover:bg-primary-container" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-md text-body-md">Support</span>
+</a>
+<div class="flex items-center gap-3 px-4 py-4 mt-4 bg-primary-container/30 rounded-xl">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="A professional headshot of a female clinician in a white medical coat, soft studio lighting, clinical background, high-resolution photography, modern medical aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_WLZCv5jhXSj3dHweVhn7zNLK2r9qEDpjKOfE_8zEYOselADY6LKA0kOludewl4FtRjLcKL0LYYKCJY37bXpQWN_KRMvjg37KEomDtFAgF2BjJ_cFRr-Y-pqIHoRI2RG9SIm6IDQxG7eNcAJkZE4qnDAAfsuu26AEbWOcEVPo2jTXdK6tDWO545m6KN10z0G5VgWFsbgMq_iyMqb8UEt8uQ8O17PGuoUMSKsHmGCNVdtzqMdu4YsB"/>
+<div class="overflow-hidden">
+<p class="text-body-md font-bold text-on-primary truncate">Dr. Sarah Chen</p>
+<p class="text-label-caps text-on-primary opacity-60 truncate">Radiology Dept.</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Top Navigation Bar -->
+<header class="flex justify-between items-center w-full px-margin-desktop h-16 fixed top-0 z-30 ml-72 bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-4">
+<span class="text-headline-md font-headline-md font-extrabold text-primary">BoneAge CDSS</span>
+<div class="h-6 w-px bg-outline-variant mx-2"></div>
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container-high rounded-full">
+<span class="text-label-caps text-primary font-bold uppercase tracking-wider">Case ID: BA-9412-A</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-outline">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-body-md focus:outline-none focus:ring-2 focus:ring-primary/20 w-64" placeholder="Search Patient Records..." type="text"/>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<button class="hover:text-secondary transition-all"><span class="material-symbols-outlined">notifications</span></button>
+<button class="hover:text-secondary transition-all"><span class="material-symbols-outlined">account_circle</span></button>
+<button class="bg-primary text-on-primary px-5 py-2 rounded-full font-body-md font-bold hover:bg-primary/90 transition-all">Clinician Portal</button>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-72 pt-16 pb-16 min-h-screen">
+<div class="max-w-container-max mx-auto px-margin-desktop py-8">
+<div class="flex gap-gutter items-start">
+<!-- Central Upload Area (Diagnostic Workspace) -->
+<div class="flex-1 space-y-6">
+<div class="flex items-center justify-between mb-2">
+<h2 class="text-headline-md font-headline-md text-primary">X-ray Data Intake</h2>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-secondary-fixed text-on-secondary-fixed text-label-caps rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">shield_person</span> HIPAA Compliant
+                            </span>
+</div>
+</div>
+<!-- Upload Dropzone / Preview -->
+<div class="relative bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm aspect-[4/3] flex flex-col">
+<div class="absolute inset-0 z-10 flex flex-col items-center justify-center upload-dashed m-6 cursor-pointer hover:bg-surface-container-low transition-all group" id="dropzone">
+<div class="bg-primary-fixed w-16 h-16 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl">upload_file</span>
+</div>
+<h3 class="text-headline-sm font-bold text-primary mb-1">Upload Wrist X-ray</h3>
+<p class="text-body-md text-on-surface-variant mb-6">Drag and drop DICOM, PNG, or JPG files here</p>
+<button class="px-6 py-2 border-2 border-secondary text-secondary font-bold rounded-lg hover:bg-secondary/5 transition-colors">Select From Computer</button>
+<p class="mt-8 text-label-caps text-outline uppercase tracking-widest">Max File Size: 50MB</p>
+</div>
+<!-- Content Preview Layer (Hidden by default, shown here as if uploaded) -->
+<div class="w-full h-full p-6 flex items-center justify-center bg-black/5">
+<div class="relative w-full h-full rounded-lg overflow-hidden border border-outline shadow-lg bg-black">
+<img class="w-full h-full object-contain opacity-80" data-alt="A high-contrast medical X-ray of a pediatric left hand and wrist on a clinical black background. The image shows clear bone structure and growth plates, intended for bone age assessment. Professional diagnostic quality, neutral lighting, monochromatic clinical aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7QDphfKFEa_c4t_uZZ7UK8TTg6syGZOdpoGpfxhZBapLDOImxD_KU1i-n5lsBfhkhgb6kT65jY7t5XtUlfiHvOLIuaZI3aaXJmvF3_wziThnyOFu_JNdd9NlzeF5_RfEPH_A_BQiKgpR-0kC2wIEgAOiWSU_SBUEl50xgDiANWG_qbVqK2pzdvQYPssHriXn5hb1nlX2_cSNBY1FWLcpe7VBlVhadJdNBb-uLK-Pqh_FZ9IH6y4-f"/>
+<!-- AI Overlay Placeholder -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-32 h-32 border-2 border-secondary-fixed/50 rounded-full animate-pulse flex items-center justify-center">
+<div class="w-16 h-16 border border-secondary-fixed/30 rounded-full"></div>
+</div>
+</div>
+<div class="absolute bottom-4 left-4 flex gap-2">
+<div class="bg-black/60 backdrop-blur-md border border-white/20 px-3 py-1 rounded text-white text-label-caps">L-WRIST_PA_VIEW.DCM</div>
+<div class="bg-black/60 backdrop-blur-md border border-white/20 px-3 py-1 rounded text-white text-label-caps">12.4 MB</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Security Notice -->
+<div class="flex items-start gap-4 p-4 bg-surface-container-high rounded-xl border border-outline-variant/50">
+<span class="material-symbols-outlined text-primary mt-0.5">lock</span>
+<div>
+<p class="text-body-md font-bold text-primary">Security Notice</p>
+<p class="text-body-md text-on-surface-variant">Images are anonymized automatically. Patient ID removed from DICOM tags. All data is encrypted in transit and at rest using AES-256 standards.</p>
+</div>
+</div>
+</div>
+<!-- Right Sidebar: Automated Checklist -->
+<aside class="w-80 space-y-6 sticky top-24">
+<div class="bg-white border border-outline-variant rounded-xl p-6 shadow-sm">
+<h3 class="text-headline-sm font-bold text-primary mb-6">Quality Check</h3>
+<ul class="space-y-4">
+<li class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low border border-outline-variant/30">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-green-600" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-body-md text-on-surface">Left hand/wrist visible</span>
+</div>
+</li>
+<li class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low border border-outline-variant/30">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-green-600" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-body-md text-on-surface">Orientation: Correct</span>
+</div>
+</li>
+<li class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low border border-outline-variant/30">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-green-600" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-body-md text-on-surface">Contrast: Optimal</span>
+</div>
+</li>
+<li class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low border border-outline-variant/30">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">cancel</span>
+<span class="text-body-md text-on-surface">Markers detected: No</span>
+</div>
+</li>
+</ul>
+<div class="mt-8 pt-6 border-t border-outline-variant">
+<div class="mb-6">
+<div class="flex justify-between text-label-caps text-on-surface-variant mb-2">
+<span>AI CONFIDENCE</span>
+<span>98.2%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[98.2%] rounded-full"></div>
+</div>
+</div>
+<button class="w-full bg-primary text-on-primary py-4 rounded-xl font-bold flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-95 transition-all shadow-md">
+<span class="material-symbols-outlined">psychology</span>
+                                Run AI Analysis
+                            </button>
+<button class="w-full mt-3 py-3 text-secondary font-bold border border-secondary rounded-xl hover:bg-secondary/5 transition-colors">
+                                Add Clinical Note
+                            </button>
+</div>
+</div>
+<!-- Help Card -->
+<div class="bg-secondary-container p-6 rounded-xl border border-secondary/20">
+<div class="flex items-center gap-3 mb-3">
+<span class="material-symbols-outlined text-secondary">info</span>
+<span class="font-bold text-secondary">Guidance</span>
+</div>
+<p class="text-body-md text-on-secondary-container">Ensure the image includes the distal ends of the radius and ulna for optimal bone age estimation using the Greulich-Pyle method.</p>
+</div>
+</aside>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="flex justify-between items-center px-margin-desktop py-base fixed bottom-0 w-full z-30 ml-72 bg-surface-container-low border-t border-outline-variant">
+<p class="font-label-caps text-label-caps text-on-surface-variant">© 2024 BoneAge AI. Decision Support Tool Only. Not for primary diagnosis.</p>
+<div class="flex gap-6">
+<a class="font-label-caps text-label-caps text-on-surface-variant opacity-80 hover:underline hover:text-primary" href="#">Terms of Service</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant opacity-80 hover:underline hover:text-primary" href="#">Privacy Policy</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant opacity-80 hover:underline hover:text-primary" href="#">Clinical Documentation</a>
+</div>
+</footer>
+<script>
+        // Simple drag & drop visual feedback
+        const dropzone = document.getElementById('dropzone');
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropzone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropzone.classList.add('bg-secondary-container/20');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropzone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropzone.classList.remove('bg-secondary-container/20');
+            }, false);
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            // logic to handle files
+            alert('File analysis starting...');
+        });
+    </script>
+</body></html>

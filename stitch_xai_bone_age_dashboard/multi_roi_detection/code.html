@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BoneAge AI - Multi-ROI Detection</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .roi-bounding-box {
+            border-width: 2px;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .roi-bounding-box:hover {
+            background-color: rgba(0, 105, 113, 0.1);
+            box-shadow: 0 0 12px rgba(0, 105, 113, 0.4);
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#213145",
+                        "on-surface": "#0b1c30",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#c4c6cf",
+                        "secondary": "#006971",
+                        "primary": "#002046",
+                        "on-tertiary-fixed-variant": "#3f4759",
+                        "surface-bright": "#f8f9ff",
+                        "tertiary-container": "#2e3648",
+                        "on-background": "#0b1c30",
+                        "on-tertiary-fixed": "#141b2c",
+                        "background": "#f8f9ff",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#eff4ff",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-error-container": "#93000a",
+                        "primary-fixed": "#d6e3ff",
+                        "surface-tint": "#465f88",
+                        "inverse-primary": "#aec7f7",
+                        "secondary-fixed": "#9af0fa",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#7ed4dd",
+                        "outline": "#74777f",
+                        "on-secondary-fixed": "#002023",
+                        "surface-container-high": "#dce9ff",
+                        "on-tertiary-container": "#979fb5",
+                        "on-primary-container": "#87a0cd",
+                        "on-secondary-container": "#006d76",
+                        "surface-dim": "#cbdbf5",
+                        "secondary-container": "#97edf7",
+                        "tertiary-fixed": "#dbe2fa",
+                        "tertiary": "#192132",
+                        "surface-variant": "#d3e4fe",
+                        "primary-container": "#1b365d",
+                        "on-primary-fixed": "#001b3d",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#44474e",
+                        "surface-container": "#e5eeff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-primary-fixed-variant": "#2e476f",
+                        "tertiary-fixed-dim": "#bfc6dd",
+                        "on-secondary": "#ffffff",
+                        "surface": "#f8f9ff",
+                        "surface-container-lowest": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#004f55",
+                        "primary-fixed-dim": "#aec7f7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "32px",
+                        "base": "4px",
+                        "container-max": "1440px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "body-md": ["Inter"],
+                        "data-mono": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "data-mono": ["14px", {"lineHeight": "20px", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-lg text-body-lg selection:bg-secondary-container">
+<!-- Sidebar Navigation (Mandatory Shared Component) -->
+<nav class="flex flex-col h-screen fixed left-0 top-0 z-40 bg-primary dark:bg-primary-container shadow-sm docked left-0 h-full w-72">
+<div class="px-6 py-8">
+<h1 class="text-headline-sm font-headline-sm font-bold text-on-primary dark:text-on-primary-fixed">BoneAge AI</h1>
+<p class="text-body-md font-body-md opacity-70 text-on-primary">Clinical Support</p>
+</div>
+<div class="flex-grow space-y-2 mt-4 px-3">
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg transition-colors hover:bg-primary-container text-on-primary-container opacity-70" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg transition-colors text-on-primary dark:text-on-primary-fixed font-bold border-r-4 border-secondary-fixed bg-primary-container" href="#">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="font-body-md text-body-md">New Case</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg transition-colors hover:bg-primary-container text-on-primary-container opacity-70" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-body-md text-body-md">History</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg transition-colors hover:bg-primary-container text-on-primary-container opacity-70" href="#">
+<span class="material-symbols-outlined">science</span>
+<span class="font-body-md text-body-md">Research</span>
+</a>
+</div>
+<div class="p-3 border-t border-white/10">
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg transition-colors hover:bg-primary-container text-on-primary-container opacity-70" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg transition-colors hover:bg-primary-container text-on-primary-container opacity-70" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-md text-body-md">Support</span>
+</a>
+</div>
+</nav>
+<!-- Top AppBar (Mandatory Shared Component) -->
+<header class="flex justify-between items-center w-full px-margin-desktop h-16 fixed top-0 z-50 ml-72 bg-surface dark:bg-inverse-surface border-b border-outline-variant dark:border-outline">
+<div class="flex items-center gap-4">
+<span class="text-headline-md font-headline-md font-extrabold text-primary dark:text-primary-fixed">Case ID: BA-9412-A | Multi-ROI Analysis</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined cursor-pointer hover:text-secondary">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-secondary">account_circle</span>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-body-md text-body-md hover:bg-primary-container transition-colors">Clinician Portal</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-72 pt-16 pb-16 min-h-screen">
+<div class="max-w-[1440px] mx-auto p-gutter grid grid-cols-12 gap-gutter h-[calc(100vh-128px)]">
+<!-- Left Panel: Diagnostic Workspace (Central Viewer) -->
+<section class="col-span-8 flex flex-col gap-gutter">
+<div class="relative bg-black rounded-xl overflow-hidden shadow-sm flex items-center justify-center border border-outline-variant h-full group">
+<!-- Base X-ray Image -->
+<img class="h-full w-auto object-contain opacity-90" data-alt="A high-resolution clinical pediatric hand X-ray for bone age assessment. The image is displayed on a deep black background with professional medical lighting. Overlaid on the X-ray are precise, semi-transparent colored bounding boxes identifying key anatomical regions like the carpals and phalanges. The aesthetic is clean, clinical, and high-tech, using a subtle navy and teal accent palette to indicate AI-driven analysis." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDM5bVw6Hq0YKk9gOhU95sWVDE_K0h62wqfxipZ2_i3Y6jyTF04_ayPN7LIPSGvLVXSauiNc9cGshFDTpL5eGabyGaE40McoJ_vTZXjTPMGjagyQv09uQal21P1KNhdQ1dwrjCFVOl7kGzsyJFRpgE4XVTurkhWI5p-0v8PQnoAMeF3gwE66v0Io60BPQq8N4zKphzo29rH9NQAQXcUNYp1KonouXA5-xqsHugezvWDSQIMjIzks9Fe"/>
+<!-- Bounding Box Overlays (Abstracted Visuals) -->
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="relative w-[400px] h-[550px]">
+<!-- Carpal Box -->
+<div class="roi-bounding-box absolute top-[360px] left-[150px] w-24 h-20 border-secondary rounded flex flex-col items-start p-1 bg-secondary/5">
+<span class="bg-secondary text-white text-[10px] px-1 font-bold uppercase tracking-tighter rounded-sm">Carpal</span>
+</div>
+<!-- Radius Box -->
+<div class="roi-bounding-box absolute top-[480px] left-[120px] w-20 h-16 border-primary-container rounded flex flex-col items-start p-1 bg-primary-container/5">
+<span class="bg-primary-container text-white text-[10px] px-1 font-bold uppercase tracking-tighter rounded-sm">Radius</span>
+</div>
+<!-- Ulna Box -->
+<div class="roi-bounding-box absolute top-[470px] left-[260px] w-16 h-16 border-primary-container rounded flex flex-col items-start p-1 bg-primary-container/5">
+<span class="bg-primary-container text-white text-[10px] px-1 font-bold uppercase tracking-tighter rounded-sm">Ulna</span>
+</div>
+<!-- Phalanges Boxes (Simplified) -->
+<div class="roi-bounding-box absolute top-[20px] left-[180px] w-12 h-16 border-secondary rounded flex flex-col items-start p-1 bg-secondary/5">
+<span class="bg-secondary text-white text-[10px] px-1 font-bold uppercase tracking-tighter rounded-sm">PP3</span>
+</div>
+<div class="roi-bounding-box absolute top-[120px] left-[185px] w-12 h-16 border-secondary rounded flex flex-col items-start p-1 bg-secondary/5">
+<span class="bg-secondary text-white text-[10px] px-1 font-bold uppercase tracking-tighter rounded-sm">MP3</span>
+</div>
+<div class="roi-bounding-box absolute top-[200px] left-[190px] w-12 h-16 border-secondary rounded flex flex-col items-start p-1 bg-secondary/5">
+<span class="bg-secondary text-white text-[10px] px-1 font-bold uppercase tracking-tighter rounded-sm">DP3</span>
+</div>
+<!-- MC1, MP5, PP1... -->
+<div class="roi-bounding-box absolute top-[320px] left-[50px] w-14 h-24 border-secondary rounded flex flex-col items-start p-1 bg-secondary/5">
+<span class="bg-secondary text-white text-[10px] px-1 font-bold uppercase tracking-tighter rounded-sm">MC1</span>
+</div>
+</div>
+</div>
+<!-- Overlay Controls -->
+<div class="absolute bottom-6 left-6 flex gap-2">
+<button class="glass-panel p-2 rounded-lg border border-white/20 shadow-lg hover:bg-white transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">visibility</span>
+<span class="text-body-md font-body-md text-primary font-semibold">Toggle Overlays</span>
+</button>
+<button class="glass-panel p-2 rounded-lg border border-white/20 shadow-lg hover:bg-white transition-all">
+<span class="material-symbols-outlined text-primary">zoom_in</span>
+</button>
+<button class="glass-panel p-2 rounded-lg border border-white/20 shadow-lg hover:bg-white transition-all">
+<span class="material-symbols-outlined text-primary">contrast</span>
+</button>
+</div>
+</div>
+<!-- Footer Disclaimer -->
+<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant flex items-center gap-4">
+<span class="material-symbols-outlined text-error">info</span>
+<p class="text-body-md font-body-md text-on-surface-variant italic">
+                        ROI detection should be reviewed when bounding boxes are misplaced. The system provides decision support only.
+                    </p>
+</div>
+</section>
+<!-- Right Panel: ROI Gallery Sidebar -->
+<aside class="col-span-4 flex flex-col gap-gutter overflow-hidden h-full">
+<div class="bg-surface rounded-xl border border-outline-variant flex flex-col h-full overflow-hidden shadow-sm">
+<div class="p-6 border-b border-outline-variant bg-white flex justify-between items-center">
+<h2 class="text-headline-sm font-headline-sm text-primary">Detected ROIs</h2>
+<span class="text-label-caps font-label-caps text-secondary bg-secondary-container px-2 py-1 rounded-full">9 Regions Found</span>
+</div>
+<div class="flex-grow overflow-y-auto p-4 custom-scrollbar space-y-4">
+<!-- ROI Items Grid -->
+<div class="grid grid-cols-2 gap-4">
+<!-- ROI Card Template -->
+<div class="group bg-white rounded-lg border border-outline-variant overflow-hidden hover:border-secondary transition-all">
+<div class="h-32 bg-slate-100 flex items-center justify-center relative">
+<img class="w-full h-full object-cover" data-alt="A macro-crop of a pediatric carpal bone region from an X-ray. The image is highly detailed with sharp edges, presented in medical grayscale. The focus is specifically on the development of the wrist bones for skeletal age estimation. Professional medical imaging aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnatBu7J6UCu0etymRbgrmqL3JBuObJ_yWRTux3RZQ2NyiiD2ccPe28d3fN4l7CVNphRZW1vqzFfmSfLXn7luw6RtP7WbhIt8MC2uON64O_aUBQgOsrsqyRgv5uB6V2-HvVct5d49yJ_9GRiHlkDZenqLjS5R8Ngz5nWY5pbKG6ruotGhmpiSBHotu0vFBKT21yyJ01J_45sW4PLUIAuZAAGe9HMT9cu7h9--HU4XkyeLHMoYmxg5k"/>
+<div class="absolute inset-0 bg-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<div class="p-3 bg-surface-container-lowest">
+<div class="flex justify-between items-start mb-2">
+<span class="font-bold text-body-md text-primary">Carpal</span>
+<span class="text-label-caps font-label-caps text-secondary">99.2%</span>
+</div>
+<button class="w-full py-1 text-label-caps font-label-caps border border-outline-variant rounded hover:bg-error-container hover:text-on-error-container hover:border-error transition-all flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[14px]">flag</span> Flag ROI
+                                    </button>
+</div>
+</div>
+<div class="group bg-white rounded-lg border border-outline-variant overflow-hidden hover:border-secondary transition-all">
+<div class="h-32 bg-slate-100 flex items-center justify-center relative">
+<img class="w-full h-full object-cover" data-alt="A cropped X-ray image showing the distal radius and ulna of a child's hand. The bones are clearly defined against a dark background, illustrating the growth plate and epiphysis development. High contrast medical imaging style with a clean, academic look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_HiYqTLRNNSSJ6fXG2ye7lea5EQmbYVfnub54RehB69tjZuKJgIWK1_-ax2ANFPrNuWd26DIrkufUTSjDCY7D1aj4YHm4saqhE6qKFbDOIgfCGnMrU58X-Drzmg7NUGfGR6txtEJ03VX5SLv6REStOymlo04knZShrj_O8qhLGXyacaNIhlYEJ1fs2P5orHY6M57DgIGjRwW5co2eGUmEgy_fW8kKg4x5JT2ZoaLi0N9A1NDoK1G-"/>
+</div>
+<div class="p-3 bg-surface-container-lowest">
+<div class="flex justify-between items-start mb-2">
+<span class="font-bold text-body-md text-primary">Radius</span>
+<span class="text-label-caps font-label-caps text-secondary">98.7%</span>
+</div>
+<button class="w-full py-1 text-label-caps font-label-caps border border-outline-variant rounded hover:bg-error-container hover:text-on-error-container hover:border-error transition-all flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[14px]">flag</span> Flag ROI
+                                    </button>
+</div>
+</div>
+<div class="group bg-white rounded-lg border border-outline-variant overflow-hidden hover:border-secondary transition-all">
+<div class="h-32 bg-slate-100 flex items-center justify-center relative">
+<img class="w-full h-full object-cover" data-alt="An X-ray crop focusing on the third proximal phalanx (PP3) of a human hand. The bone structure is sharp, showing clear trabecular patterns. Grayscale clinical aesthetic with medical-grade clarity for diagnostic evaluation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeKzlfGU3Od_TZR7BQAfufebNHFRffBAaMRz_JpdnujiRhnrRD0-rjma5EzRHpiFD5j-1NyXa4sVUWl7FU_ilasp2E2VNRZ-De6ijeK3wo073VvYiSt4V9uw78nJG7EaMkHDjpjqCmUp9gsyC0zRoQ8hNnjjvUAT5juhjSREcxIc0dO_eOxdBJ5oxpC1XD_UD4AZLp_CUaOjRw3qC0c8J-9oXKewPqOLuTalbz36YeM9gFmqQY2RPe"/>
+</div>
+<div class="p-3 bg-surface-container-lowest">
+<div class="flex justify-between items-start mb-2">
+<span class="font-bold text-body-md text-primary">PP3</span>
+<span class="text-label-caps font-label-caps text-secondary">97.5%</span>
+</div>
+<button class="w-full py-1 text-label-caps font-label-caps border border-outline-variant rounded hover:bg-error-container hover:text-on-error-container hover:border-error transition-all flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[14px]">flag</span> Flag ROI
+                                    </button>
+</div>
+</div>
+<div class="group bg-white rounded-lg border border-outline-variant overflow-hidden hover:border-secondary transition-all">
+<div class="h-32 bg-slate-100 flex items-center justify-center relative">
+<img class="w-full h-full object-cover" data-alt="A focused X-ray crop of the first metacarpal (MC1) bone area. The joint space and bone density are visible, provided in a high-fidelity grayscale format consistent with clinical radiology standards." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-UYsGDdA189slB9YIsYSOeQlV69Xf9KIaLj3DWGcFI6G2J2hd5pikDibGI7dMYwITtBBO1wG9gSIPAcrtLgk7rOF9JetTFczLWweAjNg6EwedV9hi8GFw3fGQvZ89h_QSWPj8eaxyMS990S6xnvctzmz3c44w88pybAAjzaaCkaNa2I7jvUJbQILmccvtYEJ79rt6ct_Tk8DWwgsN09vu5YsLBJy8VEBOoBCP004UfVW1aarWeIhZ"/>
+</div>
+<div class="p-3 bg-surface-container-lowest">
+<div class="flex justify-between items-start mb-2">
+<span class="font-bold text-body-md text-primary">MC1</span>
+<span class="text-label-caps font-label-caps text-secondary">95.8%</span>
+</div>
+<button class="w-full py-1 text-label-caps font-label-caps border border-outline-variant rounded hover:bg-error-container hover:text-on-error-container hover:border-error transition-all flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[14px]">flag</span> Flag ROI
+                                    </button>
+</div>
+</div>
+</div>
+<!-- Secondary region list -->
+<div class="pt-4 border-t border-outline-variant">
+<h3 class="text-label-caps font-label-caps text-on-surface-variant mb-3">ADDITIONAL DETECTED SEGMENTS</h3>
+<div class="space-y-2">
+<div class="flex items-center justify-between p-2 rounded bg-surface-container hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-slate-200 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A small clinical X-ray thumbnail of a finger joint. Professional grayscale radiology scan." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-CHWFORqJgyU_y89OU-vGtNArZlYJ1AvjCooS-tu2G5askFcKsg22Q48w0R3jFAJcF7D_Kkd7pAzqLny3vgFm5KxiNIsrlyHxaRhGbddxmqKFXaHtqqbkv-GMWl62k3mqoWnIfeaYUdpkoqp7Sod024Oxe2dREwyi8fHI_ucotjSJDgUXW6Ci6IXapRv1wJswKJHX64VcIWMiEC9JRgrLpTh6HdJb1WFdXIKBlfk1uTMRMuu79so-"/>
+</div>
+<span class="text-body-md font-bold text-primary">MP3</span>
+</div>
+<span class="text-body-md text-secondary">94.1%</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded bg-surface-container hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-slate-200 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A small clinical X-ray thumbnail of a phalangeal bone. Professional grayscale radiology scan." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzNrYN6OxzAi3s8FZXig_ti70Vd8bXnqqcnhx03-ZKcr3xCS3uVGoqfi6YFeO9gtOBgyQUjdN3fasCfiT5fyo61qY72AqMN8WPlnYkxjrRFWUy8sEpkqFtROGez6UDjLk-XuNtqjcdUCqGmBesXTCCGUvrZ5QUtzXFQsayNNx9dcQLaZeDvn397iBqK5J7ozizfZKDKSRwcCwMSNNTplZf8fsYYZCAyj_jyW-V49MhUgijBUn0eNjd"/>
+</div>
+<span class="text-body-md font-bold text-primary">DP3</span>
+</div>
+<span class="text-body-md text-secondary">92.4%</span>
+</div>
+</div>
+</div>
+</div>
+<div class="p-6 bg-white border-t border-outline-variant">
+<button class="w-full bg-primary text-on-primary py-4 rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-primary-container transition-all shadow-lg active:scale-[0.98]">
+                            Proceed to Bone Age Prediction
+                            <span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer (Mandatory Shared Component) -->
+<footer class="flex justify-between items-center px-margin-desktop py-base fixed bottom-0 w-full z-30 ml-72 bg-surface-container-low dark:bg-surface-container-lowest border-t border-outline-variant dark:border-outline">
+<span class="font-label-caps text-label-caps text-on-surface-variant">
+            © 2024 BoneAge AI. Decision Support Tool Only. Not for primary diagnosis.
+        </span>
+<div class="flex gap-6">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:underline hover:text-primary transition-all" href="#">Terms of Service</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:underline hover:text-primary transition-all" href="#">Privacy Policy</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:underline hover:text-primary transition-all" href="#">Clinical Documentation</a>
+</div>
+</footer>
+<!-- Interactive Layer: Simple JS for hover effect sync -->
+<script>
+        document.querySelectorAll('.roi-bounding-box').forEach(box => {
+            box.addEventListener('click', function() {
+                const label = this.innerText.trim();
+                // Logic to scroll to/highlight gallery item would go here
+                console.log('Selected ROI:', label);
+                this.classList.toggle('bg-secondary/20');
+            });
+        });
+
+        // Simulating subtle atmospheric animation
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            // No direct canvas/script injection as per rules, but inline JS for interaction is allowed.
+        });
+    </script>
+</body></html>
