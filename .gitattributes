@@ -1,0 +1,2 @@
+artifacts/boneage/*.pt filter=lfs diff=lfs merge=lfs -text
+artifacts/boneage/yolo11s.pt filter=lfs diff=lfs merge=lfs -text

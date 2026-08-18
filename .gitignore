@@ -30,3 +30,11 @@ tsconfig.tsbuildinfo
 Thumbs.db
 .vscode/
 .idea/
+
+# Local BoneAge training outputs and datasets
+artifacts/boneage/runs/
+artifacts/boneage/cache/
+artifacts/boneage/datasets/
+artifacts/boneage/**/weights/
+*.pt.tmp
+*.pth.tmp
