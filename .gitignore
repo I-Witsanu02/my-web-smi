@@ -1,40 +1,83 @@
-# dependencies
-node_modules/
-
-# Next.js
-.next/
-out/
-
-# production
-build/
-dist/
-
-# local env
-.env
-.env*.local
-
-# Python
+# Python / notebooks
 __pycache__/
 *.py[cod]
 .venv/
 venv/
-backend/.venv/
+env/
+.ipynb_checkpoints/
+.pytest_cache/
 
-# logs and caches
-*.log
-.eslintcache
-tsconfig.tsbuildinfo
+# Local secrets and machine-specific settings
+.env
+.env.*
+!.env.example
+!.env.production.example
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
 
-# OS/editor
-.DS_Store
-Thumbs.db
-.vscode/
-.idea/
+# Medical images, exported datasets, and local data
+data/
+# Keep the small TypeScript fixture used by the deployable web interface.
+!src/data/
+!src/data/*.ts
+datasets/
+pipeline_output/
+**/images/
+**/labels/
+*.dcm
+*.nii
+*.nii.gz
+*.png
+*.jpg
+*.jpeg
+*.bmp
+*.tif
+*.tiff
+*.webp
+# Curated, de-identified README figures are versioned separately from datasets.
+!docs/assets/
+!docs/assets/*.png
 
-# Local BoneAge training outputs and datasets
-artifacts/boneage/runs/
-artifacts/boneage/cache/
-artifacts/boneage/datasets/
-artifacts/boneage/**/weights/
-*.pt.tmp
-*.pth.tmp
+# Training outputs / checkpoints / large model artifacts
+runs/
+outputs/
+logs/
+reports/
+qc/
+checkpoints/
+artifacts/
+exports/
+*.pt
+*.pth
+*.onnx
+*.ckpt
+*.h5
+*.safetensors
+
+# Checked-in reproducibility subset (all other artifacts remain ignored)
+!artifacts/
+!artifacts/boneage/
+!artifacts/boneage/README.md
+!artifacts/boneage/BoneAge_LOCAL4050_V1_R3_AUDITED_20260817.ipynb
+!artifacts/boneage/BoneAge_LOCAL4050_V1_RUN_GUIDE.txt
+!artifacts/boneage/yolo11s.pt
+# Web application build/runtime data
+node_modules/
+dist/
+runtime/
+models/
+
+# Local project snapshots and generated manifests
+BoneAge_LOCAL4050_V1/
+BoneAge_LOCAL4050_V2_DETECTOR/
+BoneAge_ROBOFLOW11932_YOLO26M_ONECLICK_V4/
+BoneAge_YOLO26M_FULL_AUDIT/
+BoneAge_YOLO26_RF11932_V4/
+BoneAge_YOLO26_STAGEAB_V3/
+BoneAge_YOLO26_STAGEAB_V3_1/
+boneage_training_years_upto20.csv
+.vercel/
+.env*
+!.env.example
+!.env.production.example

@@ -1,0 +1,69 @@
+{
+  "default_model": "full18_focalnet_b8",
+  "models": [
+    {
+      "id": "full18_focalnet_b8",
+      "display_name": "FocalNet อายุ 1–18 ปี — ลด LR ช้าลง (validation 6.58 เดือน)",
+      "status": "active",
+      "eligible_age_years": [1, 18],
+      "input_protocol": "9 ROI + sex, aspect-pad224, original intensity",
+      "checkpoint": "models/focalnet_full18.pt",
+      "checkpoint_env": "BONEAGE_FULL18_CHECKPOINT",
+      "best_epoch": 30,
+      "validation_n": 260,
+      "validation_mae_months": 6.580859375,
+      "validation_rmse_months": 8.5625968743,
+      "validation_r2": 0.9566750718,
+      "reason": "baseline ที่ตรวจซ้ำบน reviewed-ROI validation 260 รายได้; ยังไม่ยืนยัน end-to-end หรือความเหนือกว่าทุกโมเดล",
+      "selection_status": "provisional_validation_baseline",
+      "evaluation_scope": "reviewed_roi_not_full_hand_end_to_end",
+      "locked_test_evaluated": false
+    },
+    {
+      "id": "pre2_focalnet_b8",
+      "display_name": "PRE2 FocalNet — อายุ 1–5 ปี",
+      "status": "reference",
+      "eligible_age_years": [1, 5],
+      "input_protocol": "9 ROI + sex, stretch resize 224x224",
+      "checkpoint": "models/pre2_focalnet_b8.pt",
+      "validation_n": 114,
+      "validation_mae_months": 5.9429824561,
+      "validation_rmse_months": 7.6123495235,
+      "validation_r2": 0.6466394630,
+      "reason": "โมเดลอ้างอิงช่วงอายุ 1–5 ปี; คนละ cohort กับ FULL18 จึงยังสรุปว่าแม่นกว่าไม่ได้ และไม่ใช้กับอายุ 13 ปี"
+    },
+    {
+      "id": "legacy_edgenext_small",
+      "display_name": "Legacy EdgeNeXt Small",
+      "status": "legacy_not_served",
+      "eligible_age_years": [1, 18],
+      "checkpoint": "models/archive/legacy_edgenext_small.pt",
+      "recorded_validation_mae_months": 11.9046574519,
+      "reason": "ดีที่สุดในกลุ่มโมเดลเก่า แต่ checkpoint ขาด protocol/signature สำหรับ deployment ที่ตรวจสอบย้อนกลับได้"
+    },
+    {
+      "id": "legacy_convnextv2_tiny",
+      "display_name": "Legacy ConvNeXtV2 Tiny",
+      "status": "legacy_not_served",
+      "checkpoint": "models/archive/legacy_convnextv2_tiny.pt",
+      "recorded_validation_mae_months": 114.2156907302,
+      "reason": "ผล validation ใน history ไม่พร้อมใช้งานจริง เก็บเป็นหลักฐานการทดลองเดิม"
+    },
+    {
+      "id": "legacy_focalnet_tiny",
+      "display_name": "Legacy FocalNet Tiny",
+      "status": "legacy_not_served",
+      "checkpoint": "models/archive/legacy_focalnet_tiny.pt",
+      "recorded_validation_mae_months": 115.8514845628,
+      "reason": "ผล validation ใน history ไม่พร้อมใช้งานจริง เก็บเป็นหลักฐานการทดลองเดิม"
+    }
+  ],
+  "detector": {
+    "id": "yolo_v2_b8_e53_640",
+    "display_name": "YOLO V2 B8 E53 — detector640 ตามชุดฝึก FocalNet",
+    "checkpoint": "models/yolo_roi9.pt",
+    "checkpoint_env": "BONEAGE_YOLO_CHECKPOINT",
+    "imgsz": 640,
+    "required_rois": ["Carpal", "DP3", "MC1", "MP3", "MP5", "PP1", "PP3", "Radius", "Ulna"]
+  }
+}

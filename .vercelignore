@@ -1,0 +1,11 @@
+models/
+runtime/
+scripts/
+tests/
+tools/
+*.py
+*.cmd
+Dockerfile
+requirements*.txt
+README.md
+RUNPOD_MVP_README_TH.md
