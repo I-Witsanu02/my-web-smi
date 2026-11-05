@@ -27,6 +27,32 @@ html {
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+@keyframes sb-hand-float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-1.2deg); }
+  50% { transform: translate3d(-8px, -11px, 0) rotate(1.2deg); }
+}
+
+@keyframes sb-benefit-in {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.sb-grid {
+  background-image: linear-gradient(rgba(157,238,229,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(157,238,229,.12) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(to bottom, black, transparent 72%);
+}
+
+.sb-hand-float { animation: sb-hand-float 7s ease-in-out infinite; }
+.sb-icon { display: inline-block; width: 1.1em; height: 1.1em; flex: none; }
+.sb-benefit { animation: sb-benefit-in 480ms both cubic-bezier(.22,1,.36,1); }
+.sb-login-card { backdrop-filter: blur(12px); }
+
+.sb-demo-cta:focus-visible, .sb-login button:focus-visible, .sb-login input:focus-visible {
+  outline: 3px solid rgba(124,234,226,.65);
+  outline-offset: 3px;
+}
+
 .demo-scan-line {
   position: absolute;
   left: 12%;
@@ -64,6 +90,10 @@ html {
   .demo-scan-line,
   .demo-roi-float,
   .demo-orb {
+    animation: none;
+  }
+  .sb-hand-float,
+  .sb-benefit {
     animation: none;
   }
   .demo-result-reveal {

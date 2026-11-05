@@ -1,6 +1,7 @@
 export type Language = 'th' | 'en';
 
 export type AppView =
+  | 'workstation'
   | 'overview'
   | 'cases'
   | 'screening'
@@ -36,6 +37,24 @@ export type WorkflowStep =
   | 'Completed';
 
 export interface PatientCase {
+  inferenceImageMode?: 'latest' | 'original';
+  inferenceViewSettings?: import('./components/ResearchViewer').ViewSettings;
+  predictionInput?: {mode:'latest'|'original'; settings:unknown; sourceUrl:string; inputUrl:string; key:string};
+  uploadedAt?: string;
+  completedAt?: string;
+  createdAt?: string;
+  simulationMetadata?: { syntheticFields: string[]; referenceSource: string; sourcePatientId: string; clinicalUse: false };
+  roiRevision?: number;
+  detectorRois?:DetectedROI[];
+  predictionStale?: boolean;
+  predictionRoiRevision?:number;
+  feedbackDrafts?: { revision:number; createdAt:string; reviewer:string; role:string; category:'ROI'|'XAI'; decision:string; note:string; roiRevision:number; inferenceId?:string; status:'draft_backend_connection_required' }[];
+  predictionHistory?: { input?:PatientCase['predictionInput']; inferenceId?: string; months?: number; xaiUrl?: string; modelId: string; roiRevision: number; savedAt: string; xaiMethod?:string; preprocessingVersion?:string; rois?:DetectedROI[] }[];
+    inferenceId?: string;
+    detectorRetryHistory?: { at:string; settings:unknown; detected:number; inputUrl:string; sourceUrl:string; detector:string; rois:DetectedROI[] }[];
+    predictionDurationSeconds?: number;
+    predictionCompletedAt?: string;
+  xaiLayerUrl?: string;
   id: string;
   patientId: string;
   isTestCase?: boolean;
@@ -86,6 +105,7 @@ export interface PatientCase {
   xaiHeatmapUrl: string;
   xaiEvidenceStatus?: 'generated' | 'reference' | 'unavailable';
   xaiMethod?: string;
+  xaiMetadata?: {version?:string;target_layer?:string;target?:string;flat_rois?:number[];faithfulness_validated?:boolean};
   rois: DetectedROI[];
 
   // Model Provenance
@@ -108,6 +128,7 @@ export interface PatientCase {
 }
 
 export interface DetectedROI {
+  reviewState?: 'DETECTED' | 'EDITED' | 'VERIFIED' | 'OUT_OF_FIELD' | 'NOT_VISIBLE';
   id: string;
   code: string; // e.g. "Carpal", "Radius", "Ulna", "DP3", "MP3", "MP5", "PP1", "PP3", "MC1"
   name: string;

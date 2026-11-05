@@ -33,6 +33,7 @@ export interface FullHandDetection {
 }
 
 export interface FullHandResult {
+  inference_id?: string;
   qc_status: 'PASS' | 'REVIEW';
   missing_rois: string[];
   low_confidence_rois: string[];
@@ -46,6 +47,8 @@ export interface FullHandResult {
   message?: string;
   research_only: boolean;
   xai_image?: string;
+  xai_layer?: string;
+  xai_metadata?: {version?:string;target_layer?:string;target?:string;flat_rois?:number[];faithfulness_validated?:boolean};
   xai_method?: string;
   prediction?: PredictionResult;
   demo?: boolean;
@@ -97,13 +100,13 @@ export function apiUrl(path: string): string {
 }
 
 export function getAuthToken(): string {
-  return window.sessionStorage.getItem(AUTH_TOKEN_KEY) || window.localStorage.getItem(AUTH_TOKEN_KEY) || '';
+  return window.sessionStorage.getItem(AUTH_TOKEN_KEY) || '';
+
 }
 
-export function storeAuthToken(token: string, remember: boolean): void {
-  window.sessionStorage.removeItem(AUTH_TOKEN_KEY);
+export function storeAuthToken(token: string, _remember: boolean): void {
   window.localStorage.removeItem(AUTH_TOKEN_KEY);
-  (remember ? window.localStorage : window.sessionStorage).setItem(AUTH_TOKEN_KEY, token);
+  window.sessionStorage.setItem(AUTH_TOKEN_KEY, token);
 }
 
 export function clearAuthToken(): void {
@@ -166,7 +169,9 @@ export const api = {
     modelId: string,
     chronologicalAgeMonths: number,
     caseId: string,
-    reviewedBoxes?: Record<string, [number, number, number, number]>
+    reviewedBoxes?: Record<string, [number, number, number, number]>,
+    xaiMethod = 'GradCAM',
+    detectOnly = false
   ) => {
     const body = new FormData();
     body.append('image', image);
@@ -174,6 +179,8 @@ export const api = {
     body.append('model_id', modelId);
     body.append('chronological_age_months', String(chronologicalAgeMonths));
     body.append('case_id', caseId);
+    body.append('xai_method', xaiMethod);
+    body.append('detect_only', String(detectOnly));
     if (reviewedBoxes) body.append('reviewed_boxes', JSON.stringify(reviewedBoxes));
     return request<FullHandResult>('/api/predict/full-hand', { method: 'POST', body });
   },
@@ -183,6 +190,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     }),
+  saveAnnotationFeedback:(payload:Record<string,unknown>)=>request<FeedbackItem>('/api/feedback/annotations',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}),
   listFeedback: (status?: string) =>
     request<{ feedback: FeedbackItem[]; count: number; updated_at: string }>(`/api/feedback${status ? `?status=${encodeURIComponent(status)}` : ''}`),
   updateFeedbackStatus: (feedbackId: string, status: FeedbackItem['status'], note = '') =>

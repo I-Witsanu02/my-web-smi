@@ -47,6 +47,9 @@ def prepare_roi(image, model_id):
         x, y = (224 - nw) // 2, (224 - nh) // 2
         canvas[y:y+nh, x:x+nw] = resized
         image = Image.fromarray(canvas)
+    if 'A2_MORPHSAFE_V2' in model_entry(model_id).get('input_protocol',''):
+        from model_preprocessing import apply_controlled_preprocess
+        image=apply_controlled_preprocess(image)
     return PREPROCESS(image)
 
 
@@ -67,10 +70,11 @@ class GenderFiLM(nn.Module):
 class MultiROIBoneAgeNet(nn.Module):
     """Exact deployment architecture used by PRE2 and FULL18 checkpoints."""
 
-    def __init__(self):
+    def __init__(self, backbone_name='focalnet_tiny_srf', n_h2=9, n_h3=6):
         super().__init__()
+        self.backbone_name=backbone_name
         self.backbone = timm.create_model(
-            "focalnet_tiny_srf",
+            backbone_name,
             pretrained=False,
             num_classes=0,
             drop_path_rate=0.10,
@@ -96,10 +100,10 @@ class MultiROIBoneAgeNet(nn.Module):
         self.gate = nn.Linear(feature_dim, 1)
         self.gender = GenderFiLM(feature_dim)
         self.dropout = nn.Dropout(0.30)
-        self.h2_head = nn.Sequential(nn.LayerNorm(feature_dim), nn.Dropout(0.25), nn.Linear(feature_dim, 9))
-        self.h3_head = nn.Sequential(nn.LayerNorm(feature_dim), nn.Dropout(0.25), nn.Linear(feature_dim, 6))
-        self.h2_guide = nn.Linear(9, 64)
-        self.h3_guide = nn.Linear(6, 64)
+        self.h2_head = nn.Sequential(nn.LayerNorm(feature_dim), nn.Dropout(0.25), nn.Linear(feature_dim, n_h2))
+        self.h3_head = nn.Sequential(nn.LayerNorm(feature_dim), nn.Dropout(0.25), nn.Linear(feature_dim, n_h3))
+        self.h2_guide = nn.Linear(n_h2, 64)
+        self.h3_guide = nn.Linear(n_h3, 64)
         self.reg = nn.Sequential(
             nn.LayerNorm(feature_dim + 128),
             nn.Dropout(0.30),
@@ -197,15 +201,17 @@ class BoneAgeService:
                 checkpoint_file = resolve_checkpoint(entry)
                 if not checkpoint_file.is_file():
                     raise FileNotFoundError(checkpoint_file)
-                checkpoint = torch.load(
-                    checkpoint_file,
-                    map_location="cpu",
-                    weights_only=True,
-                    mmap=True,
-                )
-                model = MultiROIBoneAgeNet()
+                # Only allow the known torch version metadata class; never unsafe pickle.
+                with torch.serialization.safe_globals([torch.torch_version.TorchVersion]):
+                    checkpoint = torch.load(checkpoint_file,map_location='cpu',weights_only=True,mmap=True)
+                state=checkpoint['model_state']
+                model = MultiROIBoneAgeNet(entry.get('backbone','focalnet_tiny_srf'),state['h2_head.2.weight'].shape[0],state['h3_head.2.weight'].shape[0])
                 model.load_state_dict(checkpoint["model_state"], strict=True)
                 model.eval().to(self.device)
+                for module in model.modules():
+                    if hasattr(module,'inplace'):module.inplace=False
+                # Bound memory on the laptop. Local variables keep an in-flight model alive.
+                self._models.clear()
                 self._models[model_id] = model
             return self._models[model_id]
 
@@ -236,6 +242,8 @@ class BoneAgeService:
         model_id: str = "full18_focalnet_b8",
         chronological_age_months: float | None = None,
         include_pixel_attribution: bool = False,
+        xai_method: str = 'GradCAM',
+        scorecam_topk: int = 16,
     ) -> dict[str, Any]:
         self._validate_age(model_id, chronological_age_months)
         missing = [roi for roi in ROI_ORDER if roi not in roi_images]
@@ -246,7 +254,12 @@ class BoneAgeService:
         gender = torch.tensor([float(male)], dtype=torch.float32, device=self.device)
         model = self.get_model(model_id)
         pixel_attribution = None
-        if include_pixel_attribution:
+        cam_metadata=None
+        if include_pixel_attribution and xai_method!='SmoothGrad':
+            from cam_service import compute_cam
+            with self._lock,torch.enable_grad():
+                output,pixel_attribution,cam_metadata=compute_cam(model,rois,gender,xai_method,scorecam_topk)
+        elif include_pixel_attribution:
             with self._lock, torch.enable_grad(), torch.random.fork_rng(
                 devices=[self.device.index or 0] if self.device.type == "cuda" else []
             ):
@@ -286,6 +299,7 @@ class BoneAgeService:
         }
         if pixel_attribution is not None:
             result["_pixel_attribution"] = pixel_attribution
+            result['_xai_metadata']=cam_metadata or {'version':'smoothgrad-legacy-v1','method':'SmoothGrad','samples':6,'gate_weighted_display':False,'faithfulness_validated':False}
         return result
 
     def predict_full_hand(
@@ -295,17 +309,20 @@ class BoneAgeService:
         model_id: str,
         chronological_age_months: float | None,
         reviewed_boxes: dict[str, list[float]] | None = None,
+        xai_method: str = 'GradCAM',
+        scorecam_topk: int = 16,
+        detect_only: bool = False,
     ) -> dict[str, Any]:
         detector_entry = load_registry()["detector"]
         rgb = ImageOps.exif_transpose(image).convert("RGB")
-        result = self.get_detector().predict(
+        result = None if reviewed_boxes and all(roi in reviewed_boxes for roi in ROI_ORDER) else self.get_detector().predict(
             np.asarray(rgb), imgsz=int(detector_entry["imgsz"]), conf=0.20,
             iou=0.70, max_det=50, verbose=False,
             device=0 if self.device.type == "cuda" else "cpu",
         )[0]
 
         best_by_roi: dict[str, dict[str, Any]] = {}
-        if result.boxes is not None:
+        if result is not None and result.boxes is not None:
             xyxy = result.boxes.xyxy.detach().cpu().numpy()
             confs = result.boxes.conf.detach().cpu().numpy()
             classes = result.boxes.cls.detach().cpu().numpy().astype(int)
@@ -332,7 +349,10 @@ class BoneAgeService:
                     values = [float(v) for v in box]
                     if max(values) <= 1.5:
                         values = [values[0] * rgb.width, values[1] * rgb.height, values[2] * rgb.width, values[3] * rgb.height]
-                    best_by_roi[roi] = {"roi": roi, "confidence": 1.0, "box": values, "source": "expert_review"}
+                    if not all(np.isfinite(values)) or not (0<=values[0]<values[2]<=rgb.width and 0<=values[1]<values[3]<=rgb.height):
+                        raise ValueError(f'Invalid original-image ROI coordinates: {roi}')
+                    previous=best_by_roi.get(roi)
+                    best_by_roi[roi] = {"roi": roi, "confidence": previous['confidence'] if previous else 0.0, "detector_confidence": previous['confidence'] if previous else None, "box": values, "source": "expert_review"}
 
         missing = [roi for roi in ROI_ORDER if roi not in best_by_roi]
         low_confidence = [
@@ -378,8 +398,11 @@ class BoneAgeService:
             ),
             "research_only": True,
         }
+        if detect_only:
+            payload['stage']='roi_review'
+            return payload
         if qc_status != "PASS" or len(roi_images) != len(ROI_ORDER):
-            payload["message"] = "ROI ยังไม่ผ่าน gate จึงหยุดก่อน FocalNet และส่งให้ตรวจทบทวน"
+            payload["message"] = "ROI ยังไม่ผ่าน gate จึงหยุดก่อนโมเดลอายุและส่งให้ตรวจทบทวน"
             return payload
         payload["prediction"] = self.predict_roi_images(
             roi_images,
@@ -387,8 +410,11 @@ class BoneAgeService:
             model_id=model_id,
             chronological_age_months=chronological_age_months,
             include_pixel_attribution=True,
+            xai_method=xai_method,
+            scorecam_topk=scorecam_topk,
         )
         attribution = payload["prediction"].pop("_pixel_attribution")
+        cam_metadata=payload['prediction'].pop('_xai_metadata')
         import cv2
 
         # Compose patient-specific Input × Gradient maps back into the original
@@ -396,8 +422,6 @@ class BoneAgeService:
         base = np.asarray(rgb).astype(np.float32)
         color_accumulator = np.zeros_like(base)
         alpha_accumulator = np.zeros((rgb.height, rgb.width), dtype=np.float32)
-        roi_gate = payload["prediction"]["roi_gate"]
-        max_gate = max(roi_gate.values()) or 1.0
         for index, roi in enumerate(ROI_ORDER):
             item = best_by_roi[roi]
             x1, y1, x2, y2 = [int(round(v)) for v in item["box"]]
@@ -413,34 +437,28 @@ class BoneAgeService:
                 pad_y = (IMAGE_SIZE - resized_height) // 2
                 saliency = saliency[pad_y:pad_y + resized_height, pad_x:pad_x + resized_width]
             saliency = cv2.resize(saliency, (crop_width, crop_height), interpolation=cv2.INTER_CUBIC)
-            sigma = max(1.0, min(crop_width, crop_height) / 45.0)
-            saliency = cv2.GaussianBlur(saliency, (0, 0), sigmaX=sigma, sigmaY=sigma)
-            upper = float(np.percentile(saliency, 99.0))
-            lower = float(np.percentile(saliency, 20.0))
+            # Restore true spatial CAMs; no extra blur or second multiplication by ROI gate.
+            upper = float(saliency.max())
+            lower = float(saliency.min())
             saliency = np.clip((saliency - lower) / max(upper - lower, 1e-8), 0.0, 1.0)
             colored = cv2.cvtColor(
                 cv2.applyColorMap(np.uint8(saliency * 255), cv2.COLORMAP_TURBO),
                 cv2.COLOR_BGR2RGB,
             ).astype(np.float32)
-            regional_weight = roi_gate[roi] / max_gate
-            alpha = saliency * 0.72 * (0.25 + 0.75 * regional_weight)
+            alpha = saliency * 0.72
             region_alpha = alpha_accumulator[y1:y2, x1:x2]
             replace = alpha > region_alpha
             color_accumulator[y1:y2, x1:x2][replace] = colored[replace]
             region_alpha[replace] = alpha[replace]
 
         composite = base * (1.0 - alpha_accumulator[..., None]) + color_accumulator * alpha_accumulator[..., None]
-        xai_method = "ROI-gate-weighted SmoothGrad Input × Gradient"
+        display_method=xai_method if xai_method!='SmoothGrad' else 'SmoothGrad Input × Gradient (legacy)'
         payload["xai_image"] = image_data_url(Image.fromarray(np.uint8(np.clip(composite, 0, 255))), "PNG")
-        payload["xai_method"] = xai_method
-        payload["prediction"]["xai_method"] = xai_method
-        payload["xai_metadata"] = {
-            "seed": 42, "samples": 6, "noise_std_normalized": 0.08,
-            "baseline": "zero in ImageNet-normalized tensor space",
-            "absolute_attribution": True, "per_roi_display_normalization": [20, 99],
-            "gate_weighted_display": True,
-            "faithfulness_validated": False,
-        }
+        rgba = np.concatenate([np.clip(color_accumulator, 0, 255), (alpha_accumulator * 255)[..., None]], axis=2).astype(np.uint8)
+        payload['xai_layer'] = image_data_url(Image.fromarray(rgba), 'PNG')
+        payload['xai_method']=display_method
+        payload['prediction']['xai_method']=display_method
+        payload['xai_metadata']={**cam_metadata,'spatial_restore':'inverse aspect-padding then bilinear to original box','display_normalization':'per-ROI min/max; not comparable magnitude between ROIs'}
         return payload
 
 

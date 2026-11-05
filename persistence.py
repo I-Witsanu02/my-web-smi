@@ -2,6 +2,7 @@
 import json
 import sqlite3
 import uuid
+from review_protocol import eligibility_reasons
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -74,6 +75,7 @@ def get_case(case_id):
 
 def save_feedback(case_id, actor, payload, status='candidate'):
     with connect() as db:
+        db.execute('BEGIN IMMEDIATE')
         revision = db.execute(
             'SELECT COALESCE(MAX(revision), 0) + 1 AS revision FROM feedback WHERE case_id=?',
             (case_id,),
@@ -104,17 +106,31 @@ def update_feedback_status(feedback_id, status, actor, note=''):
             return None
         timestamp = now()
         payload = json.loads(row['payload'])
+        if status == 'approved':
+            reasons = eligibility_reasons(payload)
+            if reasons:
+                raise ValueError('Cannot approve: ' + ', '.join(reasons))
         if payload.get('locked_test', False) and status == 'approved':
             status = 'blocked_locked_test'
         payload['training_eligible'] = status == 'approved' and not payload.get('locked_test', False)
         payload['adjudication_note'] = note
         payload['adjudicated_at'] = timestamp
+        payload['adjudicated_by'] = actor
         db.execute('UPDATE feedback SET status=?, updated=?, payload=? WHERE id=?',
                    (status, timestamp, json.dumps(payload, ensure_ascii=False, sort_keys=True), feedback_id))
         event('FEEDBACK_STATUS_CHANGED', actor, row['case_id'], {
             'feedback_id': feedback_id, 'before': row['status'], 'after': status, 'note': note,
         }, db)
     return {'id': feedback_id, 'status': status, 'updated': timestamp}
+
+def exportable_feedback():
+    # An older approved label must never override a newer pending revision.
+    latest = {}
+    for item in list_feedback():
+        if item['case_id'] not in latest or item['revision'] > latest[item['case_id']]['revision']:
+            latest[item['case_id']] = item
+    return [item for item in latest.values() if item['status'] == 'approved'
+            and not eligibility_reasons(item['payload'])]
 
 def delete_case(case_id, actor):
     with connect() as db:

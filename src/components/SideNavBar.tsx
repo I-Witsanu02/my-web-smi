@@ -24,7 +24,6 @@ const mainNavItems: NavItem[] = [
   { id: 'screening', labelEn: 'Screening', labelTh: 'คัดกรองเบื้องต้น', icon: 'clinical_notes' },
   { id: 'intake', labelEn: 'Intake', labelTh: 'บันทึกข้อมูลผู้ป่วย', icon: 'person_add' },
   { id: 'imaging', labelEn: 'Imaging', labelTh: 'ประมวลผลภาพ', icon: 'radiology' },
-  { id: 'roi', labelEn: 'ROI', labelTh: 'ตำแหน่ง ROI', icon: 'grid_view' },
   { id: 'prediction', labelEn: 'Prediction', labelTh: 'ผลการทำนาย', icon: 'analytics' },
   { id: 'xai', labelEn: 'XAI', labelTh: 'คำอธิบาย AI', icon: 'visibility' },
   { id: 'report', labelEn: 'Report', labelTh: 'รายงานผล', icon: 'description' },

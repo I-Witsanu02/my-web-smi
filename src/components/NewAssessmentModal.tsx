@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { PatientCase, Language } from '../types';
 import { defaultROIs } from '../data/mockData';
 import { calculateAgeMonths, formatAge, localDateString } from '../utils/age';
+import { DayMonthYearInput } from './DayMonthYearInput';
 
 interface NewAssessmentModalProps {
   isOpen: boolean;
@@ -147,11 +148,10 @@ export const NewAssessmentModal: React.FC<NewAssessmentModalProps> = ({
               <label className="block font-label-caps text-xs text-[#434752] mb-1">
                 {language === 'th' ? 'วันเกิด' : 'Date of Birth'}
               </label>
-              <input
-                type="date"
+              <DayMonthYearInput
                 required
                 value={dob}
-                onChange={(e) => setDob(e.target.value)}
+                onChange={setDob}
                 className="w-full bg-[#f8f9ff] border border-[#c3c6d4] rounded-lg px-3 py-2 text-sm text-[#1a1b21] font-data-mono focus:border-[#002e6f] focus:outline-none"
               />
             </div>

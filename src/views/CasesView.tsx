@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { PatientCase, Language } from '../types';
+import { caseTime } from '../utils/caseTime';
 
 interface CasesViewProps {
   cases: PatientCase[];
@@ -199,7 +200,7 @@ export const CasesView: React.FC<CasesViewProps> = ({
                         {c.status}
                       </span>
                     </td>
-                    <td className="py-4 px-6 text-[#434752] text-xs font-data-mono">{c.updatedAt}</td>
+                    <td className="py-4 px-6 text-[#434752] text-xs font-data-mono"><div>อัปโหลด: {caseTime(c.uploadedAt)}</div><div>อัปเดต: {caseTime(c.updatedAt)}</div><div>เสร็จสิ้น: {caseTime(c.completedAt)}</div>{c.simulationMetadata&&<strong>Test Case · ข้อมูลประชากรจำลอง</strong>}</td>
                     <td className="py-4 px-6 text-right">
                       <button
                         onClick={(e) => {

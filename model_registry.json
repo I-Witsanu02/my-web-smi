@@ -2,8 +2,26 @@
   "default_model": "full18_focalnet_b8",
   "models": [
     {
+      "id": "full18_convnextv2_a2v2", "display_name": "ConvNeXtV2-Tiny · FULL18 A2V2", "status": "reference", "eligible_age_years": [1,18],
+      "backbone": "convnextv2_tiny.fcmae_ft_in1k", "input_protocol": "9 ROI + sex, aspect-pad224, A2_MORPHSAFE_V2",
+      "checkpoint": "models/convnextv2_a2v2.pt",
+      "best_epoch": 18, "validation_n": 260, "validation_mae_months": 6.8451622596153845, "reason": "โมเดลทดลอง; validation ไม่ใช่ independent test", "locked_test_evaluated": false
+    },
+    {
+      "id": "full18_swin_a2v2", "display_name": "Swin-Tiny 224 · FULL18 A2V2", "status": "reference", "eligible_age_years": [1,18],
+      "backbone": "swin_tiny_patch4_window7_224.ms_in22k_ft_in1k", "input_protocol": "9 ROI + sex, aspect-pad224, A2_MORPHSAFE_V2",
+      "checkpoint": "models/swin_a2v2.pt",
+      "best_epoch": 8, "validation_n": 260, "validation_mae_months": 6.886470890045166, "reason": "โมเดลทดลอง; validation ไม่ใช่ independent test", "locked_test_evaluated": false
+    },
+    {
+      "id": "full18_efficientnet_a2v2", "display_name": "EfficientNetV2-S · FULL18 A2V2", "status": "reference", "eligible_age_years": [1,18],
+      "backbone": "efficientnetv2_rw_s.ra2_in1k", "input_protocol": "9 ROI + sex, aspect-pad224, A2_MORPHSAFE_V2",
+      "checkpoint": "models/efficientnetv2_a2v2.pt",
+      "best_epoch": 20, "validation_n": 260, "validation_mae_months": 7.435098952513474, "reason": "โมเดลทดลอง; validation ไม่ใช่ independent test", "locked_test_evaluated": false
+    },
+    {
       "id": "full18_focalnet_b8",
-      "display_name": "FocalNet อายุ 1–18 ปี — ลด LR ช้าลง (validation 6.58 เดือน)",
+      "display_name": "FocalNet 1–18 ปี",
       "status": "active",
       "eligible_age_years": [1, 18],
       "input_protocol": "9 ROI + sex, aspect-pad224, original intensity",
@@ -20,12 +38,26 @@
       "locked_test_evaluated": false
     },
     {
+      "id": "full18_focalnet_feedback_candidate_20261007",
+      "display_name": "FocalNet 1–18 ปี · Feedback Candidate",
+      "status": "reference",
+      "eligible_age_years": [1, 18],
+      "input_protocol": "9 ROI + sex, aspect-pad224, original intensity",
+      "checkpoint": "models/focalnet_feedback_candidate.pt",
+      "backbone": "focalnet_tiny_srf",
+      "reason": "รุ่นทดลองฝึกชั้นผลลัพธ์จาก RSNA reference; ค่า validation 6.370 เดือนจากชุดเดิม 259 ราย; มีผลบางกลุ่มถดถอย; ยังไม่ผ่าน independent test",
+      "selection_status": "experimental_candidate_not_validated",
+      "evaluation_scope": "same_validation_used_across_experiments",
+      "locked_test_evaluated": false
+    },
+    {
       "id": "pre2_focalnet_b8",
       "display_name": "PRE2 FocalNet — อายุ 1–5 ปี",
       "status": "reference",
       "eligible_age_years": [1, 5],
       "input_protocol": "9 ROI + sex, stretch resize 224x224",
       "checkpoint": "models/pre2_focalnet_b8.pt",
+      "best_epoch": 21,
       "validation_n": 114,
       "validation_mae_months": 5.9429824561,
       "validation_rmse_months": 7.6123495235,

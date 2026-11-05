@@ -2,6 +2,8 @@
 setlocal
 cd /d "%~dp0"
 echo Starting Skeleton Bone Age MVP...
+set "BONEAGE_DEMO_ENABLED=0"
+echo Configure BONEAGE_USERNAME, BONEAGE_PASSWORD, and BONEAGE_SESSION_SECRET in .env before signing in.
 if exist "C:\Program Files\Python311\python.exe" (
   set "PYTHON_BIN=C:\Program Files\Python311\python.exe"
 ) else (
