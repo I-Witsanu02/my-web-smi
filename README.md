@@ -37,7 +37,7 @@ Brightness, contrast, gamma, window/level, sharpness, and local contrast support
 
 ![EigenCAM overlay in the workstation](docs/assets/web-xai.png)
 
-The local demonstration used an RSNA sample, detected 9/9 ROIs, returned **183.825 months**, and reported `device=cuda` on an RTX 4050. The request took approximately **6.98 seconds**. This is one demonstration result, not a dataset-level accuracy estimate. Dates in the demonstration case are illustrative; no simulated physician assessment was recorded as ground truth.
+The local demonstration used an RSNA sample, detected 9/9 ROIs, returned **182.489 months**, and reported `device=cuda` on an RTX 4050. The request took approximately **5.66 seconds**. This is one demonstration result, not a dataset-level accuracy estimate. Dates in the demonstration case are illustrative; no simulated physician assessment was recorded as ground truth.
 
 ### Record feedback
 
@@ -45,17 +45,22 @@ The local demonstration used an RSNA sample, detected 9/9 ROIs, returned **183.8
 
 Feedback records preserve model output separately from expert opinion. Curate and approve data, version the dataset, train offline, evaluate the candidate, and approve a new release before changing the served checkpoint. Submitting feedback does not trigger automatic retraining.
 
-### Author-selected examples from earlier research exports
+## FocalNet evaluation
 
-The following ID 2832 images were supplied by the author. They are earlier exports and are distinct from the newly captured local web demonstration. The source images report reference age 144.0 months, prediction 137.8 months, and absolute error 6.2 months. A selected example does not establish overall performance.
+The manuscript reports one author-selected checkpoint under the name **FocalNet**. The checkpoint identifier and hash are retained in the provenance record rather than used as a second model name.
 
-| Full evidence | Blue display |
-| --- | --- |
-| ![Full EigenCAM example](docs/assets/example-eigencam-full.png) | ![Blue display example](docs/assets/example-eigencam-blue.png) |
+| Patients | MAE months | RMSE months | Bias months | Within ±6 months | Within ±12 months |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 260 | 6.619 | 8.795 | +0.755 | 55.0% | 86.5% |
 
-![Nine ROI example with shared display scale](docs/assets/example-eigencam-roi9.png)
+The patient bootstrap 95% CI for MAE is **5.937–7.351 months** (20,000 resamples, seed 20261105). These are archived predictions; no training or prediction editing was performed. The records flag prior inspection and possible initialization-data overlap involving 15 patients. Independence has not been established. Tolerance agreement is not classification accuracy.
 
-EigenCAM summarizes feature structure rather than age-targeted attribution. Gate weights are not clinical confidence. The earlier shared-scale examples and the current API's per-ROI normalized maps must not be compared as equivalent attribution magnitudes.
+![FocalNet agreement](docs/manuscript/figures/FocalNet_agreement.png)
+![FocalNet error distribution](docs/manuscript/figures/FocalNet_error_distribution.png)
+
+[Reproducible analysis](docs/manuscript/analysis/run_focalnet_analysis.py) · [Checkpoint provenance](docs/manuscript/FocalNet_provenance.json) · [Reviewed manuscript](docs/manuscript/Manuscript_EN_FocalNet_Reviewed.docx)
+
+The loupe screenshot was supplied by the author to show the complete lens over a joint. Interface illustrations document controls and do not constitute checkpoint-matched XAI or clinical usability evidence.
 
 ## Requirements
 

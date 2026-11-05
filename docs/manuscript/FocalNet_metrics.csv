@@ -1,0 +1,2 @@
+display_name,n,MAE_months,RMSE_months,bias_months,error_SD_months,MAE_CI95_low,MAE_CI95_high,LoA95_low,LoA95_high,median_absolute_error_months,within_3_months_percent,within_6_months_percent,within_9_months_percent,within_12_months_percent
+FocalNet,260,6.6192931945507345,8.794930207894215,0.7545584641970114,8.779401592240239,5.937330946647204,7.350585261766727,-16.453068656593857,17.96218558498788,5.3978271484375,30.0,55.00000000000001,71.92307692307692,86.53846153846155

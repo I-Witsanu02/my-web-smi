@@ -1,0 +1,3370 @@
+[
+  {
+    "number": 1,
+    "original": "Greulich WW, Pyle SI. Radiographic Atlas of Skeletal Development of the Hand and Wrist. 2nd ed. Stanford University Press; 1959.",
+    "doi": null,
+    "status": "non_doi_source_requires_manual_check"
+  },
+  {
+    "number": 2,
+    "original": "Gaskin CM, Kahn SL, Bertozzi JC, Bunch PM. Skeletal Development of the Hand and Wrist: A Radiographic Atlas and Digital Bone Age Companion. Oxford University Press; 2011. doi:10.1093/med/9780199782055.001.0001.",
+    "doi": "10.1093/med/9780199782055.001.0001",
+    "status": "metadata_resolved",
+    "title": [
+      "Skeletal Development of the Hand and Wrist"
+    ],
+    "authors": [
+      {
+        "given": "Cree M.",
+        "family": "Gaskin",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "role": "author",
+            "vocabulary": "crossref"
+          }
+        ]
+      },
+      {
+        "given": "S. Lowell",
+        "family": "Kahn",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "role": "author",
+            "vocabulary": "crossref"
+          }
+        ]
+      },
+      {
+        "given": "J. Christoper",
+        "family": "Bertozzi",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "role": "author",
+            "vocabulary": "crossref"
+          }
+        ]
+      },
+      {
+        "given": "Paul M.",
+        "family": "Bunch",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "role": "author",
+            "vocabulary": "crossref"
+          }
+        ]
+      }
+    ],
+    "issued": {
+      "date-parts": [
+        [
+          2011,
+          11
+        ]
+      ]
+    },
+    "journal": [],
+    "volume": null,
+    "issue": null,
+    "page": null,
+    "url": "https://doi.org/10.1093/med/9780199782055.001.0001"
+  },
+  {
+    "number": 3,
+    "original": "Lee BD, Lee MS. Automated Bone Age Assessment Using Artificial Intelligence: The Future of Bone Age Assessment. Korean J Radiol. 2021;22(5):792–800. doi:10.3348/kjr.2020.0941.",
+    "doi": "10.3348/kjr.2020.0941",
+    "title": [
+      "Automated Bone Age Assessment Using Artificial Intelligence: The Future of Bone Age Assessment"
+    ],
+    "authors": [
+      {
+        "ORCID": "https://orcid.org/0000-0002-4028-6168",
+        "authenticated-orcid": false,
+        "given": "Byoung-Dai",
+        "family": "Lee",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "Division of Computer Science and Engineering, Kyonggi University, Suwon, Korea."
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-0382-5564",
+        "authenticated-orcid": false,
+        "given": "Mu Sook",
+        "family": "Lee",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Radiology, Keimyung University Dongsan Hospital, Daegu, Korea."
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "issued": {
+      "date-parts": [
+        [
+          2021
+        ]
+      ]
+    },
+    "journal": [
+      "Korean Journal of Radiology"
+    ],
+    "volume": "22",
+    "issue": "5",
+    "page": "792",
+    "article_number": null,
+    "url": "https://doi.org/10.3348/kjr.2020.0941",
+    "status": "metadata_resolved"
+  },
+  {
+    "number": 4,
+    "original": "Halabi SS, et al. The RSNA Pediatric Bone Age Machine Learning Challenge. Radiology. 2019;290(2):498–503. doi:10.1148/radiol.2018180736.",
+    "doi": "10.1148/radiol.2018180736",
+    "title": [
+      "The RSNA Pediatric Bone Age Machine Learning Challenge"
+    ],
+    "authors": [
+      {
+        "ORCID": "https://orcid.org/0000-0003-1317-984X",
+        "authenticated-orcid": false,
+        "given": "Safwan S.",
+        "family": "Halabi",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Luciano M.",
+        "family": "Prevedello",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-8906-9618",
+        "authenticated-orcid": false,
+        "given": "Jayashree",
+        "family": "Kalpathy-Cramer",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Artem B.",
+        "family": "Mamonov",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Alexander",
+        "family": "Bilbily",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Mark",
+        "family": "Cicero",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Ian",
+        "family": "Pan",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Lucas Araújo",
+        "family": "Pereira",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Rafael Teixeira",
+        "family": "Sousa",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Nitamar",
+        "family": "Abdala",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Felipe Campos",
+        "family": "Kitamura",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Hans H.",
+        "family": "Thodberg",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Leon",
+        "family": "Chen",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "George",
+        "family": "Shih",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Katherine",
+        "family": "Andriole",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Marc D.",
+        "family": "Kohli",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Bradley J.",
+        "family": "Erickson",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-4679-0787",
+        "authenticated-orcid": false,
+        "given": "Adam E.",
+        "family": "Flanders",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "issued": {
+      "date-parts": [
+        [
+          2019,
+          2
+        ]
+      ]
+    },
+    "journal": [
+      "Radiology"
+    ],
+    "volume": "290",
+    "issue": "2",
+    "page": "498-503",
+    "article_number": null,
+    "url": "https://doi.org/10.1148/radiol.2018180736",
+    "status": "metadata_resolved"
+  },
+  {
+    "number": 5,
+    "original": "Koitka S, et al. Mimicking the radiologists’ workflow: Estimating pediatric hand bone age with stacked deep neural networks. Med Image Anal. 2020;64:101743. doi:10.1016/j.media.2020.101743.",
+    "doi": "10.1016/j.media.2020.101743",
+    "status": "metadata_resolved",
+    "title": [
+      "Mimicking the radiologists’ workflow: Estimating pediatric hand bone age with stacked deep neural networks"
+    ],
+    "authors": [
+      {
+        "ORCID": "https://orcid.org/0000-0001-9704-1180",
+        "authenticated-orcid": false,
+        "given": "Sven",
+        "family": "Koitka",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Moon S.",
+        "family": "Kim",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Ming",
+        "family": "Qu",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Asja",
+        "family": "Fischer",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-7906-0038",
+        "authenticated-orcid": false,
+        "given": "Christoph M.",
+        "family": "Friedrich",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Felix",
+        "family": "Nensa",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "issued": {
+      "date-parts": [
+        [
+          2020,
+          8
+        ]
+      ]
+    },
+    "journal": [
+      "Medical Image Analysis"
+    ],
+    "volume": "64",
+    "issue": null,
+    "page": "101743",
+    "url": "https://doi.org/10.1016/j.media.2020.101743"
+  },
+  {
+    "number": 6,
+    "original": "Selvaraju RR, et al. Grad-CAM: Visual Explanations from Deep Networks via Gradient-Based Localization. ICCV; 2017. doi:10.1109/ICCV.2017.74.",
+    "doi": "10.1109/ICCV.2017.74",
+    "title": [
+      "Grad-CAM: Visual Explanations from Deep Networks via Gradient-Based Localization"
+    ],
+    "authors": [
+      {
+        "given": "Ramprasaath R.",
+        "family": "Selvaraju",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Michael",
+        "family": "Cogswell",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Abhishek",
+        "family": "Das",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Ramakrishna",
+        "family": "Vedantam",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Devi",
+        "family": "Parikh",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Dhruv",
+        "family": "Batra",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "issued": {
+      "date-parts": [
+        [
+          2017,
+          10
+        ]
+      ]
+    },
+    "journal": [
+      "2017 IEEE International Conference on Computer Vision (ICCV)"
+    ],
+    "volume": null,
+    "issue": null,
+    "page": "618-626",
+    "article_number": null,
+    "url": "https://doi.org/10.1109/iccv.2017.74",
+    "status": "metadata_resolved"
+  },
+  {
+    "number": 7,
+    "original": "Chattopadhay A, Sarkar A, Howlader P, Balasubramanian VN. Grad-CAM++: Generalized Gradient-Based Visual Explanations for Deep Convolutional Networks. WACV; 2018. doi:10.1109/WACV.2018.00097.",
+    "doi": "10.1109/WACV.2018.00097",
+    "title": [
+      "Grad-CAM++: Generalized Gradient-Based Visual Explanations for Deep Convolutional Networks"
+    ],
+    "authors": [
+      {
+        "given": "Aditya",
+        "family": "Chattopadhay",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Anirban",
+        "family": "Sarkar",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Prantik",
+        "family": "Howlader",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Vineeth N",
+        "family": "Balasubramanian",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "issued": {
+      "date-parts": [
+        [
+          2018,
+          3
+        ]
+      ]
+    },
+    "journal": [
+      "2018 IEEE Winter Conference on Applications of Computer Vision (WACV)"
+    ],
+    "volume": null,
+    "issue": null,
+    "page": "839-847",
+    "article_number": null,
+    "url": "https://doi.org/10.1109/wacv.2018.00097",
+    "status": "metadata_resolved"
+  },
+  {
+    "number": 8,
+    "original": "Wang H, et al. Score-CAM: Score-Weighted Visual Explanations for Convolutional Neural Networks. CVPR Workshops; 2020. https://arxiv.org/abs/1910.01279",
+    "doi": null,
+    "status": "non_doi_source_requires_manual_check"
+  },
+  {
+    "number": 9,
+    "original": "Muhammad MB, Yeasin M. Eigen-CAM: Class Activation Map Using Principal Components. IJCNN; 2020. https://arxiv.org/abs/2008.00299",
+    "doi": null,
+    "status": "non_doi_source_requires_manual_check"
+  },
+  {
+    "number": 10,
+    "original": "Jiang PT, Zhang CB, Hou Q, Cheng MM, Wei Y. LayerCAM: Exploring Hierarchical Class Activation Maps for Localization. IEEE Trans Image Process. 2021;30:5875–5888. doi:10.1109/TIP.2021.3089943.",
+    "doi": "10.1109/TIP.2021.3089943",
+    "status": "metadata_resolved",
+    "title": [
+      "LayerCAM: Exploring Hierarchical Class Activation Maps for Localization"
+    ],
+    "authors": [
+      {
+        "ORCID": "https://orcid.org/0000-0002-1786-4943",
+        "authenticated-orcid": false,
+        "given": "Peng-Tao",
+        "family": "Jiang",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-0043-8240",
+        "authenticated-orcid": false,
+        "given": "Chang-Bin",
+        "family": "Zhang",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-8388-8708",
+        "authenticated-orcid": false,
+        "given": "Qibin",
+        "family": "Hou",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-5550-8758",
+        "authenticated-orcid": false,
+        "given": "Ming-Ming",
+        "family": "Cheng",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-2812-8781",
+        "authenticated-orcid": false,
+        "given": "Yunchao",
+        "family": "Wei",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "issued": {
+      "date-parts": [
+        [
+          2021
+        ]
+      ]
+    },
+    "journal": [
+      "IEEE Transactions on Image Processing"
+    ],
+    "volume": "30",
+    "issue": null,
+    "page": "5875-5888",
+    "url": "https://doi.org/10.1109/tip.2021.3089943"
+  },
+  {
+    "number": 11,
+    "original": "Adebayo J, et al. Sanity Checks for Saliency Maps. Adv Neural Inf Process Syst. 2018;31. https://proceedings.neurips.cc/paper/2018/hash/294a8ed24b1ad22ec2e7efea049b8737-Abstract.html",
+    "doi": null,
+    "status": "non_doi_source_requires_manual_check"
+  },
+  {
+    "number": 12,
+    "original": "Arun N, et al. Assessing the Trustworthiness of Saliency Maps for Localizing Abnormalities in Medical Imaging. Radiol Artif Intell. 2021;3(6):e200267. doi:10.1148/ryai.2021200267.",
+    "doi": "10.1148/ryai.2021200267",
+    "title": [
+      "Assessing the Trustworthiness of Saliency Maps for Localizing                     Abnormalities in Medical Imaging"
+    ],
+    "authors": [
+      {
+        "ORCID": "https://orcid.org/0000-0003-1424-4703",
+        "authenticated-orcid": false,
+        "given": "Nishanth",
+        "family": "Arun",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-7879-8946",
+        "authenticated-orcid": false,
+        "given": "Nathan",
+        "family": "Gaw",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-6641-2030",
+        "authenticated-orcid": false,
+        "given": "Praveer",
+        "family": "Singh",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-6956-5059",
+        "authenticated-orcid": false,
+        "given": "Ken",
+        "family": "Chang",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Mehak",
+        "family": "Aggarwal",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Bryan",
+        "family": "Chen",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-1881-7065",
+        "authenticated-orcid": false,
+        "given": "Katharina",
+        "family": "Hoebel",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-1848-9935",
+        "authenticated-orcid": false,
+        "given": "Sharut",
+        "family": "Gupta",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-8507-795X",
+        "authenticated-orcid": false,
+        "given": "Jay",
+        "family": "Patel",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-8477-2539",
+        "authenticated-orcid": false,
+        "given": "Mishka",
+        "family": "Gidwani",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Julius",
+        "family": "Adebayo",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-6207-4940",
+        "authenticated-orcid": false,
+        "given": "Matthew D.",
+        "family": "Li",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-8906-9618",
+        "authenticated-orcid": false,
+        "given": "Jayashree",
+        "family": "Kalpathy-Cramer",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "issued": {
+      "date-parts": [
+        [
+          2021,
+          11,
+          1
+        ]
+      ]
+    },
+    "journal": [
+      "Radiology: Artificial Intelligence"
+    ],
+    "volume": "3",
+    "issue": "6",
+    "page": null,
+    "article_number": "e200267",
+    "url": "https://doi.org/10.1148/ryai.2021200267",
+    "status": "metadata_resolved"
+  },
+  {
+    "number": 13,
+    "original": "Ghassemi M, Oakden-Rayner L, Beam AL. The false hope of current approaches to explainable artificial intelligence in health care. Lancet Digit Health. 2021;3(11):e745–e750. doi:10.1016/S2589-7500(21)00208-9.",
+    "doi": "10.1016/S2589-7500(21)00208-9",
+    "title": [
+      "The false hope of current approaches to explainable artificial intelligence in health care"
+    ],
+    "authors": [
+      {
+        "given": "Marzyeh",
+        "family": "Ghassemi",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Luke",
+        "family": "Oakden-Rayner",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Andrew L",
+        "family": "Beam",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "issued": {
+      "date-parts": [
+        [
+          2021,
+          11
+        ]
+      ]
+    },
+    "journal": [
+      "The Lancet Digital Health"
+    ],
+    "volume": "3",
+    "issue": "11",
+    "page": "e745-e750",
+    "article_number": null,
+    "url": "https://doi.org/10.1016/s2589-7500(21)00208-9",
+    "status": "metadata_resolved"
+  },
+  {
+    "number": 14,
+    "original": "Jin W, Li X, Fatehi M, Hamarneh G. Guidelines and evaluation of clinical explainable AI in medical image analysis. Med Image Anal. 2023;84:102684. doi:10.1016/j.media.2022.102684.",
+    "doi": "10.1016/j.media.2022.102684",
+    "title": [
+      "Guidelines and evaluation of clinical explainable AI in medical image analysis"
+    ],
+    "authors": [
+      {
+        "ORCID": "https://orcid.org/0000-0001-9253-4779",
+        "authenticated-orcid": false,
+        "given": "Weina",
+        "family": "Jin",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Xiaoxiao",
+        "family": "Li",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Mostafa",
+        "family": "Fatehi",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Ghassan",
+        "family": "Hamarneh",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "issued": {
+      "date-parts": [
+        [
+          2023,
+          2
+        ]
+      ]
+    },
+    "journal": [
+      "Medical Image Analysis"
+    ],
+    "volume": "84",
+    "issue": null,
+    "page": "102684",
+    "article_number": "102684",
+    "url": "https://doi.org/10.1016/j.media.2022.102684",
+    "status": "metadata_resolved"
+  },
+  {
+    "number": 15,
+    "original": "Chen H, Gomez C, Huang CM, Unberath M. Explainable medical imaging AI needs human-centered design: guidelines and evidence from a systematic review. npj Digit Med. 2022;5:156. doi:10.1038/s41746-022-00699-2.",
+    "doi": "10.1038/s41746-022-00699-2",
+    "title": [
+      "Explainable medical imaging AI needs human-centered design: guidelines and evidence from a systematic review"
+    ],
+    "authors": [
+      {
+        "ORCID": "https://orcid.org/0000-0003-0785-1855",
+        "authenticated-orcid": false,
+        "given": "Haomin",
+        "family": "Chen",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Catalina",
+        "family": "Gomez",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-6838-3701",
+        "authenticated-orcid": false,
+        "given": "Chien-Ming",
+        "family": "Huang",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-0055-9950",
+        "authenticated-orcid": false,
+        "given": "Mathias",
+        "family": "Unberath",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "issued": {
+      "date-parts": [
+        [
+          2022,
+          10,
+          19
+        ]
+      ]
+    },
+    "journal": [
+      "npj Digital Medicine"
+    ],
+    "volume": "5",
+    "issue": "1",
+    "page": null,
+    "article_number": "156",
+    "url": "https://doi.org/10.1038/s41746-022-00699-2",
+    "status": "metadata_resolved"
+  },
+  {
+    "number": 16,
+    "original": "Tonekaboni S, Joshi S, McCradden MD, Goldenberg A. What Clinicians Want: Contextualizing Explainable Machine Learning for Clinical End Use. PMLR. 2019;106:359–380. https://proceedings.mlr.press/v106/tonekaboni19a.html",
+    "doi": null,
+    "status": "non_doi_source_requires_manual_check"
+  },
+  {
+    "number": 17,
+    "original": "Amershi S, et al. Guidelines for Human-AI Interaction. CHI; 2019. doi:10.1145/3290605.3300233.",
+    "doi": "10.1145/3290605.3300233",
+    "title": [
+      "Guidelines for Human-AI Interaction"
+    ],
+    "authors": [
+      {
+        "given": "Saleema",
+        "family": "Amershi",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "Microsoft, Seattle, WA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Dan",
+        "family": "Weld",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "University of Washington &amp; Microsoft Research, Seattle, WA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Mihaela",
+        "family": "Vorvoreanu",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Microsoft, Redmond, WA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Adam",
+        "family": "Fourney",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Microsoft, Redmond, WA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Besmira",
+        "family": "Nushi",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Microsoft, Redmond, WA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Penny",
+        "family": "Collisson",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Microsoft, Redmond, WA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Jina",
+        "family": "Suh",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Microsoft, Remond, WA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Shamsi",
+        "family": "Iqbal",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Microsoft, Redmond, WA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Paul N.",
+        "family": "Bennett",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Microsoft, Redmond, WA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Kori",
+        "family": "Inkpen",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Microsoft, Redmond, WA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Jaime",
+        "family": "Teevan",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Microsoft, Redmond, WA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Ruth",
+        "family": "Kikin-Gil",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Microsoft, Redmond, WA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Eric",
+        "family": "Horvitz",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Microsoft, Redmond, WA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "issued": {
+      "date-parts": [
+        [
+          2019,
+          5,
+          2
+        ]
+      ]
+    },
+    "journal": [
+      "Proceedings of the 2019 CHI Conference on Human Factors in Computing Systems"
+    ],
+    "volume": null,
+    "issue": null,
+    "page": "1-13",
+    "article_number": null,
+    "url": "https://doi.org/10.1145/3290605.3300233",
+    "status": "metadata_resolved"
+  },
+  {
+    "number": 18,
+    "original": "Cai CJ, Winter S, Steiner D, Wilcox L, Terry M. “Hello AI”: Uncovering the Onboarding Needs of Medical Practitioners for Human-AI Collaborative Decision-Making. Proc ACM Hum-Comput Interact. 2019;3(CSCW). doi:10.1145/3359206.",
+    "doi": "10.1145/3359206",
+    "title": [
+      "\"Hello AI\": Uncovering the Onboarding Needs of Medical Practitioners for Human-AI Collaborative Decision-Making"
+    ],
+    "authors": [
+      {
+        "given": "Carrie J.",
+        "family": "Cai",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "Google Research, Brain Team, Mountain View, CA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Samantha",
+        "family": "Winter",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Google Health, Mountain View, CA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "David",
+        "family": "Steiner",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Google Health, Mountain View, CA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Lauren",
+        "family": "Wilcox",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Google Health, Mountain View, CA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Michael",
+        "family": "Terry",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Google Research, Brain Team, Mountain View, CA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "issued": {
+      "date-parts": [
+        [
+          2019,
+          11,
+          7
+        ]
+      ]
+    },
+    "journal": [
+      "Proceedings of the ACM on Human-Computer Interaction"
+    ],
+    "volume": "3",
+    "issue": "CSCW",
+    "page": "1-24",
+    "article_number": null,
+    "url": "https://doi.org/10.1145/3359206",
+    "status": "metadata_resolved"
+  },
+  {
+    "number": 19,
+    "original": "Tejani AS, et al. Checklist for Artificial Intelligence in Medical Imaging (CLAIM): 2024 Update. Radiol Artif Intell. 2024;6(4):e240300. doi:10.1148/ryai.240300.",
+    "doi": "10.1148/ryai.240300",
+    "status": "metadata_resolved",
+    "title": [
+      "Checklist for Artificial Intelligence in Medical Imaging (CLAIM):                     2024 Update"
+    ],
+    "authors": [
+      {
+        "ORCID": "https://orcid.org/0000-0002-6862-5299",
+        "authenticated-orcid": false,
+        "given": "Ali S.",
+        "family": "Tejani",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-2731-933X",
+        "authenticated-orcid": false,
+        "given": "Michail E.",
+        "family": "Klontzas",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-6717-8979",
+        "authenticated-orcid": false,
+        "given": "Anthony A.",
+        "family": "Gatti",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-2765-7451",
+        "authenticated-orcid": false,
+        "given": "John T.",
+        "family": "Mongan",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-9564-9360",
+        "authenticated-orcid": false,
+        "given": "Linda",
+        "family": "Moy",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-1257-8315",
+        "authenticated-orcid": false,
+        "given": "Seong Ho",
+        "family": "Park",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-6654-7434",
+        "authenticated-orcid": false,
+        "suffix": "Jr",
+        "given": "Charles E.",
+        "family": "Kahn",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "name": "for the CLAIM 2024 Update Panel",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Sunhy",
+        "family": "Abbara",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Saif",
+        "family": "Afat",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Udunna C.",
+        "family": "Anazodo",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Anna",
+        "family": "Andreychenko",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Folkert W.",
+        "family": "Asselbergs",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Aldo",
+        "family": "Badano",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Bettina",
+        "family": "Baessler",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Bayarbaatar",
+        "family": "Bold",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Sotirios",
+        "family": "Bisdas",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Torkel B.",
+        "family": "Brismar",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Giovanni E.",
+        "family": "Cacciamani",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "John A.",
+        "family": "Carrino",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Julius",
+        "family": "Chapiro",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Michael F.",
+        "family": "Chiang",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Tessa S.",
+        "family": "Cook",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Renato",
+        "family": "Cuocolo",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "John",
+        "family": "Damilakis",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Roxana",
+        "family": "Daneshjou",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Carlo N.",
+        "family": "De Cecco",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Hesham",
+        "family": "Elhalawani",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Guillermo",
+        "family": "Elizondo-Riojas",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Andrey",
+        "family": "Fedorov",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Benjamin",
+        "family": "Fine",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Adam E.",
+        "family": "Flanders",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Judy",
+        "family": "Wawira Gichoya",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Maryellen L.",
+        "family": "Giger",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Safwan S.",
+        "family": "Halabi",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Sven",
+        "family": "Haller",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "William",
+        "family": "Hsu",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Krishna",
+        "family": "Juluru",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Jayashree",
+        "family": "Kalpathy-Cramer",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Apostolos H.",
+        "family": "Karantanas",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Felipe C.",
+        "family": "Kitamura",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Burak",
+        "family": "Kocak",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Dow-Mu",
+        "family": "Koh",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Elmar",
+        "family": "Kotter",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Elizabeth A.",
+        "family": "Krupinski",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Curtis P.",
+        "family": "Langlotz",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Cecilia S.",
+        "family": "Lee",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Mario",
+        "family": "Maas",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Anant",
+        "family": "Madabhushi",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Lena",
+        "family": "Maier-Hein",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Kostas",
+        "family": "Marias",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Luis",
+        "family": "Martí-Bonmatí",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Jaishree",
+        "family": "Naidoo",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Emanuele",
+        "family": "Neri",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Robert",
+        "family": "Ochs",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Nikolaos",
+        "family": "Papanikolaou",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Thomas",
+        "family": "Papathomas",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Katja",
+        "family": "Pinker-Domenig",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Daniel",
+        "family": "Pinto dos Santos",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Fred",
+        "family": "Prior",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Alexandros",
+        "family": "Protonotarios",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Mauricio",
+        "family": "Reyes",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Veronica",
+        "family": "Rotemberg",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Jeffrey D.",
+        "family": "Rudie",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Emmanuel",
+        "family": "Salinas-Miranda",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Francesco",
+        "family": "Sardanelli",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Mark E.",
+        "family": "Schweitzer",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Luca Maria",
+        "family": "Sconfienza",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Ronnie",
+        "family": "Sebro",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Prateek",
+        "family": "Sharma",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "An",
+        "family": "Tang",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Antonios",
+        "family": "Tzortzakakis",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Jeroen",
+        "family": "van der Laak",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Peter M. A.",
+        "family": "van Ooijen",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Vasantha K.",
+        "family": "Venugopal",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Jacob J.",
+        "family": "Visser",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Bradford J.",
+        "family": "Wood",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Carol C.",
+        "family": "Wu",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Greg",
+        "family": "Zaharchuk",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Marc",
+        "family": "Zins",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "issued": {
+      "date-parts": [
+        [
+          2024,
+          7,
+          1
+        ]
+      ]
+    },
+    "journal": [
+      "Radiology: Artificial Intelligence"
+    ],
+    "volume": "6",
+    "issue": "4",
+    "page": null,
+    "url": "https://doi.org/10.1148/ryai.240300"
+  },
+  {
+    "number": 20,
+    "original": "Collins GS, et al. TRIPOD+AI statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods. BMJ. 2024;385:e078378. doi:10.1136/bmj-2023-078378.",
+    "doi": "10.1136/bmj-2023-078378",
+    "title": [
+      "TRIPOD+AI statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods"
+    ],
+    "authors": [
+      {
+        "ORCID": "https://orcid.org/0000-0002-2772-2316",
+        "authenticated-orcid": false,
+        "given": "Gary S",
+        "family": "Collins",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "Centre for Statistics in Medicine, UK EQUATOR Centre, Nuffield Department of Orthopaedics, Rheumatology, and Musculoskeletal Sciences, University of Oxford, Oxford OX3 7LD, UK"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-2118-004X",
+        "authenticated-orcid": false,
+        "given": "Karel G M",
+        "family": "Moons",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Julius Centre for Health Sciences and Primary Care, University Medical Centre Utrecht, Utrecht University, Utrecht, Netherlands"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-0989-0623",
+        "authenticated-orcid": false,
+        "given": "Paula",
+        "family": "Dhiman",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Centre for Statistics in Medicine, UK EQUATOR Centre, Nuffield Department of Orthopaedics, Rheumatology, and Musculoskeletal Sciences, University of Oxford, Oxford OX3 7LD, UK"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-8699-0735",
+        "authenticated-orcid": false,
+        "given": "Richard D",
+        "family": "Riley",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Institute of Applied Health Research, College of Medical and Dental Sciences, University of Birmingham, Birmingham, UK"
+          },
+          {
+            "name": "National Institute for Health and Care Research (NIHR) Birmingham Biomedical Research Centre, Birmingham, UK"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-6657-2787",
+        "authenticated-orcid": false,
+        "given": "Andrew L",
+        "family": "Beam",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Epidemiology, Harvard T H Chan School of Public Health, Boston, MA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-1613-7450",
+        "authenticated-orcid": false,
+        "given": "Ben",
+        "family": "Van Calster",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Development and Regeneration, KU Leuven, Leuven, Belgium"
+          },
+          {
+            "name": "Department of Biomedical Data Science, Leiden University Medical Centre, Leiden, Netherlands"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-6349-7251",
+        "authenticated-orcid": false,
+        "given": "Marzyeh",
+        "family": "Ghassemi",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Electrical Engineering and Computer Science, Institute for Medical Engineering and Science, Massachusetts Institute of Technology, Cambridge, MA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-1286-0038",
+        "authenticated-orcid": false,
+        "given": "Xiaoxuan",
+        "family": "Liu",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Institute of Inflammation and Ageing, College of Medical and Dental Sciences, University of Birmingham, Birmingham, UK"
+          },
+          {
+            "name": "University Hospitals Birmingham NHS Foundation Trust, Birmingham, UK"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-4026-4345",
+        "authenticated-orcid": false,
+        "given": "Johannes B",
+        "family": "Reitsma",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Julius Centre for Health Sciences and Primary Care, University Medical Centre Utrecht, Utrecht University, Utrecht, Netherlands"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-5529-1541",
+        "authenticated-orcid": false,
+        "given": "Maarten",
+        "family": "van Smeden",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Julius Centre for Health Sciences and Primary Care, University Medical Centre Utrecht, Utrecht University, Utrecht, Netherlands"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-2729-0947",
+        "authenticated-orcid": false,
+        "given": "Anne-Laure",
+        "family": "Boulesteix",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Institute for Medical Information Processing, Biometry and Epidemiology, Faculty of Medicine, Ludwig-Maximilians-University of Munich and Munich Centre of Machine Learning, Germany"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-5742-2840",
+        "authenticated-orcid": false,
+        "given": "Jennifer Catherine",
+        "family": "Camaradou",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Patient representative, Health Data Research UK patient and public involvement and engagement group"
+          },
+          {
+            "name": "Patient representative, University of East Anglia, Faculty of Health Sciences, Norwich Research Park, Norwich, UK"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-6712-6626",
+        "authenticated-orcid": false,
+        "given": "Leo Anthony",
+        "family": "Celi",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Beth Israel Deaconess Medical Center, Boston, MA, USA"
+          },
+          {
+            "name": "Laboratory for Computational Physiology, Massachusetts Institute of Technology, Cambridge, MA, USA"
+          },
+          {
+            "name": "Department of Biostatistics, Harvard T H Chan School of Public Health, Boston, MA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-9612-7791",
+        "authenticated-orcid": false,
+        "given": "Spiros",
+        "family": "Denaxas",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Institute of Health Informatics, University College London, London, UK"
+          },
+          {
+            "name": "British Heart Foundation Data Science Centre, London, UK"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-7849-0087",
+        "authenticated-orcid": false,
+        "given": "Alastair K",
+        "family": "Denniston",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "National Institute for Health and Care Research (NIHR) Birmingham Biomedical Research Centre, Birmingham, UK"
+          },
+          {
+            "name": "Institute of Inflammation and Ageing, College of Medical and Dental Sciences, University of Birmingham, Birmingham, UK"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-4897-9356",
+        "authenticated-orcid": false,
+        "given": "Ben",
+        "family": "Glocker",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Computing, Imperial College London, London, UK"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-7881-1207",
+        "authenticated-orcid": false,
+        "given": "Robert M",
+        "family": "Golub",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Northwestern University Feinberg School of Medicine, Chicago, IL, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-4528-1312",
+        "authenticated-orcid": false,
+        "given": "Hugh",
+        "family": "Harvey",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Hardian Health, Haywards Heath, UK"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-1147-8491",
+        "authenticated-orcid": false,
+        "given": "Georg",
+        "family": "Heinze",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Section for Clinical Biometrics, Centre for Medical Data Science, Medical University of Vienna, Vienna, Austria"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-4517-1562",
+        "authenticated-orcid": false,
+        "given": "Michael M",
+        "family": "Hoffman",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Princess Margaret Cancer Centre, University Health Network, Toronto, ON, Canada"
+          },
+          {
+            "name": "Department of Medical Biophysics, University of Toronto, Toronto, ON, Canada"
+          },
+          {
+            "name": "Department of Computer Science, University of Toronto, Toronto, ON, Canada"
+          },
+          {
+            "name": "Vector Institute for Artificial Intelligence, Toronto, ON, Canada"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-5183-131X",
+        "authenticated-orcid": false,
+        "given": "André Pascal",
+        "family": "Kengne",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Medicine, University of Cape Town, Cape Town, South Africa"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Emily",
+        "family": "Lam",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Patient representative, Health Data Research UK patient and public involvement and engagement group"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-0100-9659",
+        "authenticated-orcid": false,
+        "given": "Naomi",
+        "family": "Lee",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "National Institute for Health and Care Excellence, London, UK"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-1501-2947",
+        "authenticated-orcid": false,
+        "given": "Elizabeth W",
+        "family": "Loder",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "The BMJ, London, UK"
+          },
+          {
+            "name": "Department of Neurology, Brigham and Women’s Hospital, Harvard Medical School, Boston, MA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-4910-9368",
+        "authenticated-orcid": false,
+        "given": "Lena",
+        "family": "Maier-Hein",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Intelligent Medical Systems, German Cancer Research Centre, Heidelberg, Germany"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-4423-6472",
+        "authenticated-orcid": false,
+        "given": "Bilal A",
+        "family": "Mateen",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Institute of Health Informatics, University College London, London, UK"
+          },
+          {
+            "name": "Wellcome Trust, London, UK"
+          },
+          {
+            "name": "Alan Turing Institute, London, UK"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-6476-2165",
+        "authenticated-orcid": false,
+        "given": "Melissa D",
+        "family": "McCradden",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Bioethics, Hospital for Sick Children Toronto, ON, Canada"
+          },
+          {
+            "name": "Genetics and Genome Biology, SickKids Research Institute, Toronto, ON, Canada"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-5471-5202",
+        "authenticated-orcid": false,
+        "given": "Lauren",
+        "family": "Oakden-Rayner",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Australian Institute for Machine Learning, University of Adelaide, Adelaide, SA, Australia"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-6911-2367",
+        "authenticated-orcid": false,
+        "given": "Johan",
+        "family": "Ordish",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Medicines and Healthcare products Regulatory Agency, London, UK"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0003-0044-3496",
+        "authenticated-orcid": false,
+        "given": "Richard",
+        "family": "Parnell",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Patient representative, Health Data Research UK patient and public involvement and engagement group"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-9076-8472",
+        "authenticated-orcid": false,
+        "given": "Sherri",
+        "family": "Rose",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Health Policy and Center for Health Policy, Stanford University, Stanford, CA, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-8980-2330",
+        "authenticated-orcid": false,
+        "given": "Karandeep",
+        "family": "Singh",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Learning Health Sciences, University of Michigan Medical School, Ann Arbor, MI, USA"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0002-3037-122X",
+        "authenticated-orcid": false,
+        "given": "Laure",
+        "family": "Wynants",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Department of Epidemiology, CAPHRI Care and Public Health Research Institute, Maastricht University, Maastricht, Netherlands"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "ORCID": "https://orcid.org/0000-0001-8708-7003",
+        "authenticated-orcid": false,
+        "given": "Patricia",
+        "family": "Logullo",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Centre for Statistics in Medicine, UK EQUATOR Centre, Nuffield Department of Orthopaedics, Rheumatology, and Musculoskeletal Sciences, University of Oxford, Oxford OX3 7LD, UK"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "issued": {
+      "date-parts": [
+        [
+          2024,
+          4,
+          16
+        ]
+      ]
+    },
+    "journal": [
+      "BMJ"
+    ],
+    "volume": "385",
+    "issue": null,
+    "page": "e078378",
+    "article_number": null,
+    "url": "https://doi.org/10.1136/bmj-2023-078378",
+    "status": "metadata_resolved"
+  },
+  {
+    "number": 21,
+    "original": "World Health Organization. Ethics and Governance of Artificial Intelligence for Health. WHO; 2021. https://www.who.int/publications/i/item/9789240029200",
+    "doi": null,
+    "status": "non_doi_source_requires_manual_check"
+  },
+  {
+    "number": 22,
+    "original": "US FDA, Health Canada, MHRA. Good Machine Learning Practice for Medical Device Development: Guiding Principles. 2021. https://www.fda.gov/medical-devices/software-medical-device-samd/good-machine-learning-practice-medical-device- development-guiding-principles",
+    "doi": null,
+    "status": "non_doi_source_requires_manual_check"
+  },
+  {
+    "number": 23,
+    "original": "Teodoro RDA, et al. Automatic bone age assessment: a deep learning case study on the Brazilian population with a supporting mobile application prototype. Sci Rep. 2026;16:4488. doi:10.1038/s41598-025-34651-7.",
+    "doi": "10.1038/s41598-025-34651-7",
+    "title": [
+      "Automatic bone age assessment: a deep learning case study on the Brazilian population with a supporting mobile application prototype"
+    ],
+    "authors": [
+      {
+        "given": "Rafael do Amaral",
+        "family": "Teodoro",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Filipe Verrone",
+        "family": "de Lima",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Mirela",
+        "family": "Popa",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Gustavo Scalabrini",
+        "family": "Sampaio",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Cristiane",
+        "family": "Kochi",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Carlos Alberto",
+        "family": "Longui",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Leandro Augusto da",
+        "family": "Silva",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "issued": {
+      "date-parts": [
+        [
+          2026,
+          1,
+          9
+        ]
+      ]
+    },
+    "journal": [
+      "Scientific Reports"
+    ],
+    "volume": "16",
+    "issue": "1",
+    "page": null,
+    "article_number": "4488",
+    "url": "https://doi.org/10.1038/s41598-025-34651-7",
+    "status": "metadata_resolved"
+  },
+  {
+    "number": 24,
+    "original": "Bland JM, Altman DG. Statistical methods for assessing agreement between two methods of clinical measurement. Lancet. 1986;1(8476):307–310.",
+    "doi": null,
+    "status": "non_doi_source_requires_manual_check"
+  }
+]

@@ -1,6 +1,6 @@
 {
-  "model_id": "full18_focalnet_b8",
-  "checkpoint_sha256": "b1f1400311d50cf3191e627f0b99eb30e13ddf33f638e2daab77f52bfa2a37e3",
+  "model_id": "full18_focalnet_feedback_candidate_20261007",
+  "checkpoint_sha256": "ed681f0355b5d1a3660cfa0a7e7d472884ef869d8b48c94348eff1257bd049e8",
   "detector_id": "yolo_v2_b8_e53_640",
   "detector_checkpoint_sha256": "81410a091a7f6ccf08c70a87f0842a4edd48f018882bc76ce9708a70849ee058",
   "device": "cuda",
@@ -16,7 +16,7 @@
       7,
       7
     ],
-    "elapsed_seconds": 4.355,
+    "elapsed_seconds": 4.043,
     "scorecam_topk": null,
     "scorecam_full_channels": false,
     "gradcampp_variant": null,
@@ -27,10 +27,11 @@
     "spatial_restore": "inverse aspect-padding then bilinear to original box",
     "display_normalization": "per-ROI min/max; not comparable magnitude between ROIs"
   },
+  "display_name": "FocalNet",
   "demonstration_only": true,
   "case_id": "RSNA-DEMO-1377",
   "detected_count": 9,
-  "predicted_months": 183.825,
-  "request_duration_seconds": 6.98,
+  "predicted_months": 182.489,
+  "request_duration_seconds": 5.66,
   "source_image_included": false
 }

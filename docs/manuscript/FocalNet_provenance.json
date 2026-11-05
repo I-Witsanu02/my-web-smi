@@ -1,0 +1,21 @@
+{
+  "source_filename": "full18_focalnet_feedback_candidate_20261007_predictions.csv",
+  "source_sha256": "2efd94e044b0fd5d349558450543052422ce3cb649be2c91b6bb0166922df696",
+  "model_id": "full18_focalnet_feedback_candidate_20261007",
+  "checkpoint_sha256": "ed681f0355b5d1a3660cfa0a7e7d472884ef869d8b48c94348eff1257bd049e8",
+  "scenario": "original_roi_protocol",
+  "source_rows": 260,
+  "included_rows": 260,
+  "bootstrap_unit": "patient",
+  "bootstrap_repetitions": 20000,
+  "seed": 20261105,
+  "confidence_level": 0.95,
+  "CI_method": "percentile bootstrap",
+  "target": "reference bone age; not chronological age",
+  "limitations": [
+    "Archived evaluation previously inspected",
+    "Run metadata flags 15 patients overlapping PRE2 initialization data; membership not independently reconciled",
+    "Historical XAI examples not proven to come from the evaluated checkpoint",
+    "No clinical effectiveness or usability outcomes measured"
+  ]
+}
