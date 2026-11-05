@@ -9,6 +9,20 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 def configure():
+    # Read local settings before importing the application/model service.
+    env_file = ROOT / '.env'
+    if env_file.is_file():
+        for raw in env_file.read_text(encoding='utf-8-sig').splitlines():
+            if '=' in raw and not raw.strip().startswith('#'):
+                key, value = raw.split('=', 1)
+                os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+    if (os.environ.get('BONEAGE_USERNAME') and
+            os.environ.get('BONEAGE_PASSWORD') not in (None, '', 'change-me') and
+            len(os.environ.get('BONEAGE_SESSION_SECRET', '')) >= 32 and
+            os.environ.get('BONEAGE_SESSION_SECRET') != 'replace-with-a-long-random-secret'):
+        os.environ['BONEAGE_DEVICE'] = 'cuda'
+        os.environ['BONEAGE_DEMO_ENABLED'] = '0'
+        return env_file
     credentials = ROOT / 'runtime' / 'gpu_login.json'
     credentials.parent.mkdir(parents=True, exist_ok=True)
     if not credentials.exists():

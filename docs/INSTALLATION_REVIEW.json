@@ -1,0 +1,14 @@
+{
+  "scope": "Local installation scripts, account setup, illustrated manual; not a fresh university-machine installation or full security audit",
+  "checks": [
+    "Python compile passed",
+    "Custom settings preserved",
+    "GPU launcher honors configured local account",
+    "Session and incorrect-password API checks",
+    "pytest: 17 passed, 5 subtests passed",
+    "English frontend previously lint/build passed; no frontend change in this revision"
+  ],
+  "manual": "9 pages rendered with Word and visually reviewed",
+  "secrets": "No actual password is included in tracked deliverables",
+  "remaining": "Recipient must install dependencies and receive authorized checkpoints; GPU hardware compatibility requires checking on target machine"
+}

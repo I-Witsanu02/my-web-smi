@@ -8,5 +8,5 @@ if exist ".venv\Scripts\python.exe" (
 ) else (
   set "PYTHON_BIN=python"
 )
-powershell -NoProfile -Command "if (-not (Get-NetTCPConnection -LocalPort 8770 -State Listen -ErrorAction SilentlyContinue)) { Start-Process -WindowStyle Hidden -FilePath '%PYTHON_BIN%' -ArgumentList 'scripts\launch_gpu.py' -WorkingDirectory '%~dp0' -RedirectStandardOutput 'runtime\gpu_stdout.log' -RedirectStandardError 'runtime\gpu_stderr.log' }"
+powershell -NoProfile -Command "if (-not (Get-NetTCPConnection -LocalPort 8770 -State Listen -ErrorAction SilentlyContinue)) { Start-Process -WindowStyle Hidden -FilePath '%PYTHON_BIN%' -ArgumentList ([char]34 + '%~dp0scripts\launch_gpu.py' + [char]34) -WorkingDirectory '%~dp0' -RedirectStandardOutput 'runtime\gpu_stdout.log' -RedirectStandardError 'runtime\gpu_stderr.log' }"
 start "" http://127.0.0.1:8770/#/imaging

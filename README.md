@@ -132,3 +132,8 @@ Review the repository licence and the licences/data-use terms of each model, dep
 ![FocalNet Grad-CAM and Eigen-CAM](docs/manuscript/figures_xai/Figure_XAI_full.png)
 
 The maps use the same FocalNet checkpoint as the numerical analysis. Color is normalized within each ROI; red is a relative response, not confidence or an age contribution. [Figure provenance](docs/manuscript/figures_xai/XAI_figure_provenance.json) · [Revision notes](docs/manuscript/Revision_notes_XAI_Web_TH.md) · [Section comparison](docs/manuscript/Full_section_comparison.csv).
+
+
+## Local review account and illustrated installation guide
+
+Run `.venv\Scripts\python.exe scripts/setup_local_account.py` to create your own local account (suggested username `Admin_up`). The password is entered privately and saved only in ignored `.env`. The CPU and GPU launchers use this account; no password is distributed through Git. Remember-session is selected by default and expires after 12 hours. Obtain the authorized model checkpoints and hashes separately from the developer. Cloning alone does not include model weights or another machine’s account. See the [illustrated Thai installation and user guide](docs/คู่มือติดตั้งและใช้งาน_Skeleton_Bone_Age_XAI.docx) for commands, expected output, screenshots, shutdown, and troubleshooting.

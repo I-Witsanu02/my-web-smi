@@ -52,6 +52,12 @@ def check(entry: dict, required: bool) -> bool:
 
 
 def main() -> int:
+    env_file = ROOT / ".env"
+    if env_file.is_file():
+        for raw in env_file.read_text(encoding="utf-8-sig").splitlines():
+            if "=" in raw and not raw.strip().startswith("#"):
+                key, value = raw.split("=", 1)
+                os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
     registry_path = Path(os.getenv("BONEAGE_MODEL_REGISTRY", ROOT / "model_registry.json"))
     if not registry_path.is_absolute():
         registry_path = ROOT / registry_path

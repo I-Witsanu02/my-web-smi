@@ -1,136 +1,194 @@
-# คู่มือติดตั้ง Skeleton Bone Age XAI บน Windows
+# คู่มือติดตั้งและใช้งาน Skeleton Bone Age XAI
 
-## ขอบเขต
+คู่มือนี้ใช้สำหรับอาจารย์หรือผู้ตรวจงานที่ต้องการนำ Source Code ไปเปิดบนเครื่อง Windows ของตนเอง แบ่งเป็นการติดตั้ง การตรวจผล และการใช้งานเบื้องต้น ภาพหน้าจอเป็นตัวอย่างจากระบบของโครงการ ไม่ใช่ผลที่รับประกันว่าจะเท่ากันทุกเครื่อง
 
-คู่มือนี้อธิบายการติดตั้งเว็บวิจัยบน Windows ให้หน้าเว็บและ API ประมวลผลในเครื่องด้วย NVIDIA GPU ภาพที่อัปโหลดควรลบข้อมูลระบุตัวบุคคลแล้ว ระบบนี้เป็นต้นแบบวิจัย ต้องให้ผู้เชี่ยวชาญตรวจผล และไม่ใช่อุปกรณ์วินิจฉัย
+## สิ่งที่ต้องรับจากผู้พัฒนา
 
-ชุด Source Code ไม่รวม checkpoint น้ำหนักโมเดล ภาพผู้ป่วย ฐานข้อมูล หรือข้อมูลลับ ต้องเตรียม FocalNet FULL18 และ YOLO 9 ROI ที่ได้รับอนุญาตให้ใช้ก่อนเริ่ม checkpoint สำหรับโมเดลอ้างอิง/ทดลองอื่นก็ไม่รวม และไม่ควรเลือกใช้จนกว่าจะติดตั้ง checkpoint ที่ตรงรุ่น
+1. ลิงก์ repository และสิทธิ์เข้าถึงหากใช้ Bone_age ซึ่งเป็น private
+2. คู่มือนี้ และ checkpoint FocalNet/YOLO ที่ได้รับอนุญาต พร้อม SHA-256 และรุ่นที่ใช้
+3. ภาพ RSNA สาธิตที่มีสิทธิ์ใช้ สำหรับตรวจการทำนายจริง
+4. ชื่อผู้ใช้และรหัสผ่านส่งแยกเป็นการส่วนตัว หรือกำหนดใหม่บนเครื่องปลายทาง
 
-ไฟล์ YOLO V2 B8 E53 640 ที่ตรวจพบในคลังโครงการมี SHA-256 `81410A091A7F6CCF08C70A87F0842A4EDD48F018882BC76CE9708A70849EE058` ใช้ค่านี้ตรวจได้เมื่อคุณตั้งใจใช้ไฟล์รุ่นดังกล่าวเท่านั้น การ hash ตรงกันยืนยันตัวไฟล์ แต่ไม่ใช่หลักฐานว่าไฟล์นั้นเป็นตัวที่สร้าง ROI ในภาพผลลัพธ์เก่าหรือภาพใน Manuscript
+git clone ดาวน์โหลดโค้ด ไม่ได้ดาวน์โหลด checkpoint หรือบัญชีของผู้พัฒนาโดยอัตโนมัติ ไม่ส่ง .env ฐานข้อมูลจริง หรือโฟลเดอร์ runtime ขึ้น GitHub
 
-## สิ่งที่ต้องมี
+## 1 เตรียมเครื่อง
 
-- Windows 10/11 แบบ 64 บิต
-- Python 3.11 แบบ 64 บิต และ pip
-- Node.js รุ่น LTS พร้อม npm
-- NVIDIA GPU และไดรเวอร์ที่รองรับ CUDA หากต้องการประมวลผลด้วย GPU
-- checkpoint ที่ตรงกับ architecture และ preprocessing ที่บันทึกใน `model_registry.json`
-
-ก่อนเริ่ม ให้เปิด PowerShell แล้วตรวจว่า Python, Node.js และ npm ใช้งานได้:
+Windows 10/11, Git, Python 3.11 และ Node.js 20 ขึ้นไป เครื่องที่ไม่มี NVIDIA GPU ใช้ CPU ได้แต่ช้ากว่า
 
 ```powershell
+git --version
 py -3.11 --version
 node --version
 npm --version
 ```
 
-ต้องได้ Python 3.11.x และ Node.js รุ่น LTS; หากคำสั่งใดไม่พบ ให้ติดตั้งโปรแกรมนั้นและเปิด PowerShell ใหม่ก่อนทำขั้นตอนต่อไป
+ผลที่ควรเห็นคือเลขเวอร์ชันของทั้งสี่โปรแกรม หากขึ้นว่าไม่รู้จักคำสั่ง ให้ติดตั้งและเปิด PowerShell ใหม่ก่อนดำเนินการ
 
-## ติดตั้งโปรแกรม
+## 2 ดาวน์โหลด Source Code
 
-1. แตกโฟลเดอร์ `my-web-smi` ไปยังตำแหน่งที่ต้องการ เช่น `D:\BoneAge\my-web-smi` แล้วเปิด PowerShell ที่โฟลเดอร์นั้น
-2. สร้างและเปิด virtual environment:
+สำหรับ repository ภาษาอังกฤษที่ใช้ส่งงาน:
 
-   ```powershell
-   py -3.11 -m venv .venv
-   .\.venv\Scripts\Activate.ps1
-   python -m pip install --upgrade pip
-   ```
+```powershell
+git clone https://github.com/I-Witsanu02/my-web-smi.git
+cd my-web-smi
+```
 
-   หาก PowerShell แจ้งว่าบล็อกสคริปต์ ให้เปิดสิทธิ์เฉพาะหน้าต่างปัจจุบันก่อน แล้วลองเปิด virtual environment อีกครั้ง:
+หรือใช้ repository ภาษาไทยเมื่อได้รับสิทธิ์:
 
-   ```powershell
-   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-   .\.venv\Scripts\Activate.ps1
-   ```
+```powershell
+git clone https://github.com/I-Witsanu02/Bone_age.git
+cd Bone_age
+```
 
-3. ติดตั้ง PyTorch สำหรับ Windows โดยเลือก CUDA ตามเครื่องจาก [PyTorch Get Started Locally](https://pytorch.org/get-started/locally/) แล้วตรวจ GPU:
+เลือกเพียง repository เดียว ผลที่ควรเห็นคือโฟลเดอร์ src, scripts, docs และไฟล์ app.py / package.json / model_registry.json หาก private repo แจ้ง Repository not found ให้ผู้พัฒนาเพิ่มสิทธิ์ GitHub ของอาจารย์ ไม่ใช้รหัสผ่านเข้าเว็บแทนสิทธิ์ GitHub
 
-   ```powershell
-   python -c "import torch; print(torch.__version__); print(torch.cuda.is_available()); print(torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CUDA unavailable')"
-   ```
+## 3 ติดตั้ง Python และหน้าเว็บ
 
-   ใช้ขั้นต่อไปเมื่อ `torch.cuda.is_available()` แสดง `True` หากไม่ใช้ GPU ให้ติดตั้ง PyTorch แบบ CPU และใช้ `start_cpu.cmd` แทน
+```powershell
+py -3.11 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --upgrade pip
+```
 
-4. ติดตั้งแพ็กเกจ API และหน้าเว็บ:
+ใช้ Python ใน .venv โดยตรง จึงไม่ต้องเปิดสิทธิ์ Activate.ps1 หากใช้ CPU:
 
-   ```powershell
-   python -m pip install -r requirements.deploy.txt
-   npm ci
-   npm run build
-   ```
+```powershell
+.\.venv\Scripts\python.exe -m pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+```
 
-   ใช้ `requirements.deploy.txt` เพื่อไม่ให้ pip เปลี่ยน PyTorch/CUDA build ที่ติดตั้งไว้ก่อนหน้า; `requirements.txt` เป็นชุดพัฒนาที่ระบุ torch/torchvision เพิ่มเติม
+หากใช้ NVIDIA GPU ให้เลือก Windows / Pip / Python / CUDA ที่เหมาะกับ driver จาก https://pytorch.org/get-started/locally/ แล้วใช้ .venv\Scripts\python.exe -m pip แทน pip ในคำสั่งที่เว็บให้ ไม่ติดตั้ง CPU build ทับ CUDA build
 
-5. สร้างไฟล์ตั้งค่าเฉพาะเครื่องจากตัวอย่าง:
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements.deploy.txt
+npm ci
+```
 
-   ```powershell
-   Copy-Item .env.example .env
-   ```
+ผลที่ควรเห็นคือแพ็กเกจติดตั้งเสร็จโดยไม่มี error ตรวจ GPU ได้ด้วย:
 
-   เปิด `.env` แล้วตั้ง `BONEAGE_USERNAME`, `BONEAGE_PASSWORD` และ `BONEAGE_SESSION_SECRET` ด้วยค่าที่คาดเดายาก (secret ควรมีอย่างน้อย 32 ตัวอักษร) จากนั้นแก้ `BONEAGE_FULL18_CHECKPOINT` และ `BONEAGE_YOLO_CHECKPOINT` ให้ชี้ไปยังไฟล์จริง ตัวอย่างตำแหน่งเริ่มต้นคือ `models/focalnet_full18.pt` และ `models/yolo_roi9.pt` ห้ามใช้ค่า placeholder เมื่อเปิดระบบ หากมี SHA-256 ที่ผู้ดูแลโมเดลรับรอง ให้กำหนด `BONEAGE_FULL18_SHA256` และ `BONEAGE_YOLO_SHA256` เพิ่ม
+```powershell
+.\.venv\Scripts\python.exe -c "import torch; print(torch.__version__); print(torch.cuda.is_available())"
+```
 
-   สร้างรหัสสุ่มได้ด้วย Python แล้วนำไปใส่ใน `.env` ด้วยตนเอง:
+True หมายถึง PyTorch เข้าถึง CUDA ได้ หากใช้ CPU ค่า False เป็นเรื่องปกติ ไม่ใช่ผลการตรวจว่าโมเดลทำนายสำเร็จ
 
-   ```powershell
-   python -c "import secrets; print(secrets.token_urlsafe(32))"
-   ```
+## 4 ตั้งบัญชีเฉพาะเครื่อง
 
-   ค่าเริ่มต้น `BONEAGE_DEMO_ENABLED=0` ปิด endpoint สาธิตแบบไม่ต้องเข้าสู่ระบบ; ไม่มีบัญชี `admin1/admin1` สำรอง หากใช้ `start_gpu.cmd` โปรแกรมจะสร้างบัญชีสุ่มเฉพาะเครื่องไว้ใน `runtime/gpu_login.json` และเปิดเฉพาะ `127.0.0.1` อย่าเผยแพร่ไฟล์นี้หรือเปิดพอร์ต/tunnel โดยไม่ได้ตั้งค่าความปลอดภัย
+```powershell
+.\.venv\Scripts\python.exe scripts/setup_local_account.py
+```
 
-6. สร้างโฟลเดอร์และวาง checkpoint ที่ได้รับอนุญาต:
+กรอกชื่อผู้ใช้ ค่าเริ่มต้นคือ Admin_up แล้วกรอกรหัสผ่านสองครั้ง ตัวอักษรรหัสผ่านจะไม่แสดงบนจอ ผลที่ควรเห็นคือ Account saved locally in .env ไม่พิมพ์รหัสผ่านลง log และไม่ส่งรหัสผ่านในไฟล์คู่มือ
 
-   ```powershell
-   New-Item -ItemType Directory -Force models
-   ```
+อาจารย์กำหนดรหัสเองได้ หรือผู้พัฒนาตั้งเครื่องให้แล้วแจ้งรหัสแยกต่างหาก บัญชีนี้เป็น local review account บทบาท Clinical Reviewer ชื่อ Admin_up ไม่ได้ทำให้กลายเป็นผู้ดูแล Supabase หรือ GitHub
 
-   วาง FocalNet และ YOLO ไว้ที่ `models/focalnet_full18.pt` และ `models/yolo_roi9.pt` (หรือระบุพาธจริงใน `.env`) ตรวจว่าไฟล์อ่านได้และเป็นรุ่นที่ใช้กับโค้ดนี้ ห้ามใช้ checkpoint คนละรุ่นหรือ preprocessing คนละแบบโดยไม่ได้ตรวจสอบ
+การเรียกคำสั่งนี้ซ้ำจะเปลี่ยนรหัสและ session secret ให้ restart server และเข้าสู่ระบบใหม่ เครื่องปลายทางแต่ละเครื่องมี .env ของตัวเอง บัญชีจากเครื่องผู้พัฒนาไม่ตามไปกับ git clone
 
-   ตรวจ hash ของ YOLO ที่พาธเริ่มต้นได้ด้วย:
+ช่องจดจำการเข้าสู่ระบบเลือกไว้เป็นค่าเริ่มต้น ระบบจำ session ไม่เก็บรหัสผ่านในช่องกรอก และหมดอายุหลัง 12 ชั่วโมง ผู้ใช้ยังออกจากระบบได้ ไม่ใช่ auto login ถาวร
 
-   ```powershell
-   Get-FileHash .\models\yolo_roi9.pt -Algorithm SHA256
-   ```
+## 5 เตรียม checkpoint
 
-   ถ้าต้องการใช้ checkpoint YOLO ที่ตรงกับไฟล์ในคลังซึ่งระบุไว้ข้างต้น ค่า `Hash` ต้องตรงกันทุกตัวอักษร หากไม่ตรง ให้หยุดและตรวจแหล่งที่มา/รุ่นกับผู้ดูแลโมเดลก่อนใช้งาน; อย่าเปลี่ยนชื่อไฟล์เพื่อให้ดูเหมือนเป็นรุ่นเดียวกัน
+สร้างโฟลเดอร์ models และรับไฟล์จากผู้พัฒนาแยกต่างหาก:
 
-7. ตรวจสภาพแวดล้อมก่อนเริ่มบริการ:
+```powershell
+New-Item -ItemType Directory -Force models
+```
 
-   ```powershell
-   python scripts/check_local_install.py
-   ```
+โมเดลเริ่มต้นใน registry ใช้ models/focalnet_full18.pt และ detector ใช้ models/yolo_roi9.pt ต้องตรง architecture และ preprocessing ตาม registry ไม่เปลี่ยนชื่อ checkpoint คนละรุ่นเพื่อให้เปิดผ่าน
 
-   หากต้องการบังคับให้โมเดลหลักและ detector มี checksum ที่ตั้งไว้ ให้เพิ่ม `BONEAGE_REQUIRE_CHECKPOINT_SHA256=1` ใน `.env`. สำหรับโมเดลที่ไม่มีตัวแปร checkpoint เฉพาะ ให้ตั้ง hash ด้วยรูปแบบ `BONEAGE_CHECKPOINT_SHA256_<MODEL_ID ตัวพิมพ์ใหญ่>` เช่น `BONEAGE_CHECKPOINT_SHA256_FULL18_CONVNEXTV2_A2V2`. เมื่อ hash ไม่ตรง ระบบจะปฏิเสธ checkpoint นั้น ค่า hash เป็นการตรวจความตรงกันของไฟล์ ไม่ได้พิสูจน์คุณภาพหรือแหล่งที่มา
+หากต้องการทดสอบ FocalNet ที่ใช้ใน manuscript ฉบับล่าสุด ให้รับไฟล์รุ่นดังกล่าว วาง models/focalnet_feedback_candidate.pt แล้วเลือกโมเดลนั้นในหน้าเว็บ ชื่อใน registry มี Feedback Candidate เพื่อแยกไฟล์ แม้ในบทความเรียก FocalNet ต้องไม่สับสนกับ baseline ที่เป็นโมเดลเริ่มต้น
 
-## เปิดและเข้าสู่ระบบ
+```powershell
+Get-FileHash .\models\focalnet_full18.pt -Algorithm SHA256
+Get-FileHash .\models\yolo_roi9.pt -Algorithm SHA256
+```
 
-รัน `start_gpu.cmd` จากโฟลเดอร์โครงการ ระบบจะใช้ Python จาก `.venv` ก่อน แล้วเปิด `http://127.0.0.1:8770/#/imaging`
+เทียบ Hash กับเอกสารส่งมอบ checkpoint จากผู้พัฒนา หากต้องใช้พาธอื่น ตั้ง BONEAGE_FULL18_CHECKPOINT และ BONEAGE_YOLO_CHECKPOINT ใน .env เป็นพาธจริง โมเดลเพิ่มเติมใช้ตำแหน่งตาม model_registry.json ไม่จำเป็นต้องติดตั้งทุกโมเดลเพื่อทดสอบโมเดลหลัก
 
-การเปิดครั้งแรกสร้างบัญชีสุ่ม `local-research` พร้อม session secret ใน `runtime/gpu_login.json` สำหรับ GPU launcher. นี่เป็นบัญชีเฉพาะเครื่องสำหรับทดลองที่เปิดบน `127.0.0.1` เท่านั้น ไม่รองรับการแบ่งผู้ใช้/สิทธิ์ reviewer และไม่ควรเปิดพอร์ตให้ผู้อื่นหรือใช้แทนระบบบัญชีของมหาวิทยาลัย หากใช้บัญชีนี้ เปิดไฟล์ด้วย `Get-Content .\runtime\gpu_login.json` บนเครื่องเดียวกันแล้วกรอกในหน้าเข้าสู่ระบบ; ห้ามส่งไฟล์นี้หรือ `.env` ต่อผู้อื่น. `start_cpu.cmd` และ `start_web.cmd` ต้องกำหนด credential ใน `.env` ก่อน
+ไม่จำเป็นต้องคัดลอก .env.example ทั้งไฟล์ ค่าตัวอย่าง VITE_API_BASE_URL เป็น URL สมมติ สำหรับการรันเว็บและ API ในเครื่องเดียวกันให้เว้นค่านี้ว่าง ไม่ตั้งให้ชี้ไป placeholder
 
-ตรวจ `http://127.0.0.1:8770/api/health` ว่าอุปกรณ์เป็น `cuda` และมีโมเดลพร้อมใช้ก่อนทดสอบภาพหนึ่งภาพ ตรวจว่าได้ ROI ครบ 9 จุดและมีผล XAI ก่อนใช้งานกับชุดข้อมูลจริง
+## 6 Build และเปิดเว็บ
 
-## ปิดระบบและแก้ปัญหา
+```powershell
+npm run build
+```
 
-- `restart_gpu.cmd` ใช้เริ่มเซิร์ฟเวอร์ใหม่เท่านั้น โดยจะถามยืนยันก่อนหยุด process เดิม; ให้ตอบ `Y` เฉพาะเมื่อไม่มี inference กำลังทำงาน หากต้องการปิดเซิร์ฟเวอร์ ให้เปิด Task Manager แล้วหยุด Python process ที่รัน `scripts\launch_gpu.py` (ตรวจ command line ให้ตรงก่อนหยุด)
-- ตรวจ `runtime/gpu_stderr.log` และ `runtime/gpu_stdout.log` เมื่อเปิดไม่สำเร็จ
-- ถ้า CUDA เป็น `False` ให้ตรวจไดรเวอร์ NVIDIA และติดตั้ง PyTorch build ที่ตรงกับเครื่องจากหน้าอย่างเป็นทางการ
-- ถ้า `model_available` เป็น `false` ให้ตรวจตำแหน่งไฟล์ checkpoint และค่าใน `.env`
-- ถ้าเปิดหน้าเว็บไม่ได้ ให้ตรวจว่า `npm run build` จบแล้วและไม่มี process อื่นใช้พอร์ต 8770
-- ถ้า ROI ไม่ครบ 9 จุด ให้ตรวจภาพและแก้กรอบก่อนทำนาย
+ผลที่ควรเห็นคือโฟลเดอร์ dist และข้อความ build สำเร็จ จากนั้นเลือกเปิดเพียงโหมดเดียว:
 
-## การคุ้มครองข้อมูลและข้อจำกัด
+```powershell
+.\start_cpu.cmd
+```
 
-- เก็บ `.env`, `runtime/`, ฐานข้อมูล และภาพจริงไว้นอกชุด Source Code ที่เผยแพร่
-- endpoint `/api/demo/predict` ปิดเป็นค่าเริ่มต้น (`BONEAGE_DEMO_ENABLED=0`); หากเปิด ต้องมีการทบทวนความเสี่ยงและจำกัดการเข้าถึง/อัตราเรียกผ่าน reverse proxy ก่อน ห้ามใช้ anonymous upload กับภาพผู้ป่วยจริง
-- ค่า session secret ต้องสุ่มและยาวอย่างน้อย 32 ตัวอักษร; ห้ามใช้บัญชีเริ่มต้นที่คาดเดาได้, เก็บ `.env` นอก Git และหมุน credential หากสงสัยว่าเคยรั่วไหล
-- ก่อนเปิดระบบภายนอก ให้ใช้ HTTPS, จำกัด CORS เป็น origin ที่ระบุแน่นอน, ตั้ง firewall/role access และทดสอบสิทธิ์ผู้ใช้; CORS ไม่ใช่ระบบ authentication
-- การแสดงภาพที่ปรับความสว่างหรือความคมชัดอาจไม่ตรงกับภาพที่ส่งเข้าโมเดล ให้ยืนยันจาก metadata ของผล inference
-- แผนที่ XAI เป็นการแสดงการตอบสนองตามวิธีที่เลือก ไม่ใช่ความน่าจะเป็น ความมั่นใจ หรือหลักฐานเชิงสาเหตุ
-- ค่า validation ใน manuscript เป็นผลระดับชุดข้อมูล ไม่ใช่ค่าความแม่นยำที่รับประกันสำหรับผู้ป่วยรายบุคคล
+CPU เปิดที่ http://127.0.0.1:8766/ ส่วน GPU:
 
-## สถานะ Supabase
+```powershell
+.\start_gpu.cmd
+```
 
-ใน Supabase project ของงานมี schema สำหรับบัญชี metadata ผลทำนาย feedback และ private storage สำหรับ RSNA แล้ว แต่หน้าเว็บและ API รุ่นนี้ยังใช้ local authentication และ SQLite เดิม จึงยังไม่มีการส่งข้อมูลหรือภาพขึ้น Supabase. อย่าใส่ publishable key จนกว่า frontend จะเรียก Supabase SDK หรือ service จริง และห้ามใส่ service-role/secret key ในหน้าเว็บหรือ GitHub. อ่าน [คู่มือตั้งค่า Supabase](SUPABASE_SETUP_TH.md) และ [แนวทางติดตั้งและดูแลข้อมูลอย่างปลอดภัย](SECURE_OPERATIONS_TH.md) เพื่อดูขอบเขตที่เตรียมไว้และสิ่งที่ยังขาด.
+GPU เปิดที่ http://127.0.0.1:8770/ ตัวเปิดทั้งสองเลือก Python ใน .venv ก่อน บัญชีที่ตั้งใน .env ใช้ได้ทั้งสองโหมด หาก GPU ไม่มีบัญชีที่ตั้งไว้ ตัวเปิดเดิมยังรองรับบัญชีสุ่มเฉพาะเครื่องใน runtime/gpu_login.json ให้ใช้ขั้นตอนตั้งบัญชีก่อนเพื่อไม่สับสน
 
-สำหรับวิธีดูขั้นตอนใช้งานหน้าเว็บและตรวจอาการผิดปกติ อ่าน [คู่มือทดลองเว็บ](DEMO_GUIDE_TH.md). ถ้ารายการ Deploy ใน GitHub/Vercel เป็นสีแดง ให้เปิด Build Logs ของ deployment ที่ล้มเหลวโดยตรง; การทดสอบ source ในเครื่องไม่สามารถระบุ error log ของ Vercel แทนได้.
+![หน้าเข้าสู่ระบบ](assets/web-login.png)
+
+ผลที่ควรเห็นคือหน้าเข้าสู่ระบบ ใช้บัญชีเฉพาะเครื่องที่เพิ่งกำหนด การเปิดหน้าเว็บได้ยังไม่ยืนยันว่าโหลดโมเดลสำเร็จ
+
+## 7 ตรวจการติดตั้งและทำนายจริง
+
+```powershell
+$env:BONEAGE_DEVICE="cpu"
+.\.venv\Scripts\python.exe scripts/check_local_install.py
+```
+
+หากตรวจ GPU ให้เปลี่ยน cpu เป็น cuda ผลที่ควรเห็นคือไฟล์โมเดลที่เลือกและ detector มีอยู่ และ CUDA available=True เมื่อใช้ GPU หากขึ้น MISSING ให้ตรวจชื่อ/พาธ checkpoint ส่วน SHA-256 matched จะปรากฏเมื่อกำหนด expected hash ไว้ การตรวจนี้ยังไม่โหลดโมเดลหรือทำนายภาพ
+
+เข้าสู่ระบบ เปิดภาพ RSNA สาธิต ตรวจ 9 ROI และยืนยันกรอบ จากนั้นกดทำนาย ตรวจว่ามีอายุเป็นเดือน โมเดลที่เลือก เวลาใช้ และ XAI ของภาพเดียวกัน จด model ID / checkpoint hash / device / จำนวน ROI ไว้ประกอบการตรวจรับ ไม่ใช้เพียง /api/health เป็นหลักฐานการทำนายจริง
+
+## 8 ใช้งานเว็บเบื้องต้น
+
+![ตรวจ ROI และ crop](assets/web-roi-workstation.png)
+
+เลือกภาพ → ตรวจ YOLO → เทียบกรอบบนภาพกับ crop ทั้ง 9 จุด หากกรอบคลาดเคลื่อนให้เลือก ROI แล้ววาด ย้าย หรือปรับขนาด จากนั้นยืนยันกรอบก่อนทำนาย
+
+![เครื่องมือปรับภาพ](assets/web-image-controls.png)
+
+Brightness, Contrast, Gamma, Window/Level, Sharpness และ Local contrast ปรับภาพ เมื่อเลือกใช้ภาพที่ปรับแล้ว ค่าพิกเซลส่งเข้าโมเดลและอาจเปลี่ยนผลได้ ส่วน Zoom, Pan, หมุนมุมมอง และแว่นขยายใช้ดูภาพ ไม่เปลี่ยนพิกเซล input โดยอัตโนมัติ หลังปรับภาพสามารถตรวจจับซ้ำและตรวจกรอบใหม่
+
+![ผลทำนาย](assets/web-prediction.png)
+
+ผล AI เป็นอายุกระดูก เก็บแยกจากอายุปฏิทินและอายุที่ผู้เชี่ยวชาญประเมิน เลือกโมเดลและวิธี XAI ก่อนกดทำนายจากกรอบที่ยืนยัน
+
+![ตัวอย่าง XAI](assets/web-xai.png)
+
+สีแดงเป็นการตอบสนองสัมพัทธ์ตามวิธีและ normalization ไม่ใช่ความมั่นใจหรือจำนวนเดือนที่กระดูกจุดนั้นเพิ่มให้ผล EigenCAM เป็น feature visualization ไม่ใช่ attribution ที่เจาะจงอายุ
+
+![แบบฟอร์ม feedback](assets/web-feedback.png)
+
+กรอกความเห็นผู้เชี่ยวชาญและเหตุผล ระบบแยกจากผลโมเดลเดิม การส่ง feedback ไม่ฝึกโมเดลทันที ต้องตรวจข้อมูล จัด dataset version ฝึก offline ประเมิน และอนุมัติรุ่นก่อนใช้งาน
+
+## 9 ปิดและเปิดครั้งถัดไป
+
+หากเปิด API ในหน้าต่างคำสั่งโดยตรง ให้กด Ctrl+C ในหน้าต่างนั้น วิธีเปิดแบบเห็น log:
+
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn app:app --host 127.0.0.1 --port 8766
+```
+
+สำหรับตัวเปิดแบบ background ใช้คำสั่งต่อไปนี้หลังบันทึกงานและไม่มีคำขอทำนายค้างอยู่:
+
+```powershell
+powershell -NoProfile -File scripts/stop_local.ps1
+```
+
+คำสั่งนี้ตรวจว่า process เป็น BoneAge จากโฟลเดอร์นี้ก่อนหยุด ไม่หยุด Python โปรแกรมอื่น เปิดครั้งต่อไปใช้ start_cpu.cmd หรือ start_gpu.cmd ได้เลย ไม่ต้อง npm ci ใหม่ถ้า dependency ไม่เปลี่ยน
+
+## 10 ปัญหาที่พบบ่อย
+
+- เข้าเว็บไม่ได้: ตรวจ port CPU 8766 / GPU 8770 และ log runtime/gpu_stderr.log หากใช้ GPU
+- เข้าระบบไม่ได้: รัน setup_local_account.py ใหม่ แล้ว restart API ค่า .env มีผลเมื่อเริ่ม process
+- ไม่มีโมเดลหรือทำนายไม่ได้: ตรวจ checkpoint จริง รุ่นที่เลือก registry และ dependencies ไม่แก้ด้วยการใส่ค่าทำนายตัวอย่าง
+- CUDA=False: ใช้ CPU ได้ หรือติดตั้ง PyTorch CUDA ให้ตรง driver
+- หน้าจอไม่อัปเดต: npm run build แล้ว refresh Ctrl+F5
+- Supabase: การติดตั้งนี้ใช้ local authentication และ SQLite ยังไม่เปิดการเชื่อม Supabase ตามที่ผู้พัฒนาพักงานไว้
+
+## รายการส่งอาจารย์
+
+Source Code + คู่มือฉบับนี้ + Manuscript + checkpoint ที่ได้รับอนุญาตและ hash + ภาพทดสอบที่มีสิทธิ์ใช้ ส่งชื่อผู้ใช้/รหัสผ่านแยกส่วนตัว หรือให้อาจารย์ตั้งเอง ห้ามใส่รหัสจริงลง README, GitHub หรือ PDF คู่มือที่เผยแพร่
+
+ตัวอย่างการจัดหน้า README ศึกษาจาก https://github.com/topics/medical-website และ https://github.com/mhmiyazi/Medical-Website โดยนำแนวคิดภาพตัวอย่าง/ลิงก์สาธิตมาใช้ ไม่ได้ใช้โค้ดเว็บไซต์เหล่านั้นแทนระบบวิจัยนี้ รายละเอียดติดตั้ง PyTorch อ้างอิง https://pytorch.org/get-started/locally/
