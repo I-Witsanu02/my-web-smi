@@ -1,0 +1,18 @@
+{
+  "source_pdf_sha256": "0ddaaaf12d0e7275aaf17fc9565b8ad2ca90a04e10aa3c4af46565a0a84cad8c",
+  "source_pages": 14,
+  "manuscript": "Manuscript_EN_XAI_Web_Revised.docx",
+  "inline_figures": 6,
+  "tables": 2,
+  "reference_count": 25,
+  "verified_metrics": {
+    "n": 260,
+    "MAE_months": 6.6192931945507345,
+    "RMSE_months": 8.794930207894215
+  },
+  "ethics": "pending",
+  "raw_maps": "retained locally in ignored runtime/xai_raw; SHA256 recorded in XAI figure provenance",
+  "review_state": "author confirmation required for ethics and data lineage",
+  "rendered_pages": 12,
+  "render_review": "Word PDF export; all pages visually inspected; compact tables and image captions kept together"
+}

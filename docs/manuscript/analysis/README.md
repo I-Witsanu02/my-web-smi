@@ -17,3 +17,7 @@ python docs/manuscript/analysis/build_reviewed_manuscript.py
 ```
 
 This needs python-docx, pandas, the reference-audit JSON and the author-supplied loupe image at docs/assets/web-loupe.png. PDF conversion requires Word or a compatible document renderer. A successful build does not resolve the pending ethics declaration, patient-level data-lineage audit, or author approval.
+
+
+## Revised XAI manuscript
+`build_xai_web_manuscript.py` builds the revised document from the verified metrics and audited references. `build_workflow_figure.py` draws a single-model workflow. `render_checkpoint_matched_xai.py` requires the locally retained demonstration evidence `runtime/docs_prediction.json`, its image and matching checkpoint; these restricted runtime inputs are not bundled in Git. Raw map hashes and rendering settings are retained in `figures_xai/XAI_figure_provenance.json`. The figure generation is inference only and does not train the model. The full PDF-to-revision section comparison is `Full_section_comparison.csv`.

@@ -1,0 +1,398 @@
+﻿Section,Original PDF extracted text,Revised manuscript text,Scope
+Title,"Web-Based Explainable Multi-ROI Bone Age Assessment with 
+Structured Expert Review","Explainable Bone Age Assessment through Regional Visualization and Expert Review in a Web Application
+Witsanu Intasuwan, Kanokwatt Shiangjen
+University of Phayao, Phayao, Thailand",Title and authors
+Abstract,"Bone age assessment characterizes skeletal maturation from pediatric hand and wrist radiographs. 
+Although deep learning estimates bone age in months, numerical agreement with a reference 
+standard does not establish that anatomically appropriate evidence supports a prediction. We 
+developed an anatomically organized, web -based review workflow integrating nine regions of 
+interest (ROIs), bone -age regression, multiple post -hoc explanation views, and structured review 
+functions. A selected FocalNet -Tiny configuration yielded a mean absolute error of 6.619 months 
+(95% bootstrap confidence interval, 5.893 –7.331; root mean squared error, 8.795) on 260 
+retrospectively evaluated cases aged approximately 1–18 years. Project-generated Grad-CAM, Grad-
+CAM++, ScoreCAM, EigenCAM, and LayerCAM -HR images illustrate different spatial responses, 
+but were generated with an earlier FocalNet configuration and do not establish explanation 
+faithfulness for the selected model. The web workspace presents the source radiograph, anatomic al 
+ROIs, prediction, XAI overlays, and review controls together. Results demonstrate a technical 
+prediction-to-review workflow rather than clinical benefit. Further evaluation of attribution 
+faithfulness, ROI localization, expert use, and independent model generalization is required. 
+Keywords: bone age assessment; explainable artificial intelligence; multi -region learning; model 
+attribution; web application; structured expert review.","Bone age assessment describes skeletal maturation from hand and wrist radiographs. A small prediction error does not establish whether anatomically relevant evidence supports an estimate. We developed a web application integrating nine anatomical regions of interest, FocalNet regression, post hoc explainable artificial intelligence, and structured expert review. We analysed archived predictions from a fixed FocalNet checkpoint for 260 RSNA cases, using reference bone age rather than chronological age as the regression target. Mean absolute error was 6.619 months (patient bootstrap 95% confidence interval, 5.937–7.351), root mean squared error was 8.795 months, and mean signed error was +0.755 months. Absolute error was within 6 months in 55.0% of cases and within 12 months in 86.5%. The archived evaluation was previously inspected, and its records flag possible overlap with data used to initialize the model; these results are therefore descriptive rather than evidence of independent generalization. The application supports image adjustment, ROI correction, prediction review, explanation inspection, and versioned feedback. New Grad-CAM and Eigen-CAM illustrations were generated from the same checkpoint, with image, ROI geometry, and normalization recorded. These illustrations establish traceability of the displayed maps, not explanation faithfulness. The contribution is an inspectable prediction and review workflow; clinical effectiveness and feedback driven model improvement remain to be evaluated.
+Keywords: bone age assessment; explainable artificial intelligence; FocalNet; regional image analysis; web application; expert review",Full section text; see Revision_notes_XAI_Web_TH.md for reasons and unresolved items
+1. Introduction,"Bone age reflects the maturation of the skeleton rather than chronological time since birth. Hand and 
+wrist radiographs reveal age -dependent patterns of ossification, epiphyseal morphology, carpal 
+development and progressive physeal fusion. Clinicians use these patterns to support assessment of 
+pediatric growth and maturation. Unlike chronological age, an assessed bone age is a reference -
+based estimate that may differ from a child’s calendar age [1–3]. 
+Conventional assessment commonly employs the Greulich –Pyle (GP) atlas or Tanner –Whitehouse 
+(TW) scoring methods. GP compares an examination with sex -specific reference images, whereas 
+TW examines the maturity stages of selected bones with a structured scoring system. The Greulich –
+Pyle tradition and the later atlas companion by Gaskin and colleagues document changes across the 
+ 
+phalanges, metacarpals, carpal bones, radius and ulna [1,2]. These anatomical descriptions motivate 
+regional inspection, although neither atlas specifies the nine computational ROIs used in this study. 
+Deep-learning approaches automate bone -age regression from hand radiographs. The RSNA 
+Pediatric Bone Age Machine Learning Challenge established a widely used evaluation context based 
+on the difference between algorithm output and the reference bone age, typically expressed in 
+months [4]. More region -oriented systems, including workflow -inspired regional networks, have 
+subsequently emphasized anatomical structure in model design [5]. Such advances make image -
+based assessment more systematic, but a low mean a bsolute error (MAE) cannot identify which 
+image features contributed to a prediction. 
+A core problem is that prediction correctness and explanation correctness are different properties. 
+Post-hoc methods can display areas associated with internal representations or the predicted output; 
+however, these maps are method -dependent and can respond to nuisance structures or image 
+acquisition artifacts. Prior saliency research shows that a visually compelling map need not be 
+sensitive to learned parameters or faithful to the model’s behavior [11 –14]. Consequently, a colored 
+overlay should be treated  as evidence for further inspection, not an account of what the model 
+“thinks” or proof of causal image importance. 
+Clinical explainability also depends on how information is presented and reviewed. Human -centered 
+research argues that explanations should be embedded in tasks, controls, sources and opportunities 
+to challenge or correct system outputs [15 –18]. A web application can connect the source 
+radiograph, regional detections, numerical prediction and attribution views in one traceable 
+workspace. Nevertheless, a visible interface does not by itself prove that clinicians work faster, 
+make fewer errors or trust the system appropriately; these are separate empirical questions. 
+This study therefore investigates a web -based, anatomically structured bone -age assessment 
+workflow in which regional prediction and post -hoc visualization are explicitly separated from 
+expert evaluation. We document the system design, report a selected FocalNet -Tiny performance 
+summary, describe multiple XAI views using existing project images, and explain the structured 
+review process. The central contribution is the inspectable relationship between image evidence, 
+model output and human review —not a clai m that visualizations expose the complete internal 
+reasoning of artificial intelligence.","Bone age describes skeletal maturation and can differ from chronological age. Hand and wrist radiographs show changes in ossification, epiphyseal morphology, carpal development, and physeal fusion. Conventional assessment includes the Greulich–Pyle atlas and Tanner–Whitehouse scoring approaches, which provide related but distinct ways of interpreting maturity [1, 2]. The atlas by Gaskin and colleagues illustrates development across phalanges, metacarpals, carpal bones, and the distal radius and ulna [3]. This distribution of anatomical information motivates regional inspection, although the atlases do not prescribe the nine computational regions used in this system.
+Deep learning enables automated bone age estimation from radiographs. The RSNA Pediatric Bone Age Machine Learning Challenge established a widely used evaluation setting based on agreement with a reference bone age [4]. Region based systems have attempted to reflect anatomical inspection by combining information from local ossification areas [5]. Our system uses FocalNet features [6] within a regional regression workflow. We do not claim that this design reproduces a clinician’s reasoning or introduces a new backbone architecture.
+Prediction error and explanation quality address different questions. Grad-CAM, Grad-CAM++, Score-CAM, Eigen-CAM, and LayerCAM produce spatial visualizations through different operations [7, 8, 9, 10, 11]. Their maps can differ even for the same image. Visual plausibility alone is insufficient to establish dependence on learned parameters or relevance to a prediction, as shown by saliency sanity checks and medical imaging studies [12, 13, 14, 15]. Explanation evidence must therefore be evaluated separately from numerical agreement.
+A web application can make regional inputs and model output available for review in the same workspace. Human centered XAI and human–AI interaction research emphasize explanations that fit the intended task and allow users to inspect uncertainty and contest output [16, 17, 18, 19]. We developed a workflow that links ROI inspection, a single FocalNet estimate, post hoc visualization, and structured feedback. The study describes its implementation and retrospective numerical performance; it does not test clinical benefit or autonomous online learning.",Full section text; see Revision_notes_XAI_Web_TH.md for reasons and unresolved items
+2. Materials and Methods,"2.1 Study design and data provenance 
+This retrospective methods study uses pediatric hand and wrist radiographs associated with the 
+RSNA bone-age research dataset. The primary numerical analysis concerns 260 archived test cases 
+with reference bone ages across approximately 1 –18 years. A separate project preparation record 
+describes 3,600 augmented training image rows and a 260 -case development validation group; 
+however, a later evaluation workbook lists a different training inventory of 4,821 patient identifiers. 
+Because these records refer to  non-identical data versions, a training count of 3,600 cannot be 
+assigned to the evaluated FocalNet -Tiny configuration without its version -specific manifest. The 
+evaluation cohort has also been inspected previously and should not be called an untouched external 
+test set. 
+The reference variable is skeletal bone age in months, not necessarily chronological age. The 
+archived export provides patient -linked predictions, reference values, and 95% patient -bootstrap 
+confidence intervals. The present manuscript treats numeric evaluation as descriptive because the 
+test cohort has been used in historical analysis. A source -manifest and checkpoint-provenance audit 
+is required before prospective model selection or external generalization claims [19,20]. 
+2.2 Anatomical ROI localization and regression 
+The computational workflow begins with a hand radiograph and a detector that proposes nine 
+anatomical ROIs: carpal region, third distal phalanx (DP3), first metacarpal (MC1), third middle 
+phalanx (MP3), fifth middle phalanx (MP5), first proximal phalanx (PP1), third proximal phalanx 
+(PP3; denoted PP3MC in some archived panels), and distal radius and ulna. Regional image crops 
+supply anatomical units for the regression network. The detector family and inconsistent archived 
+PP3 labeling should be reconciled w ith the final training and serving configuration before journal 
+submission. 
+Features are extracted from the anatomical crops and integrated to yield a continuous age estimate in 
+months. Recorded system designs include a backbone feature extractor and learned cross -region 
+fusion or gating. A gate describes learned aggregation weighting, whereas a within -region activation 
+map describes a separate post -hoc visual response. Gate coefficients are not calibrated probabilities 
+of anatomical importance. Where activation is scaled by a regional gate for display, the composite 
+should be named an ROI-gated CAM rather than an unmodified raw CAM. 
+ 
+ 
+Figure 1. Original project workflow illustrating radiograph input, anatomical ROI detection and cropping, alternative feature 
+extractors, regional fusion, continuous regression, visual attribution, and human review. Some labels are illustrative and require 
+synchronization with final software metadata. 
+ 
+Figure 2. Project-supplied hand radiograph with annotated anatomical ROIs. These bounding boxes define inspectable image regions; 
+their appearance alone does not establish detector sensitivity or intersection-over-union performance. 
+
+ 
+2.3 Model evaluation and statistical measures 
+A selected FocalNet -Tiny regression configuration was summarized using mean absolute error 
+(MAE), root mean squared error (RMSE), median absolute error, signed bias and proportions of 
+cases within prespecified month -error thresholds. Signed error was calculated as predicted minus 
+reference bone age; thus negative values mean underestimation and positive values mean 
+overestimation. Patient-level bootstrap intervals quantify sampling variation of cohort -level metrics 
+rather than predictive uncertainty for any individual child [19,20]. 
+Other investigated backbone families included ConvNeXtV2 -Tiny, EfficientNetV2 -S and Swin -
+Tiny. They provide research context for backbone exploration, but the present report avoids a series 
+of model -by-model diagnostic plots because the main scientific question concerns explanation 
+review and the web workflow. The selected FocalNet -Tiny result is reported as one configuration 
+only, without implying that numerical MAE establishes attribution validity. 
+2.4 XAI visualization and interpretation 
+Five post -hoc visualization techniques were included: Grad -CAM, Grad -CAM++, ScoreCAM, 
+EigenCAM, and the project’s high -resolution LayerCAM -HR adaptation [6 –10]. Grad -CAM uses 
+gradients to weight spatial feature activations; Grad -CAM++ modifies gradient weighting; 
+ScoreCAM estimates feature -map relevance from output responses to masked inputs; EigenCAM 
+visualizes dominant components of activations; and LayerCAM combines spatial information from 
+hierarchical layers. These constructions are not interchangeable . In particular, EigenCAM is not 
+target-conditioned in the same manner as gradient-based CAM. 
+The heatmaps represent method -dependent spatial responses, not a complete reconstruction of the 
+model’s decision process. A hotspot near a growth plate may be anatomically plausible, but visual 
+correspondence alone does not demonstrate that the pixels were decisive for the month -level 
+estimate. Likewise, a broad response over the carpus can reflect spatial smoothing, layer selection or 
+image normalization rather than clinically validated relevance. Maps must be interpreted together 
+with the original radiograph and the precise target and processing settings [11–14]. 
+2.5 Framework for explanation assessment 
+Explanation evaluation requires separate dimensions. Anatomical plausibility asks whether a 
+reviewer judges highlighted structures relevant to skeletal maturation. Faithfulness assesses whether 
+controlled changes to highlighted image areas alter the model output more than appropriate controls. 
+ 
+Robustness examines prediction and attribution changes under clinically tolerable shifts in image 
+quality, geometry, or acquisition appearance. Parameter-randomization checks further probe whether 
+the map actually depends on learned model parameters [11 –14]. A visually attractive overlay should 
+not substitute for these experiments. 
+For a reproducible quantitative audit, raw ROI -level attribution tensors, image -to-ROI transforms, 
+perturbation masks, normalization conventions, and the model checkpoint used to generate each 
+explanation should be archived. An expert assessment should use prespecified criteria, blinded 
+review where feasible, and explicit disagreement handling. These constitute the proposed evaluation 
+protocol; the newly supplied 260 -case spreadsheet does not contain new model -matched raw 
+attribution tensors or blinded expe rt ratings, so this study does not rank the five XAI methods by 
+faithfulness. 
+2.6 Web application and structured review 
+The Skeleton Bone Age web interface was designed as a shared workspace for the source 
+radiograph, region boxes, bone -age estimate, alternative XAI overlays, model selection and review 
+status. Separating the radiographic evidence, numerical output and post -hoc maps lets a user 
+question an apparently accurate prediction rather than merely accept the displayed month value. The 
+interface shown in the project screenshot supports the presence of these visible controls; usability 
+and backend behaviors must be tested separately [15–18]. 
+The intended review sequence is image inspection, ROI verification, prediction inspection, 
+explanation comparison, reviewer decision and recording of reasons. A traceable record should 
+contain a pseudonymous case identifier, image version, detector and regressor versions, XAI method 
+and settings, original and corrected ROI coordinates where applicable, reviewer action, reason 
+category and timestamp. Until functional tests document successful storage and retrieval, these fields 
+should be described as a specified feedback schema rather than as a fully validated audit trail. 
+Expert comments are not permitted to change the served model automatically. A controlled future 
+update would require feedback quality checking, adjudication when experts disagree, dataset 
+versioning, training isolated from the assessment cohort, preregistered criteria for regression and 
+subgroup harms, and a rollback mechanism. This process is a governance design, not evidence that 
+the present interface has already improved clinical accuracy [21,22].","2.1 Study design data and reference standard
+This retrospective methodological study used archived predictions associated with RSNA hand and wrist radiographs. The numerical analysis included one successful prediction per patient for 260 cases under the original stored ROI protocol. The target was the reference bone age supplied in the archived evaluation file, not age calculated from dates of birth and examination. Chronological age, when displayed in the interface, was a separate contextual variable. No Thai clinical cases were included in this manuscript.
+The analysis was restricted to one fixed FocalNet checkpoint. The checkpoint was selected retrospectively for this report after inspection of the archived results, rather than through a prospectively prespecified selection procedure. The model had undergone prior offline refinement before the archived evaluation; no parameters were fitted and no images were selected according to prediction error in the present analysis. The exact checkpoint hash, input file hash, row selection rules, and analysis seed are provided in the supplementary provenance record.
+Data partition provenance remains a limitation. The source PDF described differing preparation inventories of 3,600 augmented training image rows and 4,821 training patient identifiers; these counts have not been reconciled and are not treated as interchangeable. The evaluation records also state that the set had been inspected in earlier analyses and flag 15 patients as overlapping training or tuning records associated with model initialization. The patient memberships have not been independently reconciled. Until this is resolved, this analysis cannot be described as an independent or untouched test. Patient level separation and reporting of data partitions follow the transparency principles in CLAIM and TRIPOD+AI [20, 21].
+2.2 Anatomical ROI localization and regression
+The regional inputs comprised the carpal region, distal phalanx of the third digit, first metacarpal, middle phalanges of the third and fifth digits, proximal phalanges of the first and third digits, distal radius, and distal ulna. The computational pipeline uses a YOLO detector to propose boxes, followed by review of the full radiograph and each crop. Prediction is gated until all nine required regions are present and confirmed. The quantitative results analysed here used stored ROI inputs; they do not measure the complete detector to prediction pipeline or detector localization accuracy.
+The served regression architecture extracts FocalNet features from the ROI images, projects them into a common representation, models regional interactions, aggregates regional features, and incorporates sex information before regression. The archived protocol specifies aspect preserving padding to a 224 × 224 input and the original intensity convention. The analysis uses the recorded predictions from that protocol. GUI enhancement settings used for a separate demonstration must not be assumed to match the archived quantitative inputs.
+
+Figure 1. Implemented prediction and review workflow. ROI proposals require review before prediction. Feedback is recorded separately; curation, offline training, independent evaluation, and release approval form a proposed future update process, whose benefit was not evaluated here.
+2.3 Model evaluation and statistical measures
+Error was defined as predicted minus reference bone age in months. We calculated mean absolute error (MAE), root mean squared error (RMSE), median absolute error, and mean signed error (bias). MAE was the primary descriptive outcome. A percentile 95% confidence interval for MAE was estimated from 20,000 patient level bootstrap resamples with replacement using a fixed seed of 20261105. This interval replaces the undocumented interval in the source PDF and is linked to executable analysis code; it does not represent an individual prediction interval.
+We also calculated the percentages of cases within absolute errors of 3, 6, 9, and 12 months. These are tolerance based agreement summaries, not general classification accuracy. Scatter plots compare predicted and reference bone ages. Bland–Altman plots show signed differences against pairwise means, with descriptive limits of agreement calculated as bias ± 1.96 times the sample standard deviation of errors [22]. We did not prespecify clinical acceptability limits and do not interpret these lines as evidence of clinical interchangeability.
+Errors were summarized by sex and by reference bone age strata of less than 6 years, 6 to less than 12 years, and 12 to less than 19 years. These strata were derived from the reference bone age, not chronological age. Subgroup counts accompany each estimate. The subgroup analysis is exploratory and does not establish age specific superiority. Precision, recall, F1 score, and a confusion matrix were not primary outcomes because the model predicts a continuous age rather than a clinical class.
+2.4 XAI visualization and interpretation
+The project provides Grad-CAM, Grad-CAM++, Score-CAM, Eigen-CAM, and LayerCAM views [7, 8, 9, 10, 11]. For the present revision, Grad-CAM and Eigen-CAM illustrations were generated using the same checkpoint as the numerical analysis and one RSNA demonstration image. The image was used to demonstrate regional inspection rather than selected by its prediction error. No reference age was assigned to this demonstration and it was not added to the 260-case numerical cohort. Grad-CAM used the gradient of the scalar predicted age and the final spatial feature map (7 × 7). An additional LayerCAM illustration used an earlier spatial feature map (14 × 14). No quantitative ranking of explanation methods is reported.
+Eigen-CAM summarizes principal components of feature activations and is not inherently targeted to the scalar age estimate [10]. Regional gate weights describe the aggregation mechanism and are not confidence scores. Each ROI map was independently normalized to the range 0–1, restored by removing aspect padding, and resized to its source box by bilinear interpolation. Turbo colors were overlaid with opacity equal to 0.65 times the normalized response. Where boxes overlapped, the map with the larger opacity was displayed; pixels outside all boxes were unchanged. Red denotes a high relative response within that ROI, not confidence, a cross-region importance ranking, or a contribution measured in months. Raw maps, input and checkpoint hashes, box coordinates, and rendering settings were retained in the supplementary provenance record. No parameter randomization or matched perturbation experiment was performed.
+2.5 Framework for explanation assessment
+Anatomical plausibility, faithfulness, and stability were treated as separate evaluation requirements. Anatomical plausibility concerns whether highlighted regions correspond to relevant structures, whereas faithfulness requires evidence that the explanation changes appropriately when the model or its influential inputs change. Stability concerns changes under controlled variations in the image or explanation procedure [12, 13, 14, 15]. These requirements define future experiments; no completed reader study or perturbation result is inferred from the displayed images.
+2.6 Web application and structured review
+The interface presents the radiograph, ROI boxes, crop previews, model estimate, explanation controls, and feedback form. Users can adjust brightness, contrast, gamma, window and level, sharpness, and local contrast. When adjusted image inference is selected, the resulting pixels can affect detection and prediction. Zoom, pan, display rotation, loupe magnification, and XAI opacity affect viewing. Editing ROI geometry changes the crops and requires renewed review. The loupe provides a magnified local view for inspecting joint detail without changing the model input.
+Feedback records separate the unmodified model result from expert assessment and comments about ROIs or XAI. A future update cycle requires provenance and permission checks, data curation, a versioned dataset, offline training, evaluation, and human approval before release. Submitting feedback does not update the served model automatically. No performance improvement from feedback is claimed. The design is informed by human centered review principles and governance guidance [16, 17, 18, 19, 23, 24]. Ethics approval or exemption remains pending author confirmation.",Full section text; see Revision_notes_XAI_Web_TH.md for reasons and unresolved items
+3. Results,"3.1 Selected bone-age regression performance 
+On the 260-case recorded test cohort, the selected FocalNet-Tiny configuration achieved MAE 6.619 
+months (95% patient-bootstrap CI 5.893–7.331), RMSE 8.795 months, median absolute error 5.398 
+months and signed bias +0.755 months. The proportions within ±6 and ±12 months were 55.0% and 
+86.5%, respectively. These results describe numeric agreement with the RSNA reference labels; they 
+do not measure whether an explanation is anatomically meaningful or faithful. As the cohort was 
+historically inspected, the figures should not be interpreted as unbiased evidence for choosing a final 
+clinical model. 
+Table 1. Selected FocalNet-Tiny performance on the 260-case retrospective evaluation cohort. The 95% interval for MAE was 
+calculated using patient-level bootstrap resampling. 
+Measure Result 
+Evaluation cohort 260 cases 
+Mean absolute error 6.619 months 
+MAE 95% bootstrap CI 5.893–7.331 months 
+Root mean squared error 8.795 months 
+Median absolute error 5.398 months 
+Signed bias +0.755 months 
+Within ±6 months 55.0% 
+Within ±12 months 86.5% 
+ 
+The selected prediction –reference scatterplot shows many observations near the line of identity, 
+while the Bland –Altman panel reveals both positive and negative differences across the age range. 
+The error histogram centers near zero but contains individual deviations extending beyond one year. 
+Taken together, these patterns show that modest average error can coexist with larger errors for 
+particular patients. The dashed agreement limits indicate the observed distribution of differences and 
+should not be interpreted as predefined clinical safety thresholds. 
+ 
+ 
+Figure 3. Evaluation of the selected FocalNet-Tiny configuration (260 cases): predicted versus reference bone age, Bland–Altman 
+differences, and the signed-error distribution. This is the only model-specific diagnostic composite shown in the main text. 
+3.2 Qualitative XAI evidence 
+The project -supplied multi -method montage displays one hand radiograph alongside Grad -CAM, 
+Grad-CAM++, ScoreCAM, EigenCAM and LayerCAM -HR overlays. For the illustrated image, an 
+earlier FocalNet -Tiny configuration yielded a reference age of 162 months and a displayed 
+prediction near 157.2 months. Importantly, that attribution example is not a model -matched 
+explanation of the selected 6.619 -month evaluation configuration. The montage demonstrates 
+differing visual patterns on a shared case, not measured superiority of one XAI method. 
+
+ 
+ 
+Figure 4. Representative five-method XAI comparison on the same project case. The source image and overlays are preserved from 
+the original project exports; heatmap brightness is method- and display-dependent. These images originate from an earlier FocalNet-
+Tiny checkpoint and are not quantitative faithfulness measurements. 
+ROI-level panels show that localized color patterns can differ substantially even when the 
+anatomical crop and case are unchanged. Broad smooth responses, compact growth -plate hotspots 
+and fine high -resolution patterns should not be compared using color intensity alone because map 
+generation and normalization differ. Region -gate values, where shown, describe fusion coefficients; 
+they do not by themselves measure causal contribution. A future matched -model occlusion study is 
+needed to test whether the highlighted locations are behaviorally relevant. 
+
+ 
+ 
+Figure 5. Nine-ROI qualitative attribution comparison from original project exports. Individual region responses differ between 
+methods; ROI fusion weights must not be read as calibrated anatomical importance. 
+3.3 Web-based review evidence 
+The submitted screenshot displays the Skeleton Bone Age workspace, including a source -image 
+viewport, colored regional overlays, model and XAI selectors, status indicators and navigation for 
+feedback or history. The combined presentation supports inspection of prediction context and 
+visually differentiated explanations without switching between disconnected image files. However, 
+the screenshot documents visible interface design only. It does not establish completed clinical 
+reader testing, role-based security, server persistence or accurate recomputation after every ROI edit. 
+
+ 
+ 
+Figure 6. Original Skeleton Bone Age web-application screenshot showing image review, anatomical overlays, model/XAI selection 
+and review-related navigation. Software functions not observable in a static screenshot require separate functional testing.","3.1 FocalNet bone age regression performance
+The analysis included 260 patient records. FocalNet had an MAE of 6.619 months (95% bootstrap CI, 5.937–7.351) and an RMSE of 8.795 months. Mean signed error was +0.755 months, indicating a small average overestimate across this dataset. Median absolute error was 5.398 months. These aggregate values do not imply that individual errors were small or that the evaluation was independent of earlier model development.
+Table 1. Descriptive FocalNet performance on the archived evaluation cohort. All age errors are in months.
+Descriptive limits of agreement were -16.45 to 17.96 months. The difference between a small mean bias and these wider limits illustrates why bias alone does not characterize individual agreement (Figure 2). The cumulative error curve summarizes the range of absolute errors without converting the regression task into arbitrarily defined classes (Figure 3).
+
+Figure 2. FocalNet predictions against reference bone age and descriptive Bland–Altman agreement. The diagonal denotes equality. Horizontal lines denote mean signed error and bias ± 1.96 sample standard deviations; no clinical acceptability threshold is implied. Each point represents one patient.
+
+Figure 3. Cumulative absolute error and descriptive error by reference bone age stratum. The cumulative curve includes all 260 cases. Counts above the bars identify subgroup support; age is reference bone age, not chronological age.
+Table 2. Descriptive subgroup errors. Age strata use reference bone age.
+3.2 Qualitative XAI evidence
+The checkpoint matched illustrations show spatially different responses for Grad-CAM and Eigen-CAM on the same image and reviewed ROI geometry (Figure 4). Regional views make it possible to examine responses near epiphyses, joint spaces, and crop boundaries (Figure 5). Responses are not restricted to a manually defined bone mask, and some extend toward the edge of a crop. These observations describe the displayed maps without establishing causal relevance to the predicted age. The manuscript reports no XAI accuracy, faithfulness score, or preferred CAM method.
+
+Figure 4. Original radiograph and checkpoint matched Grad-CAM and Eigen-CAM views of one RSNA demonstration. The same image, reviewed boxes, and FocalNet checkpoint were used in both methods. Colors are normalized independently within each ROI. Red denotes high relative response and must not be interpreted as confidence or an age contribution. The demonstration is separate from the numerical cohort.
+
+Figure 5. Grad-CAM views of the nine regional inputs from the same demonstration. The third proximal phalanx input is labelled PP3MC in the application. Independent within-ROI normalization preserves spatial patterns but prevents direct comparison of color intensity across regions. Boundary responses remain visible rather than being removed for presentation.
+3.3 Web based review evidence
+The interface supports inspection of the full radiograph and individual crops, a loupe view, image adjustments, model output, and structured feedback. Figure 6 illustrates the workspace and its explanation controls. The screenshot documents the presence and visual arrangement of controls. Task completion time, reviewer agreement, diagnostic decisions, and usability scores were not measured, so no improvement in clinical work or review efficiency can be attributed to the application.
+
+Figure 6. English language review workspace captured from the locally running application. Image controls and model settings are presented alongside the radiograph. Interface values are demonstration context, not additional clinical observations. The screenshot documents functionality and does not establish usability or clinical benefit.",Full section text; see Revision_notes_XAI_Web_TH.md for reasons and unresolved items
+4. Discussion,"The central methodological message is that numeric prediction, spatial attribution and user 
+interpretation must be evaluated independently. A bone -age estimate can be close to the reference 
+while the saliency image remains ambiguous, noisy or dependent on visualization settings. 
+Comparing different CAM families exposes this ambiguity but does not resolve it through a majority 
+vote or visual preference [11 –14]. A scientifically defensible claim of explanation fidelity requires 
+behavior-based tests applied to the same fixed model and case set. 
+Anatomical regions provide clinically understandable units of inspection; they do not reproduce GP 
+or TW scoring and do not automatically ensure adequate evidence. The carpus, phalanges, 
+metacarpal, radius and ulna have different maturation characteristics across childhood [1,2], so 
+localization errors or an attribution concentrated on an unexpected substructure may merit expert 
+review. Nevertheless, anatomical plausibility remains a clinical judgment to be established with 
+explicit ratings, not an assertion derived from colorful overlays. 
+The main role of the web application is to make model evidence inspectable in context. A reviewer 
+should be able to compare the original radiograph with ROI boxes, predicted age, alternative 
+explanation methods and recorded decisions. Structured review could reveal incorrect localization, 
+unstable overlays or disagreement with the reference interpretation; whether it actually reduces 
+review time or improves decisions remains untested. Future interface evaluation should measure task 
+
+ 
+completion, review time, detection of seeded errors and feedback -record completeness using a 
+defined protocol [15–18]. 
+The numerical summary should also be interpreted with restraint. The reported MAE is an aggregate 
+measure, and the diagnostic plot includes individual cases with substantially larger discrepancies. 
+Moreover, the archival evaluation set had already been examined, and documentation of model 
+initialization raises potential inherited exposure in part of the cohort. These limitations do not make 
+the exported results unusable as descriptive evidence, but they preclude strong claims of 
+independently confirmed clin ical performance or of improvement due specifically to expert 
+feedback [19,20].","The numerical findings describe the selected FocalNet checkpoint on 260 archived records. The MAE of 6.619 months summarizes average absolute disagreement, while the RMSE of 8.795 months places greater weight on large errors. Positive average bias was modest, but the spread of signed differences was substantially wider. These results support reporting the distribution of errors alongside an average, rather than representing the system through one favourable example or one scalar metric.
+The contribution of the web application lies in making inputs and outputs inspectable within the same case review process. Regional crops allow reviewers to identify missing or misplaced inputs, and a recorded expert opinion preserves disagreement without overwriting the original model estimate. These functions create a basis for studying error detection and correction. Their practical benefit remains a hypothesis because a controlled user study has not been performed [16, 17, 18, 19].
+A regional design does not eliminate shortcut learning. Markers, borders, background texture, or preprocessing artefacts may remain within a crop. Likewise, agreement with reference bone age does not establish that an explanation is faithful. A useful subsequent study would match checkpoint, image, ROI geometry, normalization, and attribution method before applying parameter randomization and perturbation tests [12, 13, 14, 15]. The matched illustrations improve the auditability of the explanation workflow, but a single case cannot establish the reliability of these maps across patients.
+Evaluation on other populations also requires care. Bone age is a reference based maturity estimate, whereas chronological age measures elapsed time. Errors against these two quantities answer different questions. A study of a Brazilian population with a supporting application illustrates the importance of reporting dataset context [25]; its performance is not directly comparable with the present cohort. The present manuscript includes no evidence of generalization to Thai clinical data.",Full section text; see Revision_notes_XAI_Web_TH.md for reasons and unresolved items
+5. Study Limitations and Future Evaluation,"The current evidence is limited by historical reuse of the evaluation cohort, unresolved cross -version 
+training counts, lack of detector performance estimates on raw images, and absence of raw, model -
+matched attribution tensors for the selected FocalNet -Tiny configuration. Static screenshots do not 
+establish completed feedback persistence, end -to-end correction behavior or clinical usability. No 
+prospective external dataset or blinded specialist study was provided. These limitations prevent 
+claims of clinical readiness and quantitative superiority among XAI methods. 
+A confirmatory evaluation should first establish a version -specific patient -disjoint data manifest, 
+secure a genuinely uninspected test cohort, verify nine -ROI detection quality, and regenerate every 
+XAI map from the exact selected model with archived settings. Faithfulness experiments should 
+compare deletion or occlusion with control masks while controlling for out -of-distribution 
+perturbation artifacts. Expert review tasks should then quantify anatomical ratings and the ability to 
+identify incorrect evidence, and feedback-derived model changes should be evaluated offline before 
+deployment [14–22].","The main limitation is evaluation provenance. The archived set was inspected previously and its records flag overlap associated with model initialization. These conditions prevent an unqualified claim of independent testing. A patient level lineage audit is required before excluding the flagged individuals or assigning a final test designation. The conflicting historical training inventories must also be reconciled. Numerical confidence intervals reflect sampling variation conditional on the analysed records; they do not correct leakage or selection bias.
+The results concern stored regional inputs and do not establish full hand end to end performance. Detector localization, incomplete ROI handling, and robustness to image enhancement require separate evaluation. Subgroup estimates are descriptive and may be unstable where counts are small. No blinded expert ratings, clinical effectiveness study, or measured usability experiment was available. Ethics approval or exemption remains pending confirmation.
+Future work should first resolve patient level data lineage and evaluate a frozen checkpoint on a genuinely untouched cohort. An explanation study should extend the present checkpoint matched raw maps to multiple cases with prespecified plausibility, faithfulness, and stability criteria. A separate user study can measure ROI correction success, missed errors, task time, and reviewer workload. Feedback driven model updates require an independent evaluation protocol and release approval; no such improvement is inferred from the current interface.",Full section text; see Revision_notes_XAI_Web_TH.md for reasons and unresolved items
+6. Conclusion,"This study documents a web -based, nine -region approach to bone -age assessment that combines 
+regression output with multiple inspectable attribution views and structured review controls. The 
+selected FocalNet -Tiny configuration recorded an MAE of 6.619 months on 260 historically 
+assessed cases. These numeric results establish descriptive prediction performance only; archived 
+XAI examples and the visible web interface are evidence of visualization and interaction design, not 
+proven explanation faithfulness or  clinical utility. The main contribution is an explicit, auditable 
+ 
+framework for separating accurate prediction from credible model evidence and enabling future 
+expert-centered evaluation.","We developed a web based workflow combining nine regional inputs, FocalNet bone age regression, explanation inspection, and structured expert review. The selected checkpoint had an MAE of 6.619 months and RMSE of 8.795 months on 260 archived cases. These descriptive results are limited by evaluation provenance and do not establish independent generalization. The system provides an inspectable setting for future studies of model evidence and expert review; explanation faithfulness, clinical benefit, and feedback driven improvement remain unmeasured.
+Declarations
+Author contributions: Witsanu Intasuwan developed the application and analysis workflow. Kanokwatt Shiangjen supervised the project. Final author approval and detailed contribution assignments require confirmation. Funding: No funding was reported. Conflicts of interest: The authors declare no conflicts of interest. Ethics approval or exemption: Pending author confirmation.
+Data and code availability: The code for the application is available at https://github.com/I-Witsanu02/Bone_age subject to repository access. The analysis code, aggregate results, and checkpoint provenance accompany this manuscript. Source radiographs and trained weights are not included in this document; their use and redistribution are subject to the applicable permissions. No new clinical dataset was collected for this revision.",Full section text; see Revision_notes_XAI_Web_TH.md for reasons and unresolved items
+References,"[1] Greulich WW, Pyle SI. Radiographic Atlas of Skeletal Development of the Hand and Wrist. 2nd ed. Stanford University Press; 
+1959. 
+[2] Gaskin CM, Kahn SL, Bertozzi JC, Bunch PM. Skeletal Development of the Hand and Wrist: A Radiographic Atlas and Digital 
+Bone Age Companion. Oxford University Press; 2011. doi:10.1093/med/9780199782055.001.0001. 
+[3] Lee BD, Lee MS. Automated Bone Age Assessment Using Artificial Intelligence: The Future of Bone Age Assessment. Korean J 
+Radiol. 2021;22(5):792–800. doi:10.3348/kjr.2020.0941. 
+[4] Halabi SS, et al. The RSNA Pediatric Bone Age Machine Learning Challenge. Radiology. 2019;290(2):498–503. 
+doi:10.1148/radiol.2018180736. 
+[5] Koitka S, et al. Mimicking the radiologists’ workflow: Estimating pediatric hand bone age with stacked deep neural networks. 
+Med Image Anal. 2020;64:101743. doi:10.1016/j.media.2020.101743. 
+[6] Selvaraju RR, et al. Grad-CAM: Visual Explanations from Deep Networks via Gradient-Based Localization. ICCV; 2017. 
+doi:10.1109/ICCV.2017.74. 
+[7] Chattopadhay A, Sarkar A, Howlader P, Balasubramanian VN. Grad-CAM++: Generalized Gradient-Based Visual Explanations 
+for Deep Convolutional Networks. WACV; 2018. doi:10.1109/WACV.2018.00097. 
+[8] Wang H, et al. Score-CAM: Score-Weighted Visual Explanations for Convolutional Neural Networks. CVPR Workshops; 2020. 
+https://arxiv.org/abs/1910.01279 
+[9] Muhammad MB, Yeasin M. Eigen-CAM: Class Activation Map Using Principal Components. IJCNN; 2020. 
+https://arxiv.org/abs/2008.00299 
+[10] Jiang PT, Zhang CB, Hou Q, Cheng MM, Wei Y. LayerCAM: Exploring Hierarchical Class Activation Maps for Localization. 
+IEEE Trans Image Process. 2021;30:5875–5888. doi:10.1109/TIP.2021.3089943. 
+[11] Adebayo J, et al. Sanity Checks for Saliency Maps. Adv Neural Inf Process Syst. 2018;31. 
+https://proceedings.neurips.cc/paper/2018/hash/294a8ed24b1ad22ec2e7efea049b8737-Abstract.html 
+[12] Arun N, et al. Assessing the Trustworthiness of Saliency Maps for Localizing Abnormalities in Medical Imaging. Radiol Artif 
+Intell. 2021;3(6):e200267. doi:10.1148/ryai.2021200267. 
+[13] Ghassemi M, Oakden-Rayner L, Beam AL. The false hope of current approaches to explainable artificial intelligence in health 
+care. Lancet Digit Health. 2021;3(11):e745–e750. doi:10.1016/S2589-7500(21)00208-9. 
+[14] Jin W, Li X, Fatehi M, Hamarneh G. Guidelines and evaluation of clinical explainable AI in medical image analysis. Med Image 
+Anal. 2023;84:102684. doi:10.1016/j.media.2022.102684. 
+[15] Chen H, Gomez C, Huang CM, Unberath M. Explainable medical imaging AI needs human-centered design: guidelines and 
+evidence from a systematic review. npj Digit Med. 2022;5:156. doi:10.1038/s41746-022-00699-2. 
+[16] Tonekaboni S, Joshi S, McCradden MD, Goldenberg A. What Clinicians Want: Contextualizing Explainable Machine Learning 
+for Clinical End Use. PMLR. 2019;106:359–380. https://proceedings.mlr.press/v106/tonekaboni19a.html 
+ 
+[17] Amershi S, et al. Guidelines for Human-AI Interaction. CHI; 2019. doi:10.1145/3290605.3300233. 
+[18] Cai CJ, Winter S, Steiner D, Wilcox L, Terry M. “Hello AI”: Uncovering the Onboarding Needs of Medical Practitioners for 
+Human-AI Collaborative Decision-Making. Proc ACM Hum-Comput Interact. 2019;3(CSCW). doi:10.1145/3359206. 
+[19] Tejani AS, et al. Checklist for Artificial Intelligence in Medical Imaging (CLAIM): 2024 Update. Radiol Artif Intell. 
+2024;6(4):e240300. doi:10.1148/ryai.240300. 
+[20] Collins GS, et al. TRIPOD+AI statement: updated guidance for reporting clinical prediction models that use regression or 
+machine learning methods. BMJ. 2024;385:e078378. doi:10.1136/bmj-2023-078378. 
+[21] World Health Organization. Ethics and Governance of Artificial Intelligence for Health. WHO; 2021. 
+https://www.who.int/publications/i/item/9789240029200 
+[22] US FDA, Health Canada, MHRA. Good Machine Learning Practice for Medical Device Development: Guiding Principles. 2021. 
+https://www.fda.gov/medical-devices/software-medical-device-samd/good-machine-learning-practice-medical-device-
+development-guiding-principles 
+[23] Teodoro RDA, et al. Automatic bone age assessment: a deep learning case study on the Brazilian population with a supporting 
+mobile application prototype. Sci Rep. 2026;16:4488. doi:10.1038/s41598-025-34651-7. 
+[24] Bland JM, Altman DG. Statistical methods for assessing agreement between two methods of clinical measurement. Lancet. 
+1986;1(8476):307–310.","[1] Greulich WW, Pyle SI. Radiographic Atlas of Skeletal Development of the Hand and Wrist. 2nd ed. Stanford University Press; 1959.
+[2] Lee BD, Lee MS. Automated Bone Age Assessment Using Artificial Intelligence: The Future of Bone Age Assessment. Korean Journal of Radiology. 2021;22(5):792. doi:10.3348/kjr.2020.0941.
+[3] Gaskin CM, Kahn SL, Bertozzi JC, Bunch PM. Skeletal Development of the Hand and Wrist: A Radiographic Atlas and Digital Bone Age Companion. Oxford University Press; 2011. doi:10.1093/med/9780199782055.001.0001.
+[4] Halabi SS, Prevedello LM, Kalpathy-Cramer J, Mamonov AB, Bilbily A, Cicero M, et al.. The RSNA Pediatric Bone Age Machine Learning Challenge. Radiology. 2019;290(2):498-503. doi:10.1148/radiol.2018180736.
+[5] Koitka S, Kim MS, Qu M, Fischer A, Friedrich CM, Nensa F. Mimicking the radiologists’ workflow: Estimating pediatric hand bone age with stacked deep neural networks. Medical Image Analysis. 2020;64:101743. doi:10.1016/j.media.2020.101743.
+[6] Yang J, Li C, Dai X, Gao J. Focal Modulation Networks. Advances in Neural Information Processing Systems. 2022;35. doi:10.52202/068431-0304.
+[7] Selvaraju RR, Cogswell M, Das A, Vedantam R, Parikh D, Batra D. Grad-CAM: Visual Explanations from Deep Networks via Gradient-Based Localization. 2017 IEEE International Conference on Computer Vision (ICCV). 2017:618-626. doi:10.1109/ICCV.2017.74.
+[8] Chattopadhay A, Sarkar A, Howlader P, Balasubramanian VN. Grad-CAM++: Generalized Gradient-Based Visual Explanations for Deep Convolutional Networks. 2018 IEEE Winter Conference on Applications of Computer Vision (WACV). 2018:839-847. doi:10.1109/WACV.2018.00097.
+[9] Wang H, et al. Score-CAM: Score-Weighted Visual Explanations for Convolutional Neural Networks. CVPR Workshops; 2020. https://arxiv.org/abs/1910.01279
+[10] Muhammad MB, Yeasin M. Eigen-CAM: Class Activation Map Using Principal Components. IJCNN; 2020. https://arxiv.org/abs/2008.00299
+[11] Jiang PT, Zhang CB, Hou Q, Cheng MM, Wei Y. LayerCAM: Exploring Hierarchical Class Activation Maps for Localization. IEEE Transactions on Image Processing. 2021;30:5875-5888. doi:10.1109/TIP.2021.3089943.
+[12] Adebayo J, et al. Sanity Checks for Saliency Maps. Adv Neural Inf Process Syst. 2018;31. https://proceedings.neurips.cc/paper/2018/hash/294a8ed24b1ad22ec2e7efea049b8737-Abstract.html
+[13] Arun N, Gaw N, Singh P, Chang K, Aggarwal M, Chen B, et al.. Assessing the Trustworthiness of Saliency Maps for Localizing Abnormalities in Medical Imaging. Radiology: Artificial Intelligence. 2021;3(6):e200267. doi:10.1148/ryai.2021200267.
+[14] Ghassemi M, Oakden-Rayner L, Beam AL. The false hope of current approaches to explainable artificial intelligence in health care. The Lancet Digital Health. 2021;3(11):e745-e750. doi:10.1016/S2589-7500(21)00208-9.
+[15] Jin W, Li X, Fatehi M, Hamarneh G. Guidelines and evaluation of clinical explainable AI in medical image analysis. Medical Image Analysis. 2023;84:102684. doi:10.1016/j.media.2022.102684.
+[16] Chen H, Gomez C, Huang CM, Unberath M. Explainable medical imaging AI needs human-centered design: guidelines and evidence from a systematic review. npj Digital Medicine. 2022;5(1):156. doi:10.1038/s41746-022-00699-2.
+[17] Tonekaboni S, Joshi S, McCradden MD, Goldenberg A. What Clinicians Want: Contextualizing Explainable Machine Learning for Clinical End Use. PMLR. 2019;106:359–380. https://proceedings.mlr.press/v106/tonekaboni19a.html
+[18] Amershi S, Weld D, Vorvoreanu M, Fourney A, Nushi B, Collisson P, et al.. Guidelines for Human-AI Interaction. Proceedings of the 2019 CHI Conference on Human Factors in Computing Systems. 2019:1-13. doi:10.1145/3290605.3300233.
+[19] Cai CJ, Winter S, Steiner D, Wilcox L, Terry M. ""Hello AI"": Uncovering the Onboarding Needs of Medical Practitioners for Human-AI Collaborative Decision-Making. Proceedings of the ACM on Human-Computer Interaction. 2019;3(CSCW):1-24. doi:10.1145/3359206.
+[20] Tejani AS, Klontzas ME, Gatti AA, Mongan JT, Moy L, Park SH, et al.. Checklist for Artificial Intelligence in Medical Imaging (CLAIM): 2024 Update. Radiology: Artificial Intelligence. 2024;6(4):e240300. doi:10.1148/ryai.240300.
+[21] Collins GS, Moons KGM, Dhiman P, Riley RD, Beam AL, Van Calster B, et al.. TRIPOD+AI statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods. BMJ. 2024;385:e078378. doi:10.1136/bmj-2023-078378.
+[22] Bland JM, Altman DG. Statistical methods for assessing agreement between two methods of clinical measurement. Lancet. 1986;327(8476):307–310. doi:10.1016/S0140-6736(86)90837-8.
+[23] World Health Organization. Ethics and Governance of Artificial Intelligence for Health. WHO; 2021. https://www.who.int/publications/i/item/9789240029200
+[24] US FDA, Health Canada, MHRA. Good Machine Learning Practice for Medical Device Development: Guiding Principles. October 2021. https://www.canada.ca/en/health-canada/services/drugs-health-products/medical-devices/good-machine-learning-practice-medical-device-development.html
+[25] Teodoro RdA, de Lima FV, Popa M, Sampaio GS, Kochi C, Longui CA, et al.. Automatic bone age assessment: a deep learning case study on the Brazilian population with a supporting mobile application prototype. Scientific Reports. 2026;16(1):4488. doi:10.1038/s41598-025-34651-7.",Full section text; see Revision_notes_XAI_Web_TH.md for reasons and unresolved items

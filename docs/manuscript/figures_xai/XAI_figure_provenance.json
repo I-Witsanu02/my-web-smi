@@ -1,0 +1,150 @@
+{
+  "checkpoint_sha256": "ed681f0355b5d1a3660cfa0a7e7d472884ef869d8b48c94348eff1257bd049e8",
+  "model_display_name": "FocalNet",
+  "model_id": "full18_focalnet_feedback_candidate_20261007",
+  "input_image_sha256": "738cf66cacf15a5beb555a4a5ed424327eaf8294e85daae991f220963f5ba6fc",
+  "input_filename": "full_hand.png",
+  "illustrative_case": "RSNA demonstration",
+  "device": "cpu",
+  "sex_input": 0,
+  "source_intensity_adjustment": "none",
+  "image_pixel_integrity": "original decoded RGB pixels; no contrast/sharpness/color retouch",
+  "crop_boxes": {
+    "Carpal": [
+      495,
+      1310,
+      1073,
+      1717
+    ],
+    "DP3": [
+      722,
+      178,
+      837,
+      327
+    ],
+    "MC1": [
+      903,
+      1407,
+      1075,
+      1587
+    ],
+    "MP3": [
+      730,
+      406,
+      873,
+      594
+    ],
+    "MP5": [
+      301,
+      709,
+      426,
+      850
+    ],
+    "PP1": [
+      1095,
+      1124,
+      1280,
+      1345
+    ],
+    "PP3": [
+      734,
+      765,
+      902,
+      1042
+    ],
+    "Radius": [
+      620,
+      1635,
+      917,
+      1902
+    ],
+    "Ulna": [
+      456,
+      1630,
+      639,
+      1848
+    ]
+  },
+  "normalization": "min-max within each restored ROI; values not comparable across ROIs/methods",
+  "display": {
+    "colormap": "turbo",
+    "alpha": "0.65 * normalized response",
+    "non_ROI_pixels": "unchanged",
+    "overlap_rule": "largest alpha wins"
+  },
+  "faithfulness_evaluated": false,
+  "methods": {
+    "GradCAM": {
+      "version": "roi9-cam-regression-v1",
+      "method": "GradCAM",
+      "target": "pred_months (increasing age)",
+      "target_layer": "backbone.layers.3.blocks.1.norm1",
+      "activation_shape": [
+        9,
+        768,
+        7,
+        7
+      ],
+      "elapsed_seconds": 0.565,
+      "scorecam_topk": null,
+      "scorecam_full_channels": false,
+      "gradcampp_variant": null,
+      "baseline": "zero = ImageNet mean in normalized input",
+      "gate_weighted_display": false,
+      "faithfulness_validated": false,
+      "flat_rois": [],
+      "predicted_months": 182.4844512939453,
+      "raw_maps_sha256": "f9f1633b2ba8c16acb1c420a77e5571008186d831055d623e49edcebf6e27262",
+      "raw_maps_local_file": "runtime\\xai_raw\\GradCAM_raw.npz",
+      "restoration_interpolation": "bilinear after inverse aspect padding"
+    },
+    "EigenCAM": {
+      "version": "roi9-cam-regression-v1",
+      "method": "EigenCAM",
+      "target": "feature principal component (not age-targeted)",
+      "target_layer": "backbone.layers.3.blocks.1.norm1",
+      "activation_shape": [
+        9,
+        768,
+        7,
+        7
+      ],
+      "elapsed_seconds": 0.468,
+      "scorecam_topk": null,
+      "scorecam_full_channels": false,
+      "gradcampp_variant": null,
+      "baseline": "zero = ImageNet mean in normalized input",
+      "gate_weighted_display": false,
+      "faithfulness_validated": false,
+      "flat_rois": [],
+      "predicted_months": 182.4844512939453,
+      "raw_maps_sha256": "fec09beba53ea35a5c1b145247663e9e8522545e31d991abacae8c766daae192",
+      "raw_maps_local_file": "runtime\\xai_raw\\EigenCAM_raw.npz",
+      "restoration_interpolation": "bilinear after inverse aspect padding"
+    },
+    "LayerCAM-HR": {
+      "version": "roi9-cam-regression-v1",
+      "method": "LayerCAM-HR",
+      "target": "pred_months (increasing age)",
+      "target_layer": "backbone.layers.2.blocks.5.norm1",
+      "activation_shape": [
+        9,
+        384,
+        14,
+        14
+      ],
+      "elapsed_seconds": 0.506,
+      "scorecam_topk": null,
+      "scorecam_full_channels": false,
+      "gradcampp_variant": null,
+      "baseline": "zero = ImageNet mean in normalized input",
+      "gate_weighted_display": false,
+      "faithfulness_validated": false,
+      "flat_rois": [],
+      "predicted_months": 182.4844512939453,
+      "raw_maps_sha256": "3c31d221600b732267feef3b7d4b7618a6081072f513ac3e7903ece5f65c97be",
+      "raw_maps_local_file": "runtime\\xai_raw\\LayerCAM-HR_raw.npz",
+      "restoration_interpolation": "bilinear after inverse aspect padding"
+    }
+  }
+}

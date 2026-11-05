@@ -58,7 +58,7 @@ The patient bootstrap 95% CI for MAE is **5.937–7.351 months** (20,000 resampl
 ![FocalNet agreement](docs/manuscript/figures/FocalNet_agreement.png)
 ![FocalNet error distribution](docs/manuscript/figures/FocalNet_error_distribution.png)
 
-[Reproducible analysis](docs/manuscript/analysis/run_focalnet_analysis.py) · [Checkpoint provenance](docs/manuscript/FocalNet_provenance.json) · [Reviewed manuscript](docs/manuscript/Manuscript_EN_FocalNet_Reviewed.docx)
+[Reproducible analysis](docs/manuscript/analysis/run_focalnet_analysis.py) · [Checkpoint provenance](docs/manuscript/FocalNet_provenance.json) · [Reviewed manuscript](docs/manuscript/Manuscript_EN_XAI_Web_Revised.docx)
 
 The loupe screenshot was supplied by the author to show the complete lens over a joint. Interface illustrations document controls and do not constitute checkpoint-matched XAI or clinical usability evidence.
 
@@ -125,3 +125,10 @@ Use only images that you are authorized to process. Keep real-world clinical ima
 ## Licence and acknowledgements
 
 Review the repository licence and the licences/data-use terms of each model, dependency, and dataset before redistribution or deployment. This repository's code licence does not grant rights to external datasets or pretrained weights.
+
+
+### Checkpoint matched regional explanations
+
+![FocalNet Grad-CAM and Eigen-CAM](docs/manuscript/figures_xai/Figure_XAI_full.png)
+
+The maps use the same FocalNet checkpoint as the numerical analysis. Color is normalized within each ROI; red is a relative response, not confidence or an age contribution. [Figure provenance](docs/manuscript/figures_xai/XAI_figure_provenance.json) · [Revision notes](docs/manuscript/Revision_notes_XAI_Web_TH.md) · [Section comparison](docs/manuscript/Full_section_comparison.csv).
