@@ -154,10 +154,6 @@ export function App() {
   };
 
   useEffect(() => {
-    if (!getAuthToken()) {
-      setAuthReady(true);
-      return;
-    }
     api.session()
       .then((result) => {
         setUser((previous) => ({ ...previous, name: result.user.name, role: result.user.role }));

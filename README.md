@@ -11,6 +11,52 @@ Research software for reviewing bone-age estimates from hand and wrist radiograp
 - A feedback workflow that records expert review separately. It does **not** update model weights online; any future model update must be an offline, documented release.
 - Optional Supabase schema for authenticated accounts, case metadata, prediction records, feedback, and private RSNA image storage. The application does not yet synchronize its local cases or inference records with Supabase. See `docs/SUPABASE_SETUP_EN.md` for the verified boundary and setup steps.
 
+## Workflow and interface gallery
+
+![Project methodology and architecture](docs/assets/methodology-original.png)
+
+This is the author-supplied architecture illustration. Its detector label is YOLOv12; the local demonstration below used registry entry `yolo_v2_b8_e53_640`. Use the recorded checkpoint hash and registry entry when identifying an experiment.
+
+### Review the nine ROIs and their crops
+
+![ROI review workspace captured from the local application](docs/assets/web-roi-workstation.png)
+
+Select an image, run detection, review the full-image boxes and individual crops, adjust any misplaced box, and confirm all nine ROIs before prediction.
+
+### Inspect the image
+
+![Image controls](docs/assets/web-image-controls.png)
+
+Brightness, contrast, gamma, window/level, sharpness, and local contrast support image inspection. If adjusted-image inference is selected, these pixel changes can affect predictions. Zoom, pan, display rotation, loupe magnification, XAI opacity, and blue tint are display controls. Box edits change the crops used for inference and require review again.
+
+![Loupe on the current image](docs/assets/web-loupe.png)
+
+### Predict and inspect XAI
+
+![Prediction result](docs/assets/web-prediction.png)
+
+![EigenCAM overlay in the workstation](docs/assets/web-xai.png)
+
+The local demonstration used an RSNA sample, detected 9/9 ROIs, returned **183.825 months**, and reported `device=cuda` on an RTX 4050. The request took approximately **6.98 seconds**. This is one demonstration result, not a dataset-level accuracy estimate. Dates in the demonstration case are illustrative; no simulated physician assessment was recorded as ground truth.
+
+### Record feedback
+
+![Expert feedback form](docs/assets/web-feedback.png)
+
+Feedback records preserve model output separately from expert opinion. Curate and approve data, version the dataset, train offline, evaluate the candidate, and approve a new release before changing the served checkpoint. Submitting feedback does not trigger automatic retraining.
+
+### Author-selected examples from earlier research exports
+
+The following ID 2832 images were supplied by the author. They are earlier exports and are distinct from the newly captured local web demonstration. The source images report reference age 144.0 months, prediction 137.8 months, and absolute error 6.2 months. A selected example does not establish overall performance.
+
+| Full evidence | Blue display |
+| --- | --- |
+| ![Full EigenCAM example](docs/assets/example-eigencam-full.png) | ![Blue display example](docs/assets/example-eigencam-blue.png) |
+
+![Nine ROI example with shared display scale](docs/assets/example-eigencam-roi9.png)
+
+EigenCAM summarizes feature structure rather than age-targeted attribution. Gate weights are not clinical confidence. The earlier shared-scale examples and the current API's per-ROI normalized maps must not be compared as equivalent attribution magnitudes.
+
 ## Requirements
 
 - Windows 10/11 or Linux; Python 3.11 recommended; Node.js 20 LTS; Git.
