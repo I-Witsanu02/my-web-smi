@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { PatientCase, Language } from '../types';
-import { calculateAgeMonths, formatAge } from '../utils/age';
+import { calculateAgeMonths, formatAge, formatCalendarAge } from '../utils/age';
+import { DayMonthYearInput } from '../components/DayMonthYearInput';
 
 interface ScreeningViewProps {
   currentCase: PatientCase;
@@ -22,6 +23,8 @@ export const ScreeningView: React.FC<ScreeningViewProps> = ({
   const [measurementDate, setMeasurementDate] = useState(currentCase.measurementDate);
   const [sex, setSex] = useState<'Male' | 'Female' | 'Other'>(currentCase.sex);
   const [growthStandard, setGrowthStandard] = useState(currentCase.growthStandard);
+  const [dobValid, setDobValid] = useState(true);
+  const [dateValid, setDateValid] = useState(true);
   const calculatedAgeMonths = calculateAgeMonths(dob, measurementDate);
 
   useEffect(() => {
@@ -52,6 +55,7 @@ export const ScreeningView: React.FC<ScreeningViewProps> = ({
   ];
 
   const handleSave = () => {
+    if (!dobValid || !dateValid || formatCalendarAge(dob, measurementDate) === '—') return;
     onUpdateCase({
       dob,
       measurementDate,
@@ -63,6 +67,7 @@ export const ScreeningView: React.FC<ScreeningViewProps> = ({
   };
 
   const handleNext = () => {
+    if (!dobValid || !dateValid || formatCalendarAge(dob, measurementDate) === '—') return;
     handleSave();
     onUpdateCase({ currentStep: 'Intake', lastStep: 'Screening' });
     onContinue();
@@ -118,26 +123,30 @@ export const ScreeningView: React.FC<ScreeningViewProps> = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block font-label-caps text-xs text-[#434752] mb-1 font-bold">
-                  {language === 'th' ? 'วันเดือนปีเกิด' : 'Date of Birth'}
+                  {language === 'th' ? 'วันเดือนปีเกิด (dd/mm/yyyy ค.ศ.)' : 'Date of Birth (dd/mm/yyyy)'}
                 </label>
-                <input
-                  type="date"
+                <DayMonthYearInput
+                  required
                   value={dob}
-                  onChange={(e) => updateDates(e.target.value, measurementDate)}
+                  onChange={(iso) => updateDates(iso, measurementDate)}
+                  onValidityChange={setDobValid}
                   className="w-full bg-white border border-[#c3c6d4] rounded-md px-3 py-2 text-sm text-[#1a1b21] font-data-mono focus:border-[#002e6f] focus:ring-1 focus:ring-[#002e6f] outline-none"
                 />
+                <p className="text-xs mt-1 text-[#434752]">{/^\d{4}-\d{2}-\d{2}$/.test(dob) && formatCalendarAge(dob, dob) !== '—' ? new Date(`${dob}T12:00:00`).toLocaleDateString(language === 'th' ? 'th-TH-u-ca-gregory' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : (language === 'th' ? 'พิมพ์ 10032017 → 10/03/2017 (ค.ศ.)' : 'Type 10032017 → 10/03/2017')}</p>
               </div>
 
               <div>
                 <label className="block font-label-caps text-xs text-[#434752] mb-1 font-bold">
-                  {language === 'th' ? 'วันที่ทำการวัด' : 'Measurement Date'}
+                  {language === 'th' ? 'วันที่ตรวจ (dd/mm/yyyy ค.ศ.)' : 'Assessment Date (dd/mm/yyyy)'}
                 </label>
-                <input
-                  type="date"
+                <DayMonthYearInput
+                  required
                   value={measurementDate}
-                  onChange={(e) => updateDates(dob, e.target.value)}
+                  onChange={(iso) => updateDates(dob, iso)}
+                  onValidityChange={setDateValid}
                   className="w-full bg-white border border-[#c3c6d4] rounded-md px-3 py-2 text-sm text-[#1a1b21] font-data-mono focus:border-[#002e6f] focus:ring-1 focus:ring-[#002e6f] outline-none"
                 />
+                <p className="text-xs mt-1 text-[#434752]">{/^\d{4}-\d{2}-\d{2}$/.test(measurementDate) && formatCalendarAge(measurementDate, measurementDate) !== '—' ? new Date(`${measurementDate}T12:00:00`).toLocaleDateString(language === 'th' ? 'th-TH-u-ca-gregory' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : (language === 'th' ? 'พิมพ์ 04022025 → 04/02/2025 (ค.ศ.)' : 'Type 04022025 → 04/02/2025')}</p>
               </div>
             </div>
 
@@ -147,7 +156,7 @@ export const ScreeningView: React.FC<ScreeningViewProps> = ({
                 {language === 'th' ? 'คำนวณอายุจริง (Calculated Age)' : 'Calculated Age'}
               </span>
               <span className="font-data-mono text-[#002e6f] font-bold text-lg">
-                {dob && measurementDate ? formatAge(calculatedAgeMonths, language) : '—'}
+                {dobValid && dateValid ? formatCalendarAge(dob, measurementDate, language) : '—'}
               </span>
             </div>
 

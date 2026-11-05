@@ -3,6 +3,8 @@ import { PatientCase, Language } from '../types';
 import { ModelInfo } from '../api';
 import { publicModelLabel } from '../utils/modelLabels';
 import { AuthenticatedImage } from '../components/AuthenticatedImage';
+import { modelLabel } from '../utils/modelLabel';
+import { formatAgeDetailed, formatCalendarAge, calculateAgeMonths } from '../utils/age';
 
 interface PredictionViewProps {
   currentCase: PatientCase;
@@ -14,7 +16,7 @@ interface PredictionViewProps {
   models: ModelInfo[];
   selectedModelId: string;
   onModelChange: (modelId: string) => void;
-  onRunPrediction: () => void | Promise<void>;
+  onReviewRois: () => void;
   isPredicting: boolean;
   predictionError: string;
   backendConnected: boolean;
@@ -35,7 +37,7 @@ export const PredictionView: React.FC<PredictionViewProps> = ({
   models,
   selectedModelId,
   onModelChange,
-  onRunPrediction,
+  onReviewRois,
   isPredicting,
   predictionError,
   backendConnected,
@@ -45,24 +47,16 @@ export const PredictionView: React.FC<PredictionViewProps> = ({
   reviewSaved,
   feedbackStatus,
 }) => {
-  const [reviewUnit, setReviewUnit] = useState<'months' | 'years'>('months');
-  const reviewDisplayValue = reviewedMonths === '' ? '' : reviewUnit === 'years' ? Number((reviewedMonths / 12).toFixed(2)) : reviewedMonths;
+  const [reviewUnit, setReviewUnit] = useState<'months' | 'yearsMonths'>('yearsMonths');
+  const validReview = reviewedMonths !== '' && Number.isFinite(reviewedMonths) && reviewedMonths >= 0 && reviewedMonths <= 240;
   const ageText = (months: number) => {
-    const years = Math.floor(months / 12);
-    const remaining = Number((months - years * 12).toFixed(1));
-    return language === 'th' ? `${years} ปี ${remaining} เดือน` : `${years}y ${remaining}m`;
+    return formatAgeDetailed(months, language);
   };
-  const comparisonAgeMonths = currentCase.reviewedPredictedAgeMonths
-    ?? (currentCase.isTestCase && currentCase.groundTruthBoneAgeMonths != null
-      ? currentCase.groundTruthBoneAgeMonths
-      : currentCase.chronologicalAgeMonths);
+  const comparisonAgeMonths = currentCase.dob && currentCase.measurementDate
+    ? calculateAgeMonths(currentCase.dob, currentCase.measurementDate) : currentCase.chronologicalAgeMonths;
   const comparisonOffset = Number((currentCase.predictedAgeMonths - comparisonAgeMonths).toFixed(1));
-  const comparisonOffsetType = Math.abs(comparisonOffset) < 3 ? 'Normal' : comparisonOffset > 0 ? 'Advanced' : 'Delayed';
-  const comparisonLabel = currentCase.reviewedPredictedAgeMonths != null
-    ? (language === 'th' ? 'อายุกระดูกที่แพทย์ยืนยัน' : 'Expert-reviewed bone age')
-    : currentCase.isTestCase
-      ? (language === 'th' ? 'อายุกระดูกจริง' : 'Ground truth')
-      : (language === 'th' ? 'อายุจริง' : 'Chronological age');
+  const comparisonLabel = language === 'th' ? 'อายุปฏิทิน' : 'Chronological age';
+  const expertMonths = currentCase.reviewedPredictedAgeMonths;
   return (
     <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-6 pb-28">
       {/* Header */}
@@ -110,15 +104,9 @@ export const PredictionView: React.FC<PredictionViewProps> = ({
               </div>
 
               <span
-                className={`px-3 py-1 rounded-full font-label-caps text-xs font-bold ${
-                  comparisonOffsetType === 'Advanced'
-                    ? 'bg-[#ffdad6] text-[#93000a]'
-                    : comparisonOffsetType === 'Delayed'
-                    ? 'bg-[#ffebc4] text-[#784d00]'
-                    : 'bg-[#9deee5] text-[#0c6f67]'
-                }`}
+                className="px-3 py-1 rounded-full font-label-caps text-xs font-bold bg-[#f3f3fb] text-[#002e6f]"
               >
-                {comparisonOffsetType} ({comparisonOffset > 0 ? '+' : ''}{comparisonOffset} mo)
+                {language==='th'?'ผลต่างจากค่าที่แสดง ไม่ใช่ข้อวินิจฉัย':'Difference from displayed comparator — not a diagnosis'} ({comparisonOffset > 0 ? '+' : ''}{comparisonOffset} mo)
               </span>
             </div>
 
@@ -127,14 +115,10 @@ export const PredictionView: React.FC<PredictionViewProps> = ({
               {/* Chronological Age */}
               <div className="bg-[#f3f3fb] p-4 rounded-xl border border-[#c3c6d4]/50">
                 <span className="font-label-caps text-xs text-[#737784] block font-bold">
-                  {currentCase.reviewedPredictedAgeMonths != null
-                    ? (language === 'th' ? 'อายุกระดูกที่แพทย์ยืนยัน' : 'Expert-reviewed Bone Age')
-                    : currentCase.isTestCase
-                    ? (language === 'th' ? 'อายุกระดูกจริงของภาพทดสอบ' : 'Ground-truth bone age')
-                    : (language === 'th' ? 'อายุจริง (ตามสูติบัตร)' : 'Chronological Age')}
+                  {comparisonLabel}
                 </span>
                 <div className="font-headline-lg text-2xl font-bold text-[#1a1b21] mt-1 font-data-mono">
-                  {ageText(comparisonAgeMonths)}
+                  {currentCase.dob && currentCase.measurementDate ? formatCalendarAge(currentCase.dob, currentCase.measurementDate, language) : ageText(comparisonAgeMonths)}
                 </div>
                 <span className="font-data-mono text-xs text-[#434752]">
                   ({comparisonAgeMonths} {language === 'th' ? 'เดือน' : 'months'})
@@ -153,19 +137,12 @@ export const PredictionView: React.FC<PredictionViewProps> = ({
                   ({currentCase.predictedAgeMonths} {language === 'th' ? 'เดือน' : 'months'})
                 </span>
               </div>
-
-              {/* Uncertainty / Confidence */}
-              <div className="bg-[#9deee5]/20 p-4 rounded-xl border border-[#9deee5]">
-                <span className="font-label-caps text-xs text-[#006a63] block font-bold">
-                  {language === 'th' ? 'MAE ชุด Validation' : 'Validation MAE'}
-                </span>
-                <div className="font-headline-lg text-2xl font-bold text-[#0c6f67] mt-1 font-data-mono">
-                  {currentCase.validationMaeMonths?.toFixed(2) ?? '—'} mo
-                </div>
-                <span className="font-data-mono text-xs text-[#006a63]">
-                  {language === 'th' ? 'ค่าความคลาดเคลื่อนของชุดข้อมูล ไม่ใช่ช่วงความเชื่อมั่นรายบุคคล' : 'Dataset metric, not patient uncertainty'}
-                </span>
-              </div>
+              {expertMonths != null && <div className="bg-[#e6f5f2] p-4 rounded-xl border border-[#006a63]/30">
+                <span className="text-xs font-bold text-[#006a63]">{currentCase.isTestCase ? (language === 'th' ? 'อายุกระดูกที่กรอกเพื่อทดสอบ' : 'Test review bone age') : (language === 'th' ? 'อายุกระดูกที่แพทย์ประเมิน' : 'Expert-assessed bone age')}</span>
+                <div className="text-2xl font-bold mt-1">{ageText(expertMonths)}</div>
+                <span className="text-xs">({expertMonths} {language === 'th' ? 'เดือน' : 'months'})</span>
+                <p className="text-xs mt-2">{language === 'th' ? 'ผลต่าง AI − แพทย์' : 'Difference AI − expert'}: {(currentCase.predictedAgeMonths - expertMonths).toFixed(1)} {language === 'th' ? 'เดือน' : 'months'}</p>
+              </div>}
             </div>
 
             {/* Offset Gauge Comparison */}
@@ -173,7 +150,7 @@ export const PredictionView: React.FC<PredictionViewProps> = ({
               <div className="flex justify-between text-xs font-label-caps">
                 <span className="text-[#737784]">{comparisonLabel}: {comparisonAgeMonths}m</span>
                 <span className="text-[#002e6f] font-bold">
-                  {language === 'th' ? 'ผลต่าง' : 'Difference'}: {comparisonOffset > 0 ? `+${comparisonOffset}` : comparisonOffset} {language === 'th' ? 'เดือน' : 'months'}
+                  {language === 'th' ? 'ผลต่าง AI − อายุปฏิทิน' : 'Difference AI − chronological'}: {comparisonOffset > 0 ? `+${comparisonOffset}` : comparisonOffset} {language === 'th' ? 'เดือน' : 'months'}
                 </span>
                 <span className="text-[#737784]">{language === 'th' ? 'ค่าทำนาย' : 'Predicted'}: {currentCase.predictedAgeMonths}m</span>
               </div>
@@ -184,16 +161,17 @@ export const PredictionView: React.FC<PredictionViewProps> = ({
                 <div
                   className="h-3.5 rounded bg-[#002e6f] transition-all"
                   style={{
-                    marginLeft: '45%',
-                    width: `${Math.min(Math.abs(comparisonOffset) * 5 + 20, 100)}px`,
+                    position: 'absolute',
+                    left: `${50 + Math.min(0, Math.max(-24, comparisonOffset)) / 48 * 100}%`,
+                    width: `${Math.min(Math.abs(comparisonOffset), 24) / 48 * 100}%`,
                   }}
                 ></div>
               </div>
 
               <div className="flex justify-between text-[11px] font-caption text-[#737784]">
-                <span>{language === 'th' ? '-24 เดือน (ช้ากว่า)' : '-24 mo (Delayed)'}</span>
-                <span>{language === 'th' ? '0 เดือน (สอดคล้อง)' : '0 mo (Synchronous)'}</span>
-                <span>{language === 'th' ? '+24 เดือน (เร็วกว่า)' : '+24 mo (Advanced)'}</span>
+                <span>−24 {language === 'th' ? 'เดือน' : 'months'}</span>
+                <span>0</span>
+                <span>+24 {language === 'th' ? 'เดือน' : 'months'}</span>
               </div>
             </div>
           </div>
@@ -275,36 +253,51 @@ export const PredictionView: React.FC<PredictionViewProps> = ({
             </label>
 
             <button
-              onClick={onRunPrediction}
-              disabled={!backendConnected || isPredicting}
+              onClick={onReviewRois}
+              disabled={isPredicting}
               className="w-full py-2.5 bg-[#002e6f] disabled:bg-[#9aa5b8] text-white rounded-lg font-label-caps text-xs font-bold flex items-center justify-center gap-2"
             >
               <span className="material-symbols-outlined text-base">neurology</span>
               {isPredicting
                 ? (language === 'th' ? 'กำลังโหลดโมเดลและคำนวณ...' : 'Loading model and predicting…')
-                : (language === 'th' ? 'ประมวลผลเคสปัจจุบันอีกครั้ง' : 'Re-run current case')}
+                : (language === 'th' ? 'กลับตรวจ ROI เพื่อทำนายใหม่' : 'Review ROI before predicting again')}
             </button>
+            {currentCase.predictionDurationSeconds != null && <p className="text-xs">{language === 'th' ? 'เวลาประมวลผลล่าสุด' : 'Last processing time'}: {currentCase.predictionDurationSeconds.toFixed(2)} {language === 'th' ? 'วินาที' : 'seconds'}</p>}
             {predictionError && <p className="text-xs text-[#93000a] bg-[#ffdad6] rounded-lg p-2.5">{predictionError}</p>}
 
             <div className="pt-3 border-t border-[#c3c6d4]/30 space-y-2">
               <p className="text-xs font-bold text-[#1a1b21]">{language === 'th' ? 'อายุกระดูกที่ผู้เชี่ยวชาญทบทวน' : 'Expert-reviewed bone age'}</p>
               <div className="flex gap-2">
+                {reviewUnit === 'yearsMonths' ? <div className="flex gap-2 min-w-0 flex-1">
+                  <label className="min-w-0 flex-1 text-xs">{language === 'th' ? 'ปี' : 'Years'}
+                    <input aria-label="Review years" type="number" min="0" max="20" step="1"
+                      value={reviewedMonths === '' ? '' : Math.floor(reviewedMonths / 12)}
+                      onChange={(event) => { const years = Number(event.target.value); if (event.target.value === '') onReviewedMonthsChange(''); else if (Number.isInteger(years) && years >= 0 && years <= 20) onReviewedMonthsChange(years * 12 + (reviewedMonths === '' ? 0 : reviewedMonths % 12)); }}
+                      className="w-full border border-[#c3c6d4] rounded-lg px-3 py-2 font-data-mono text-sm" />
+                  </label>
+                  <label className="min-w-0 flex-1 text-xs">{language === 'th' ? 'เดือน (0–11)' : 'Months (0–11)'}
+                    <input aria-label="Review months" type="number" min="0" max="11" step="1"
+                      value={reviewedMonths === '' ? '' : Number((reviewedMonths % 12).toFixed(3))}
+                      onChange={(event) => { const months = Number(event.target.value); if (event.target.value === '') onReviewedMonthsChange(reviewedMonths === '' ? '' : Math.floor(reviewedMonths / 12) * 12); else if (Number.isInteger(months) && months >= 0 && months <= 11) onReviewedMonthsChange((reviewedMonths === '' ? 0 : Math.floor(reviewedMonths / 12)) * 12 + months); }}
+                      className="w-full border border-[#c3c6d4] rounded-lg px-3 py-2 font-data-mono text-sm" />
+                  </label>
+                </div> :
                 <input
                   type="number"
                   min="0"
-                  max={reviewUnit === 'years' ? 20 : 240}
+                  max={240}
                   step="0.1"
-                  value={reviewDisplayValue}
-                  onChange={(event) => onReviewedMonthsChange(event.target.value === '' ? '' : Number(event.target.value) * (reviewUnit === 'years' ? 12 : 1))}
+                  value={reviewedMonths}
+                  onChange={(event) => onReviewedMonthsChange(event.target.value === '' ? '' : Number(event.target.value))}
                   className="min-w-0 flex-1 border border-[#c3c6d4] rounded-lg px-3 py-2 font-data-mono text-sm"
-                />
-                <select value={reviewUnit} onChange={(event) => setReviewUnit(event.target.value as 'months' | 'years')} className="border border-[#c3c6d4] rounded-lg px-2 bg-white text-xs font-bold">
+                />}
+                <select value={reviewUnit} onChange={(event) => setReviewUnit(event.target.value as 'months' | 'yearsMonths')} className="border border-[#c3c6d4] rounded-lg px-2 bg-white text-xs font-bold">
                   <option value="months">{language === 'th' ? 'เดือน' : 'months'}</option>
-                  <option value="years">{language === 'th' ? 'ปี' : 'years'}</option>
+                  <option value="yearsMonths">{language === 'th' ? 'ปี / เดือน' : 'Years / months'}</option>
                 </select>
                 <button
                   onClick={onSaveReview}
-                  disabled={reviewedMonths === '' || currentCase.rawPredictedAgeMonths == null}
+                  disabled={!validReview || currentCase.rawPredictedAgeMonths == null}
                   className="px-3 py-2 rounded-lg bg-[#006a63] disabled:bg-[#aeb7b7] text-white text-xs font-bold"
                 >
                   {language === 'th' ? 'บันทึกผลทบทวน' : 'Save review'}
@@ -327,14 +320,14 @@ export const PredictionView: React.FC<PredictionViewProps> = ({
             <div className="flex items-center gap-2 border-b border-[#c3c6d4]/30 pb-3">
               <span className="material-symbols-outlined text-[#002e6f]">science</span>
               <h3 className="font-headline-sm text-base font-bold text-[#1a1b21]">
-                {language === 'th' ? 'ข้อมูลโมเดลและการทดลอง' : 'Research Provenance'}
+                {language === 'th' ? 'ระบบที่ใช้ประเมิน' : 'Analysis system'}
               </h3>
             </div>
 
             <div className="space-y-3 font-data-mono text-xs">
               <div className="flex justify-between py-1 border-b border-[#c3c6d4]/20">
                 <span className="text-[#737784]">Model ID:</span>
-                <span className="text-[#002e6f] font-bold">{currentCase.modelDisplayName || currentCase.modelId}</span>
+                <span className="text-[#002e6f] font-bold">{modelLabel(currentCase.modelId)}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-[#c3c6d4]/20">
                 <span className="text-[#737784]">Architecture:</span>
@@ -343,10 +336,6 @@ export const PredictionView: React.FC<PredictionViewProps> = ({
               <div className="flex justify-between py-1 border-b border-[#c3c6d4]/20">
                 <span className="text-[#737784]">Preprocessing:</span>
                 <span className="text-[#1a1b21]">{currentCase.preprocessingVersion}</span>
-              </div>
-              <div className="flex justify-between py-1 border-b border-[#c3c6d4]/20">
-                <span className="text-[#737784]">Experiment:</span>
-                <span className="text-[#004e62] font-bold">{currentCase.experimentId}</span>
               </div>
               <div className="flex justify-between py-1 border-b border-[#c3c6d4]/20">
                 <span className="text-[#737784]">Quality Check:</span>

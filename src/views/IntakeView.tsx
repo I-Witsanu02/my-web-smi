@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { PatientCase, Language } from '../types';
 import { calculateAgeMonths, formatAge } from '../utils/age';
+import { DayMonthYearInput } from '../components/DayMonthYearInput';
 
 interface IntakeViewProps {
   currentCase: PatientCase;
@@ -167,10 +168,9 @@ export const IntakeView: React.FC<IntakeViewProps> = ({
                 <label className="block font-label-caps text-xs text-[#737784] mb-1 font-bold">
                   {language === 'th' ? 'วันเดือนปีเกิด' : 'Date of Birth'}
                 </label>
-                <input
-                  type="date"
+                <DayMonthYearInput
                   value={dob}
-                  onChange={(e) => handleDobChange(e.target.value)}
+                  onChange={handleDobChange}
                   className="w-full bg-white border border-[#c3c6d4] rounded-lg px-3 py-2 text-sm text-[#1a1b21] font-data-mono focus:border-[#002e6f] focus:ring-1 focus:ring-[#002e6f] outline-none transition-all"
                 />
               </div>

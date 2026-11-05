@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { PatientCase, Language } from '../types';
 import { AuthenticatedImage } from '../components/AuthenticatedImage';
+import { DEFAULT_VIEW, ViewSettings } from '../components/ResearchViewer';
+import { useAdjustedImage } from '../utils/useAdjustedImage';
 
 interface XAIViewProps {
   currentCase: PatientCase;
@@ -23,7 +25,14 @@ export const XAIView: React.FC<XAIViewProps> = ({
   const [showRoiOverlays, setShowRoiOverlays] = useState(true);
   const [researchNotes, setResearchNotes] = useState('');
   const [isAcknowledged, setIsAcknowledged] = useState(currentCase.xaiAcknowledged);
-  const activeHeatmapUrl = currentCase.xaiHeatmapUrl;
+  // Composite heatmaps contain the original radiograph: only layer RGBA over
+  // the current display image, never overpaint it with the old composite.
+  const activeHeatmapUrl = currentCase.xaiLayerUrl;
+  let viewSettings: ViewSettings = DEFAULT_VIEW;
+  try {
+    viewSettings = { ...DEFAULT_VIEW, ...JSON.parse(localStorage.getItem(`boneage-view:${currentCase.id}:${currentCase.xrayImageUrl}`) || '{}') };
+  } catch { /* Use original display settings if persisted values are invalid. */ }
+  const adjusted = useAdjustedImage(currentCase.xrayImageUrl, viewSettings);
   const hasGeneratedXai = currentCase.xaiEvidenceStatus === 'generated' && Boolean(activeHeatmapUrl);
   const xaiMethod = currentCase.xaiMethod || 'ROI-gate-weighted SmoothGrad Input × Gradient';
 
@@ -62,12 +71,12 @@ export const XAIView: React.FC<XAIViewProps> = ({
           <span className="material-symbols-outlined">warning</span>
           <div>
             <div className="font-headline-sm text-sm font-bold">
-              {language === 'th' ? 'ยังไม่มี XAI heatmap สำหรับเคสนี้' : 'No generated XAI heatmap for this case'}
+              {language === 'th' ? 'ยังไม่มีชั้น XAI แยกสำหรับเคสนี้' : 'No separate XAI layer for this case'}
             </div>
             <div className="font-caption text-xs mt-1">
               {language === 'th'
-                ? 'ผล ROI gate และค่าน้ำหนักยังดูได้ แต่ระบบจะไม่แสดงภาพอ้างอิงของผู้ป่วยรายอื่นแทนผลจริง'
-                : 'ROI gate weights remain available, but the app will not substitute another patient’s reference heatmap.'}
+                ? 'แสดงภาพตามค่าปรับล่าสุด หากมีเฉพาะผล XAI แบบรวมภาพเก่า กรุณากลับไปคำนวณใหม่เพื่อสร้างชั้น XAI แยก'
+                : 'The current display settings are applied. Legacy composite-only results require recalculation to obtain a separate XAI layer.'}
             </div>
           </div>
         </div>
@@ -125,11 +134,14 @@ export const XAIView: React.FC<XAIViewProps> = ({
           {/* Main Stage with Layered Radiograph + Heatmap */}
           <div className="relative max-h-[480px] w-auto flex items-center justify-center">
             <AuthenticatedImage
-              src={currentCase.xrayImageUrl}
-              alt="Base Hand X-Ray"
+              src={adjusted.url || currentCase.xrayImageUrl}
+              alt="ภาพเอกซเรย์ตามค่าปรับการแสดงผลล่าสุด"
               className="max-h-[460px] w-auto object-contain rounded-md"
               referrerPolicy="no-referrer"
             />
+            {hasGeneratedXai && viewSettings.blue && (
+              <div className="absolute inset-0 pointer-events-none" style={{ background: 'rgba(30, 80, 210, 0.22)' }} aria-label="สีพื้นแสดงผล ไม่ใช่ attribution" />
+            )}
             {hasGeneratedXai && (
               <AuthenticatedImage
                 src={activeHeatmapUrl}

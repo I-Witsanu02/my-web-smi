@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AppView, AuditEvent, Language, PatientCase, UserProfile } from './types';
 import { api, clearAuthToken, FeedbackItem, getAuthToken, ModelInfo, storeAuthToken } from './api';
 import { initialCases, currentUser } from './data/mockData';
@@ -24,6 +24,8 @@ import { CasesView } from './views/CasesView';
 import { ScreeningView } from './views/ScreeningView';
 import { IntakeView } from './views/IntakeView';
 import { ImagingView } from './views/ImagingView';
+import { WorkstationView } from './views/WorkstationView';
+import './workstation.css';
 import { PredictionView } from './views/PredictionView';
 import { XAIView } from './views/XAIView';
 import { ReportView } from './views/ReportView';
@@ -33,16 +35,19 @@ import { ReferencesView } from './views/ReferencesView';
 import { LogsView } from './views/LogsView';
 import { HelpSupportView } from './views/HelpSupportView';
 import { calculateAgeMonths, formatAge } from './utils/age';
+import { inferenceImage, inputKey, intensitySettings } from './utils/inferenceImage';
 
 const APP_VIEWS: AppView[] = [
+  'workstation',
   'overview', 'cases', 'screening', 'intake', 'imaging', 'roi', 'prediction', 'xai',
   'report', 'checklist', 'review-queue', 'references', 'logs', 'help', 'support', 'settings',
 ];
-const CASE_CENTRIC_VIEWS: AppView[] = ['screening', 'intake', 'imaging', 'roi', 'prediction', 'xai', 'report', 'checklist'];
-const INITIAL_UI = loadUiState({ language: 'th', selectedCaseId: '', currentView: 'overview' });
+const CASE_CENTRIC_VIEWS: AppView[] = ['workstation', 'screening', 'intake', 'imaging', 'roi', 'prediction', 'xai', 'report', 'checklist'];
+const INITIAL_UI = loadUiState({ language: 'en', selectedCaseId: '', currentView: 'overview' });
 
 function viewFromHash(fallback: AppView): AppView {
   const candidate = window.location.hash.replace(/^#\/?/, '') as AppView;
+  if(candidate==='workstation'||candidate==='roi')return 'imaging';
   return APP_VIEWS.includes(candidate) ? candidate : fallback;
 }
 
@@ -70,7 +75,10 @@ export function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [models, setModels] = useState<ModelInfo[]>([]);
   const [selectedModelId, setSelectedModelId] = useState('full18_focalnet_b8');
+  const [selectedXaiMethod, setSelectedXaiMethod] = useState('GradCAM');
+  const liveXai=useRef(selectedXaiMethod);liveXai.current=selectedXaiMethod;
   const [isPredicting, setIsPredicting] = useState(false);
+  const [activeRequestId,setActiveRequestId]=useState('');
   const [predictionError, setPredictionError] = useState('');
   const [backendConnected, setBackendConnected] = useState(false);
   const [reviewedMonths, setReviewedMonths] = useState<number | ''>('');
@@ -79,13 +87,27 @@ export function App() {
   const [feedbackItems, setFeedbackItems] = useState<FeedbackItem[]>([]);
 
   // Active current case
+  useEffect(() => {
+    const refresh = () => { void api.listFeedback().then(r => setFeedbackItems(r.feedback)).catch(() => undefined); };
+    window.addEventListener('boneage-feedback-updated', refresh);
+    return () => window.removeEventListener('boneage-feedback-updated', refresh);
+  }, []);
   const currentCase = cases.find((c) => c.id === selectedCaseId) || cases[0];
+  const liveCase=useRef(currentCase); liveCase.current=currentCase;
+  const liveModel=useRef(selectedModelId);liveModel.current=selectedModelId;
+  const requestLock=useRef(false);
+  useEffect(()=>{
+    if(!currentCase)return;
+    setSelectedModelId(currentCase.modelId||'full18_focalnet_b8');
+    setSelectedXaiMethod(currentCase.xaiMethod||'GradCAM');
+  },[currentCase?.id,casesHydrated]);
   const pendingReviewCount = useMemo(
     () => cases.filter((item) => item.status === 'Review Required' || item.status === 'Review Req').length,
     [cases]
   );
 
   const navigateTo = useCallback((view: AppView, replace = false) => {
+    if(view==='workstation'||view==='roi')view='imaging';
     if (CASE_CENTRIC_VIEWS.includes(view) && cases.length === 0) view = 'cases';
     const nextHash = `#/${view}`;
     if (window.location.hash !== nextHash) {
@@ -208,7 +230,7 @@ export function App() {
       .then(([, catalog, persisted, feedback]) => {
         setBackendConnected(true);
         setModels(catalog.models);
-        setSelectedModelId(catalog.default_model);
+        setSelectedModelId(liveCase.current?.modelId||catalog.default_model);
         const normalizedCases = persisted.cases.map((item) => {
           if (!item.dob || !item.measurementDate) return item;
           const months = calculateAgeMonths(item.dob, item.measurementDate);
@@ -226,13 +248,24 @@ export function App() {
       });
   }, [isAuthenticated]);
 
-  const runRealPrediction = async (uploadedImage?: File, stayOnImaging = false) => {
+  const runRealPrediction = async (uploadedImage?: File, stayOnImaging = false, detectOnly = false, detectorRetry?:{source:string;settings:unknown}) => {
+    if(requestLock.current||!currentCase)return;
+    if(!detectOnly&&currentCase.rois.some(r=>r.reviewState!=='VERIFIED'||parseFloat(r.bbox.width)<=0||parseFloat(r.bbox.height)<=0)){setPredictionError('ตรวจและยืนยันกรอบครบ 9 จุดก่อนทำนาย');return;}
+    requestLock.current=true;
+    const startedAt = performance.now();
+    setActiveRequestId(crypto.randomUUID());
+    const requestCase=currentCase;
+    const revision=requestCase.roiRevision||0;
+    const pixelKey=inputKey(requestCase.inferenceImageMode,requestCase.inferenceViewSettings);
+    const isCurrent=()=>liveCase.current?.id===requestCase.id&&(liveCase.current?.roiRevision||0)===revision&&liveCase.current?.xrayImageUrl===requestCase.xrayImageUrl&&liveCase.current?.sex===requestCase.sex&&liveCase.current?.chronologicalAgeMonths===requestCase.chronologicalAgeMonths&&liveModel.current===selectedModelId&&liveXai.current===selectedXaiMethod;
     setIsPredicting(true);
     setPredictionError('');
     setReviewSaved(false);
     setFeedbackStatus('');
     try {
       let sourceImage = uploadedImage;
+      const adjustedInput=!detectOnly&&!uploadedImage&&pixelKey!==inputKey('original');
+      if(adjustedInput)sourceImage=await inferenceImage(requestCase.xrayImageUrl,requestCase.inferenceViewSettings);
       if (!sourceImage && currentCase.xrayImageUrl.startsWith('/runtime-assets/')) {
         const blob = await api.fetchAsset(currentCase.xrayImageUrl);
         sourceImage = new File([blob], 'full_hand.png', { type: blob.type || 'image/png' });
@@ -248,7 +281,7 @@ export function App() {
               const top = parseFloat(roi.bbox.top) / 100;
               const width = parseFloat(roi.bbox.width) / 100;
               const height = parseFloat(roi.bbox.height) / 100;
-              return [roi.code, [left, top, left + width, top + height]];
+              return [roi.code==='PP3MC'?'PP3':roi.code, [left, top, left + width, top + height]];
             })) as Record<string, [number, number, number, number]>
           : undefined;
         const fullHand = await api.predictFullHand(
@@ -257,20 +290,24 @@ export function App() {
           selectedModelId,
           currentCase.chronologicalAgeMonths,
           currentCase.id,
-          reviewedBoxes
+          detectOnly?undefined:reviewedBoxes, selectedXaiMethod, detectOnly
         );
+        if(!isCurrent()||inputKey(liveCase.current?.inferenceImageMode,liveCase.current?.inferenceViewSettings)!==pixelKey)return;
         const [imageWidth, imageHeight] = fullHand.image_size;
         const detections = new Map(fullHand.detections.map((item) => [item.roi, item]));
         const updatedRois = currentCase.rois.map((roi) => {
-          const detection = detections.get(roi.code);
-          if (!detection) return { ...roi, status: 'flagged' as const };
+          const detection = detections.get(roi.code)||detections.get(roi.code==='PP3'?'PP3MC':roi.code==='PP3MC'?'PP3':roi.code);
+          if(detectorRetry&&roi.source==='expert_review')return roi;
+          if(!uploadedImage&&roi.source==='expert_review'&&roi.reviewState==='VERIFIED')return {...roi,thumbnailUrl:detection?.crop_data_url||roi.thumbnailUrl};
+          if (!detection) return { ...roi, status: 'pending' as const, reviewState:'DETECTED' as const, confidence:0, thumbnailUrl:'', bbox:{left:'0%',top:'0%',width:'0%',height:'0%'} };
           const [x1, y1, x2, y2] = detection.box;
           return {
             ...roi,
             confidence: detection.confidence,
             source: detection.source,
             thumbnailUrl: detection.crop_data_url,
-            status: detection.confidence >= 0.5 ? 'accepted' as const : 'flagged' as const,
+            status: 'flagged' as const,
+            reviewState: 'DETECTED' as const,
             bbox: {
               left: `${(x1 / imageWidth) * 100}%`,
               top: `${(y1 / imageHeight) * 100}%`,
@@ -280,21 +317,29 @@ export function App() {
           };
         });
         imagingUpdate = {
-          xrayImageUrl: fullHand.full_hand_url,
+          ...(!detectOnly?{predictionInput:{mode:requestCase.inferenceImageMode||'latest',settings:intensitySettings(adjustedInput?requestCase.inferenceViewSettings:{}),sourceUrl:requestCase.xrayImageUrl,inputUrl:fullHand.full_hand_url,key:pixelKey}}:{}),
+          ...(uploadedImage&&!detectorRetry ? {uploadedAt:new Date().toISOString(),completedAt:undefined} : {}),
+          inferenceId: fullHand.inference_id,
+          xaiLayerUrl: fullHand.xai_layer || '',
+          xrayImageUrl: detectorRetry?.source || (uploadedImage?fullHand.full_hand_url:requestCase.xrayImageUrl),
+          ...(detectorRetry?{detectorRetryHistory:[...(requestCase.detectorRetryHistory||[]),{at:new Date().toISOString(),settings:detectorRetry.settings,detected:fullHand.detected_count,inputUrl:fullHand.full_hand_url,sourceUrl:detectorRetry.source,detector:fullHand.detector,rois:updatedRois}]}:{}),
           xaiHeatmapUrl: fullHand.xai_image || '',
+          xaiMetadata: fullHand.xai_metadata,
           xaiEvidenceStatus: fullHand.xai_image ? 'generated' : 'unavailable',
           rois: updatedRois,
+          detectorRois:uploadedImage||!currentCase.detectorRois?updatedRois:currentCase.detectorRois,
           roisAccepted: updatedRois.filter((roi) => roi.status === 'accepted').length,
           roisTotal: updatedRois.length,
           imageQualityCheck: fullHand.qc_status === 'PASS' ? 'Passed' : 'Flagged',
           detectorName: fullHand.detector,
         };
         if (!fullHand.prediction) {
-          handleUpdateCurrentCase(imagingUpdate);
+          handleUpdateCurrentCase({...imagingUpdate,predictionStale:true,roiRevision:revision+1,currentStep:'Imaging'});
+          if(detectOnly){setPredictionError('');navigateTo('imaging');return;}
           const detail = fullHand.message || `ROI gate did not pass (${fullHand.detected_count}/9 detected)`;
           setPredictionError(detail);
           recordAudit('ROI_GATE', detail, 'WARN', currentCase.id);
-          navigateTo('imaging');
+          if (currentView !== 'workstation') navigateTo('imaging');
           return;
         }
         result = fullHand.prediction;
@@ -302,23 +347,29 @@ export function App() {
         throw new Error('กรุณาอัปโหลดภาพ X-ray มือก่อนประมวลผล');
       }
 
-      setReviewedMonths(result.predicted_months);
+      setReviewedMonths('');
       setCases((previous) =>
         previous.map((item) => {
-          if (item.id !== selectedCaseId) return item;
+          if (item.id !== requestCase.id||(item.roiRevision||0)!==revision) return item;
           const signed = result.predicted_months - item.chronologicalAgeMonths;
           const offsetType = Math.abs(signed) < 3 ? 'Normal' : signed > 0 ? 'Advanced' : 'Delayed';
           const sourceRois = imagingUpdate.rois ?? item.rois;
           return {
             ...item,
             ...imagingUpdate,
+            predictionStale:false,
+            predictionDurationSeconds: Number(((performance.now() - startedAt) / 1000).toFixed(2)),
+            predictionCompletedAt: new Date().toISOString(),
+            predictionRoiRevision:uploadedImage?revision+1:revision,
+            roiRevision:uploadedImage?revision+1:revision,
+            predictionHistory:uploadedImage&&item.inferenceId&&!item.predictionHistory?.some(h=>h.inferenceId===item.inferenceId)?[...(item.predictionHistory||[]),{inferenceId:item.inferenceId,months:item.rawPredictedAgeMonths,xaiUrl:item.xaiLayerUrl||item.xaiHeatmapUrl,modelId:item.modelId,roiRevision:item.predictionRoiRevision??revision,savedAt:new Date().toISOString()}]:item.predictionHistory,
             predictedAgeMonths: result.predicted_months,
             rawPredictedAgeMonths: result.predicted_months,
             predictedAgeDisplay: displayAge(result.predicted_months),
             offsetMonths: Math.round(signed * 10) / 10,
             offsetType,
             modelId: result.model_id,
-            modelDisplayName: 'ระบบวิเคราะห์อายุกระดูก อายุ 1–18 ปี',
+            modelDisplayName: result.model_name,
             modelArchitecture: 'ระบบวิเคราะห์ภาพ 9 ตำแหน่งร่วมกับข้อมูลเพศ',
             preprocessingVersion: result.preprocess,
             experimentId: 'FULL18_TRANSFER_REAL_AUG',
@@ -326,8 +377,8 @@ export function App() {
             xaiMethod: result.xai_method || 'ROI-gate-weighted SmoothGrad Input × Gradient',
             rois: sourceRois.map((roi) => ({
               ...roi,
-              xaiImportance: result.roi_gate[roi.code] || 0,
-              importance: Math.round((result.roi_gate[roi.code] || 0) * 100),
+              xaiImportance: result.roi_gate[roi.code] ?? result.roi_gate[roi.code==='PP3MC'?'PP3':roi.code] ?? 0,
+              importance: Math.round((result.roi_gate[roi.code] ?? result.roi_gate[roi.code==='PP3MC'?'PP3':roi.code] ?? 0) * 100),
             })),
             currentStep: 'Prediction',
             lastStep: 'Prediction',
@@ -341,10 +392,11 @@ export function App() {
         'INFO',
         selectedCaseId
       );
-      if (!stayOnImaging) navigateTo('prediction');
+      navigateTo('prediction');
     } catch (error) {
-      setPredictionError(error instanceof Error ? error.message : 'Prediction failed');
+      if(isCurrent())setPredictionError(error instanceof Error ? error.message : 'Prediction failed');
     } finally {
+      requestLock.current=false;
       setIsPredicting(false);
     }
   };
@@ -369,6 +421,7 @@ export function App() {
       const refreshed = await api.listFeedback();
       setFeedbackItems(refreshed.feedback);
       recordAudit('CLINICAL_REVIEW', `Expert review saved at ${Number(reviewedMonths).toFixed(1)} months`, 'AUDIT', currentCase.id);
+      navigateTo('xai');
     } catch (error) {
       setPredictionError(error instanceof Error ? error.message : 'Could not save review');
     }
@@ -376,14 +429,32 @@ export function App() {
 
   const handleUpdateCurrentCase = (updated: Partial<PatientCase>) => {
     setCases((prev) =>
-      prev.map((c) => (c.id === selectedCaseId ? { ...c, ...updated, updatedAt: 'Just now' } : c))
+      prev.map((c) => (c.id === selectedCaseId ? { ...c, ...updated, updatedAt: new Date().toISOString(), ...(updated.status==='Finalized'||updated.status==='Complete'?{completedAt:new Date().toISOString()}:{} ) } : c))
     );
   };
 
+  const invalidateSelectedResult = () => {
+    handleUpdateCurrentCase({predictionStale:true,predictionHistory:!currentCase.predictionStale&&currentCase.inferenceId?[...(currentCase.predictionHistory||[]),{inferenceId:currentCase.inferenceId,months:currentCase.rawPredictedAgeMonths,xaiUrl:currentCase.xaiLayerUrl||currentCase.xaiHeatmapUrl,modelId:currentCase.modelId,roiRevision:currentCase.predictionRoiRevision??0,savedAt:new Date().toISOString(),xaiMethod:currentCase.xaiMethod,preprocessingVersion:currentCase.preprocessingVersion,rois:currentCase.rois}]:currentCase.predictionHistory});
+  };
+  const selectModel = (id:string) => {
+    if(requestLock.current)return;
+    setSelectedModelId(id);
+    if(id!==currentCase.modelId)invalidateSelectedResult();
+  };
+  const selectXai = (method:string) => {
+    if(requestLock.current)return;
+    setSelectedXaiMethod(method);
+    if(method!==currentCase.xaiMethod)invalidateSelectedResult();
+  };
+
   const updateFeedback = async (feedbackId: string, status: FeedbackItem['status']) => {
-    await api.updateFeedbackStatus(feedbackId, status);
-    const refreshed = await api.listFeedback();
-    setFeedbackItems(refreshed.feedback);
+    try {
+      await api.updateFeedbackStatus(feedbackId, status);
+      const refreshed = await api.listFeedback();
+      setFeedbackItems(refreshed.feedback);
+    } catch (error) {
+      window.alert(error instanceof Error ? error.message : 'บันทึกสถานะไม่สำเร็จ');
+    }
     recordAudit('FEEDBACK', `Feedback ${feedbackId} changed to ${status}`, 'AUDIT');
   };
 
@@ -553,25 +624,16 @@ export function App() {
           />
         )}
 
-        {(currentView === 'imaging' || currentView === 'roi') && (
-          <ImagingView
-            currentCase={currentCase}
-            onUpdateCase={handleUpdateCurrentCase}
-            onContinue={runRealPrediction}
-            onBack={() => navigateTo('intake')}
-            isProcessing={isPredicting}
-            processingError={predictionError}
-            language={language}
-          />
-        )}
+        {['workstation','imaging','roi'].includes(currentView) && currentCase && <WorkstationView onComplete={() => navigateTo('report')} currentCase={currentCase} onRun={runRealPrediction} processing={isPredicting} error={predictionError} onUpdate={handleUpdateCurrentCase} models={models} selectedModelId={selectedModelId} onModelChange={selectModel} selectedXaiMethod={selectedXaiMethod} onXaiChange={selectXai} user={user} storageStatus={storageStatus} requestId={activeRequestId} />}
 
-        {currentView === 'prediction' && (
+        {currentCase?.predictionStale&&['prediction','xai','report'].includes(currentView)&&<div className="p-8"><p role="alert">กรอบถูกแก้ไขแล้ว ผลนี้เป็นผลก่อนแก้ กรุณาคำนวณใหม่ · ผลเดิมดูได้ใน History</p><button className="ws-button" onClick={()=>navigateTo('workstation')}>กลับห้องตรวจเพื่อยืนยันกรอบและคำนวณใหม่</button></div>}
+        {currentView === 'prediction' && !currentCase?.predictionStale && (
           <PredictionView
             currentCase={currentCase}
             models={models}
             selectedModelId={selectedModelId}
-            onModelChange={setSelectedModelId}
-            onRunPrediction={runRealPrediction}
+            onModelChange={selectModel}
+            onReviewRois={() => navigateTo('imaging')}
             isPredicting={isPredicting}
             predictionError={predictionError}
             backendConnected={backendConnected}
@@ -588,7 +650,7 @@ export function App() {
           />
         )}
 
-        {currentView === 'xai' && (
+        {currentView === 'xai' && !currentCase?.predictionStale && (
           <XAIView
             currentCase={currentCase}
             onUpdateCase={handleUpdateCurrentCase}
@@ -609,7 +671,7 @@ export function App() {
           />
         )}
 
-        {currentView === 'report' && (
+        {currentView === 'report' && !currentCase?.predictionStale && (
           <ReportView
             currentCase={currentCase}
             language={language}

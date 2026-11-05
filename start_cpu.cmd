@@ -2,6 +2,8 @@
 setlocal
 cd /d "%~dp0"
 set "BONEAGE_DEVICE=cpu"
+set "BONEAGE_DEMO_ENABLED=0"
+echo Configure BONEAGE_USERNAME, BONEAGE_PASSWORD, and BONEAGE_SESSION_SECRET in .env before signing in.
 echo Starting Bone Age research application in CPU mode...
 echo The first analysis may be slower while the real models load into memory.
 if exist "C:\Program Files\Python311\python.exe" (

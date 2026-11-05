@@ -171,7 +171,7 @@ export const ReportView: React.FC<ReportViewProps> = ({
                   : 'bg-[#9deee5] text-[#0c6f67]'
               }`}
             >
-              {isThai ? `ผลต่าง ${currentCase.offsetMonths > 0 ? '+' : ''}${currentCase.offsetMonths} เดือน` : `${currentCase.offsetType} maturation (${currentCase.offsetMonths > 0 ? '+' : ''}${currentCase.offsetMonths} months)`}
+              {isThai ? `ผลต่าง ${currentCase.offsetMonths > 0 ? '+' : ''}${currentCase.offsetMonths} เดือน` : `Difference from chronological age (${currentCase.offsetMonths > 0 ? '+' : ''}${currentCase.offsetMonths} months)`}
             </span>
           </div>
 

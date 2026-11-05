@@ -35,6 +35,9 @@ pipeline_output/
 *.tif
 *.tiff
 *.webp
+# Required decorative UI artwork; this is not a patient radiograph.
+!src/assets/
+!src/assets/bone-hand-hero-v1.png
 # Curated, de-identified README figures are versioned separately from datasets.
 !docs/assets/
 !docs/assets/*.png
